@@ -1409,6 +1409,7 @@
             activeSet: 0,
             currentQIndex: 0,
             theme: 'light',
+            fontSizeMode: 'medium',
             questionsDB: {},   // mockKey -> Array of normalized questions
             answersDB: {},     // mockKey -> { [qIndex]: selectedOptionIndex }
             progressDB: {},    // mockKey -> { activeSet, currentQIndex }
@@ -1440,6 +1441,7 @@
                     if (parsed.mockCountsDB && typeof parsed.mockCountsDB === 'object') state.mockCountsDB = parsed.mockCountsDB;
                     if (parsed.removedMocksDB && typeof parsed.removedMocksDB === 'object') state.removedMocksDB = parsed.removedMocksDB;
                     if (parsed.theme === 'dark' || parsed.theme === 'light') state.theme = parsed.theme;
+                    if (parsed.fontSizeMode === 'small' || parsed.fontSizeMode === 'medium' || parsed.fontSizeMode === 'large') state.fontSizeMode = parsed.fontSizeMode;
                     if (parsed.activityDates && typeof parsed.activityDates === 'object') state.activityDates = parsed.activityDates;
                     if (parsed.practiceAnswers && typeof parsed.practiceAnswers === 'object') state.practiceAnswers = parsed.practiceAnswers;
                     if (parsed.practiceSessions && typeof parsed.practiceSessions === 'object') state.practiceSessions = parsed.practiceSessions;
@@ -1451,6 +1453,7 @@
             try {
                 const payload = {
                     theme: state.theme,
+                    fontSizeMode: state.fontSizeMode,
                     questionsDB: state.questionsDB,
                     answersDB: state.answersDB,
                     progressDB: state.progressDB,
@@ -1464,6 +1467,32 @@
             } catch (e) {
                 showToast('Storage सीमा भर गई है — कृपया Backup JSON डाउनलोड करें।');
             }
+        }
+
+        const FONT_SIZE_MODES = ['small', 'medium', 'large'];
+        const FONT_SIZE_LABELS = { small: 'Small', medium: 'Medium', large: 'Large' };
+        const FONT_SIZE_SCALES = { small: 0.90, medium: 1, large: 1.15 };
+
+        function applyFontSize(mode) {
+            state.fontSizeMode = FONT_SIZE_MODES.includes(mode) ? mode : 'medium';
+            const scale = FONT_SIZE_SCALES[state.fontSizeMode];
+            document.querySelectorAll('*').forEach(el => {
+                if (!el.dataset.originalFontSize) {
+                    const size = getComputedStyle(el).fontSize;
+                    if (size) el.dataset.originalFontSize = size;
+                }
+                const base = parseFloat(el.dataset.originalFontSize);
+                if (Number.isFinite(base)) el.style.fontSize = (base * scale) + 'px';
+            });
+            const label = document.getElementById('font-size-label');
+            if (label) label.textContent = FONT_SIZE_LABELS[state.fontSizeMode];
+            savePersistedState();
+        }
+
+        function cycleFontSize() {
+            const current = FONT_SIZE_MODES.indexOf(state.fontSizeMode);
+            const next = FONT_SIZE_MODES[(current + 1) % FONT_SIZE_MODES.length];
+            applyFontSize(next);
         }
 
         function applyTheme(mode) {
@@ -1804,6 +1833,7 @@
                 hdrSub.textContent = modeLabel;
                 root.innerHTML = renderPlayerView(examObj, subjObj, topicObj);
             }
+            applyFontSize(state.fontSizeMode);
         }
 
         function renderHomeView() {
@@ -2558,6 +2588,7 @@
                 backupVersion: 2,
                 exportedAt: new Date().toISOString(),
                 theme: state.theme,
+                fontSizeMode: state.fontSizeMode,
                 questionsDB: state.questionsDB,
                 answersDB: state.answersDB,
                 progressDB: state.progressDB,
@@ -2607,6 +2638,7 @@
                     state.practiceAnswers = (parsed.practiceAnswers && typeof parsed.practiceAnswers === 'object') ? parsed.practiceAnswers : {};
                     state.practiceSessions = (parsed.practiceSessions && typeof parsed.practiceSessions === 'object') ? parsed.practiceSessions : {};
                     if (parsed.theme === 'dark' || parsed.theme === 'light') state.theme = parsed.theme;
+                    if (parsed.fontSizeMode === 'small' || parsed.fontSizeMode === 'medium' || parsed.fontSizeMode === 'large') state.fontSizeMode = parsed.fontSizeMode;
                     state.view = 'home';
                     state.examId = null; state.subjectId = null; state.topicId = null;
                     state.mockNumber = 1; state.activeSet = 0; state.currentQIndex = 0;
@@ -2688,6 +2720,7 @@
                 <button class="quick-btn" onclick="exportAllDataBackup()">💾<strong>Backup Data</strong><span>Complete saved data JSON</span></button>
                 <button class="quick-btn" onclick="openRestoreBackupPicker()">📤<strong>Restore Backup</strong><span>Google Drive / Mobile Storage</span></button>
                 <button class="quick-btn" onclick="openExamHub()">▣<strong>Browse Exams</strong><span>MTS, CGL & Stenographer</span></button>
+                <button class="quick-btn" onclick="cycleFontSize()">🔤<strong>Font Size: <span id="font-size-label">${FONT_SIZE_LABELS[state.fontSizeMode]}</span></strong><span>Small / Medium / Large</span></button>
                 <button class="quick-btn" onclick="toggleTheme()">🌙<strong>Toggle Theme</strong><span>Light / Dark mode</span></button>
             </div>
             <input id="restore-backup-input" type="file" accept="application/json,.json" style="display:none" onchange="restoreBackupFromFile(this)">`;

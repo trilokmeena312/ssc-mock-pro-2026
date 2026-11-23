@@ -1,0 +1,3115 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4f39f5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SSC Mock Pro 2026">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <meta name="theme-color" content="#111633">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SSC Mock Pro 2026</title>
+    <style>
+        :root {
+            --bg-main: #eef1fa;
+            --bg-card: #ffffff;
+            --bg-subtle: #f4f6fc;
+            --border-card: #e2e8f0;
+            --header-bg: #171b36;
+            --header-btn: #252b52;
+            --accent-primary: #4938e3;
+            --accent-primary-hover: #3b2bc9;
+            --accent-gold: #ffb300;
+            --accent-gold-text: #171b36;
+            --text-main: #111827;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --topic-pill-bg: #f5ebff;
+            --topic-pill-text: #7e22ce;
+            --topic-pill-border: #e9d5ff;
+            --correct-main: #059669;
+            --correct-bg: #e9f8f0;
+            --correct-border: #059669;
+            --correct-pill-bg: #d1fae5;
+            --wrong-main: #dc2626;
+            --wrong-bg: #fef2f2;
+            --wrong-border: #fca5a5;
+            --shadow-card: 0 2px 10px rgba(23, 27, 54, 0.06);
+        }
+
+        html.dark {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-subtle: #283548;
+            --border-card: #334155;
+            --header-bg: #111633;
+            --header-btn: #1e264d;
+            --accent-primary: #6353f7;
+            --accent-primary-hover: #5241e6;
+            --accent-gold: #ffb300;
+            --accent-gold-text: #171b36;
+            --text-main: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --topic-pill-bg: #2e1d47;
+            --topic-pill-text: #d8b4fe;
+            --topic-pill-border: #4c2d78;
+            --correct-main: #10b981;
+            --correct-bg: #0d2b22;
+            --correct-border: #10b981;
+            --correct-pill-bg: #064e3b;
+            --wrong-main: #f87171;
+            --wrong-bg: #351419;
+            --wrong-border: #7f1d1d;
+            --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Devanagari", Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
+            overflow-x: hidden;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.85; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.06); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .anim-float { animation: floatSlow 3.2s ease-in-out infinite; }
+        .anim-pulse { animation: pulseGlow 2.4s ease-in-out infinite; }
+        .fade-in { animation: fadeIn 0.2s ease-out; }
+
+        /* Top Sticky Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background-color: var(--header-bg);
+            color: #ffffff;
+            padding: 10px 14px 12px 46px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .header-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            min-height: 34px;
+        }
+
+        .header-left-group, .header-right-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hdr-btn {
+            background-color: var(--header-btn);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 10px;
+            padding: 7px 11px;
+            font-size: 12.5px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.12s ease, background-color 0.15s ease;
+            white-space: nowrap;
+        }
+        .hdr-btn:active { transform: scale(0.96); }
+        .hdr-btn-primary {
+            background-color: var(--accent-primary);
+            border-color: rgba(255, 255, 255, 0.24);
+            border-radius: 999px;
+            padding: 7px 13px;
+        }
+
+        .header-brand-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .gold-badge {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: var(--accent-gold-text);
+            font-size: 10.5px;
+            font-weight: 900;
+            padding: 2px 8px;
+            border-radius: 6px;
+            letter-spacing: 0.4px;
+            margin-bottom: 3px;
+        }
+
+        .brand-title {
+            font-size: 16.5px;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.25;
+        }
+
+        .brand-sub {
+            font-size: 11.5px;
+            color: #cbd5e1;
+            margin: 2px 0 0 0;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 14px 12px 52px 12px;
+        }
+
+        .section-title {
+            font-size: 15.5px;
+            font-weight: 800;
+            margin: 4px 0 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        /* Linear Cards */
+        .linear-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .list-card {
+            background-color: var(--bg-card);
+            border: 1.5px solid var(--border-card);
+            border-radius: 16px;
+            padding: 14px 15px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.14s ease, border-color 0.15s ease;
+            text-align: left;
+            width: 100%;
+            color: var(--text-main);
+        }
+        .list-card:hover { border-color: var(--accent-primary); }
+        .list-card:active { transform: scale(0.985); }
+
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border-card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .card-info { min-width: 0; flex: 1; }
+        .card-title {
+            font-size: 15px;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-main);
+        }
+        .card-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 3px 0 0 0;
+        }
+
+        .badge-pill {
+            font-size: 11.5px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background-color: var(--bg-subtle);
+            color: var(--accent-primary);
+            border: 1px solid var(--border-card);
+            white-space: nowrap;
+        }
+
+        /* Side-by-Side Flex Row Mode Switcher */
+        .mode-switch-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 2px solid var(--border-card);
+            border-radius: 14px;
+            padding: 13px 10px;
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: all 0.15s ease;
+        }
+        .mode-btn.active {
+            background-color: var(--accent-primary);
+            color: #ffffff;
+            border-color: var(--accent-primary);
+        }
+
+        .add-more-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 13px;
+            border-radius: 14px;
+            border: 2px dashed var(--accent-primary);
+            background-color: var(--bg-card);
+            color: var(--accent-primary);
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .add-more-btn:active { transform: scale(0.98); }
+
+        .mock-management-bar {
+            display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;
+            margin:0 0 10px; padding:10px 12px; border:1px solid var(--border-card);
+            border-radius:14px; background:var(--bg-subtle);
+        }
+        .mock-management-info { font-size:11.5px; color:var(--text-secondary); font-weight:800; }
+        .mock-remove-btn {
+            border:1px solid #ef4444; background:transparent; color:#dc2626; border-radius:10px;
+            padding:8px 10px; font-size:11.5px; font-weight:900; cursor:pointer;
+        }
+        .mock-remove-btn.active { background:#dc2626; color:#fff; }
+        .mock-row {
+            background:var(--bg-card); border:1.5px solid var(--border-card); border-radius:16px;
+            box-shadow:var(--shadow-card); display:flex; align-items:stretch; gap:8px; padding:7px;
+        }
+        .mock-row.open { flex:1; min-width:0; border:0; box-shadow:none; padding:7px 5px 7px 3px; background:transparent; }
+        .mock-select-wrap { width:42px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .mock-select-wrap input { width:20px; height:20px; accent-color:var(--accent-primary); }
+        .mock-open-btn { flex:1; min-width:0; background:var(--bg-card); border:0; color:var(--text-main); cursor:pointer; text-align:left;
+            display:flex; align-items:center; justify-content:space-between; gap:10px; border-radius:12px; padding:8px; }
+        .mock-open-btn:active { transform:scale(.99); }
+
+        .import-dropzone {
+            border:1.5px dashed var(--accent-primary); background:var(--bg-subtle); border-radius:14px;
+            padding:14px; margin:0 0 12px;
+        }
+        .import-textarea { min-height:240px; max-height:55vh; resize:vertical; width:100%; box-sizing:border-box;
+            background:var(--bg-card); color:var(--text-main); border:1.5px solid var(--border-card); border-radius:12px;
+            padding:12px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12px; line-height:1.5;
+            outline:none; }
+        .import-textarea:focus { border-color:var(--accent-primary); box-shadow:0 0 0 3px rgba(73,56,227,.10); }
+        .import-hint { font-size:11px; color:var(--text-muted); margin-top:7px; font-weight:700; line-height:1.45; }
+
+        /* Mock Player Score Bar */
+        .stats-bar {
+            background-color: var(--bg-card);
+            border: 1.5px solid var(--border-card);
+            border-radius: 14px;
+            padding: 10px 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .stats-chips {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .stat-chip {
+            padding: 4px 8px;
+            border-radius: 8px;
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border-card);
+        }
+        .stat-correct { color: var(--correct-main); }
+        .stat-wrong { color: var(--wrong-main); }
+        .stat-score { color: var(--accent-primary); }
+
+        .stats-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mini-action-btn {
+            padding: 6px 10px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 700;
+            border: 1px solid var(--border-card);
+            background-color: var(--bg-subtle);
+            color: var(--text-main);
+            cursor: pointer;
+        }
+        .mini-action-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        .mini-reset-btn {
+            color: var(--wrong-main);
+            border-color: var(--wrong-border);
+            background-color: var(--wrong-bg);
+        }
+
+        /* Golden Active Set Tabs */
+        .set-tabs-row {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+        }
+
+        .set-tab {
+            flex: 1;
+            min-width: 105px;
+            padding: 9px 10px;
+            border-radius: 11px;
+            border: 1.5px solid var(--border-card);
+            background-color: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 12.5px;
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .set-tab.active {
+            background-color: var(--accent-gold);
+            color: var(--accent-gold-text);
+            border-color: #e09e00;
+        }
+
+        /* Top & Bottom Prev / Next Controls */
+        .nav-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .nav-step-btn {
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-card);
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            min-width: 112px;
+            box-shadow: var(--shadow-card);
+        }
+        .nav-step-btn.primary {
+            background-color: var(--accent-primary);
+            color: #ffffff;
+            border-color: var(--accent-primary);
+        }
+        .nav-step-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .nav-center-label {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Screenshot-2 Exact Question Card */
+        .question-card {
+            background-color: var(--bg-card);
+            border: 1.5px solid var(--border-card);
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .q-badges-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 6px;
+        }
+
+        .q-num-pill {
+            background-color: #171b36;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        html.dark .q-num-pill {
+            background-color: var(--accent-primary);
+        }
+
+        .q-light-pill {
+            background-color: var(--bg-subtle);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-card);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 3.5px 10px;
+            border-radius: 8px;
+        }
+
+        .q-topic-pill {
+            background-color: var(--topic-pill-bg);
+            color: var(--topic-pill-text);
+            border: 1px solid var(--topic-pill-border);
+            font-size: 12px;
+            font-weight: 800;
+            padding: 3.5px 11px;
+            border-radius: 999px;
+        }
+
+        .q-shift-line {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin: 2px 0 12px 0;
+        }
+
+        .passage-box {
+            background-color: var(--bg-subtle);
+            border-left: 4px solid var(--accent-primary);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 14px;
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            white-space: pre-line;
+        }
+        .passage-label {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--accent-primary);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .player-zoom-bar { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0 12px; padding:8px 10px; background:var(--bg-card); border:1px solid var(--border-card); border-radius:14px; box-shadow:var(--shadow-card); position:relative; z-index:2; }
+        .player-zoom-title { font-size:11px; font-weight:900; color:var(--text-secondary); white-space:nowrap; }
+        .player-zoom-controls { display:flex; align-items:center; gap:5px; }
+        .player-zoom-btn { min-width:34px; height:32px; padding:0 8px; border-radius:9px; border:1px solid var(--border-card); background:var(--bg-subtle); color:var(--text-main); font-weight:900; cursor:pointer; }
+        .player-zoom-btn.zoom-value { min-width:52px; color:var(--accent-primary); background:var(--topic-pill-bg); border-color:var(--topic-pill-border); }
+        .player-zoom-btn:active { transform:scale(.96); }
+        html.pinch-zoom-page, body.pinch-zoom-page { touch-action: pan-x pan-y pinch-zoom; }
+        body.pinch-zoom-page { overflow-x: hidden; }
+
+        .q-text {
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0 0 16px 0;
+            line-height: 1.55;
+            white-space: pre-line;
+        }
+
+        /* Option Buttons */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .opt-btn {
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1.5px solid var(--border-card);
+            border-radius: 13px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            text-align: left;
+            color: var(--text-main);
+            transition: all 0.14s ease;
+        }
+        .opt-btn:hover:not(:disabled) {
+            border-color: var(--accent-primary);
+            background-color: var(--bg-subtle);
+        }
+        .opt-btn:disabled {
+            cursor: default;
+        }
+
+        .opt-left {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .opt-letter {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border-card);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .opt-label-text {
+            font-size: 14.5px;
+            font-weight: 600;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .opt-status-tag {
+            font-size: 12px;
+            font-weight: 800;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .opt-btn.opt-dim { opacity: 0.52; }
+        .opt-btn.opt-correct {
+            background-color: var(--correct-bg);
+            border: 2px solid var(--correct-main);
+            opacity: 1;
+        }
+        .opt-btn.opt-correct .opt-letter {
+            background-color: var(--correct-main);
+            border-color: var(--correct-main);
+            color: #ffffff;
+        }
+        .opt-btn.opt-correct .opt-label-text { font-weight: 800; }
+        .opt-btn.opt-correct .opt-status-tag { color: var(--correct-main); }
+
+        .opt-btn.opt-wrong {
+            background-color: var(--wrong-bg);
+            border: 2px solid var(--wrong-main);
+            opacity: 1;
+        }
+        .opt-btn.opt-wrong .opt-letter {
+            background-color: var(--wrong-main);
+            border-color: var(--wrong-main);
+            color: #ffffff;
+        }
+        .opt-btn.opt-wrong .opt-status-tag { color: var(--wrong-main); }
+
+        /* Screenshot-2 Mint Explanation Box */
+        .explanation-card {
+            margin-top: 16px;
+            background-color: var(--correct-bg);
+            border: 1.5px solid var(--correct-border);
+            border-radius: 16px;
+            padding: 15px;
+        }
+
+        .exp-result-header {
+            font-size: 15.5px;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+        }
+        .exp-result-header.is-right { color: var(--correct-main); }
+        .exp-result-header.is-wrong { color: var(--wrong-main); }
+
+        .exp-ans-pill {
+            display: inline-block;
+            background-color: var(--correct-pill-bg);
+            color: var(--correct-main);
+            border: 1px solid var(--correct-border);
+            font-size: 13px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+
+        .exp-heading {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--accent-primary);
+            margin: 0 0 5px 0;
+        }
+
+        .exp-body-text {
+            font-size: 14px;
+            color: var(--text-main);
+            margin: 0 0 12px 0;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        .exam-facts-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--correct-border);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .exam-facts-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0 0 8px 0;
+        }
+
+        .exam-facts-list {
+            margin: 0;
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .exam-facts-list li {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .exam-facts-list li::marker { color: var(--accent-primary); }
+
+        /* Empty Mock Card */
+        .empty-card {
+            background-color: var(--bg-card);
+            border: 1.5px dashed var(--border-card);
+            border-radius: 18px;
+            padding: 28px 18px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* Modals */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(11, 15, 30, 0.72);
+            /* Keep every modal above the fixed bottom navigation on mobile. */
+            z-index: 300;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+        }
+        .modal-backdrop.open { display: flex; }
+
+        .modal-panel {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1.5px solid var(--border-card);
+            border-radius: 18px;
+            width: 100%;
+            max-width: 560px;
+            /* Use the real mobile viewport and leave a little breathing room. */
+            max-height: calc(100dvh - 24px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 16px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Extra room at the bottom of long mobile forms so the last controls
+           can never sit underneath Android/browser UI. */
+        #add-mock-modal .modal-panel {
+            padding-bottom: calc(22px + env(safe-area-inset-bottom));
+        }
+
+        @media (max-width: 600px) {
+            .modal-backdrop {
+                padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+            }
+            .modal-panel {
+                max-height: calc(100dvh - 16px);
+                border-radius: 16px;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-card);
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin: 0;
+        }
+        .close-x {
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-card);
+            color: var(--text-main);
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 480px) {
+            .form-grid-2 { grid-template-columns: 1fr; }
+        }
+
+        .form-label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .form-select, .paste-textarea {
+            width: 100%;
+            background-color: var(--bg-subtle);
+            color: var(--text-main);
+            border: 1.5px solid var(--border-card);
+            border-radius: 10px;
+            padding: 9px 10px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .paste-textarea {
+            min-height: 82px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            resize: vertical;
+        }
+
+        .chunk-box-wrapper {
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .chunk-box-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .char-counter {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .char-counter.warn { color: #d97706; }
+
+        .warn-tag {
+            display: none;
+            font-size: 11px;
+            font-weight: 700;
+            color: #b45309;
+            background-color: #fef3c7;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+        }
+        .warn-tag.show { display: block; }
+
+        .file-upload-box {
+            border: 1.5px dashed var(--accent-primary);
+            background-color: var(--bg-subtle);
+            border-radius: 12px;
+            padding: 11px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+        .pal-btn {
+            padding: 10px 4px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-card);
+            background-color: var(--bg-subtle);
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .pal-btn.current { border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--accent-primary); }
+        .pal-btn.right { background-color: var(--correct-main); color: #fff; border-color: var(--correct-main); }
+        .pal-btn.wrong { background-color: var(--wrong-main); color: #fff; border-color: var(--wrong-main); }
+
+        .toast-banner {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #171b36;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 90;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            display: none;
+            max-width: 92vw;
+            text-align: center;
+        }
+        .toast-banner.show { display: block; }
+
+        /* ===== SSC MOCK PRO 2026 • PREMIUM UI UPGRADE ===== */
+        body { padding-bottom: 78px; }
+        .app-header { background: linear-gradient(135deg, var(--header-bg), #242b61 58%, #3b2bc9); backdrop-filter: blur(16px); }
+        .header-brand-row { margin-top: 8px; }
+        .brand-title { letter-spacing: -0.2px; }
+        .container { padding-top: 16px; }
+        .hero-card { position:relative; overflow:hidden; background:linear-gradient(135deg,var(--bg-card),var(--bg-subtle)); border:1px solid var(--border-card); border-radius:22px; padding:18px; margin-bottom:14px; box-shadow:0 12px 30px rgba(23,27,54,.08); }
+        .hero-card:after { content:""; position:absolute; width:150px; height:150px; right:-55px; top:-65px; border-radius:50%; background:rgba(73,56,227,.10); }
+        .hero-kicker { display:inline-flex; align-items:center; gap:6px; padding:5px 9px; border-radius:999px; background:var(--topic-pill-bg); color:var(--topic-pill-text); font-size:11px; font-weight:900; }
+        .hero-title { margin:9px 0 4px; font-size:23px; line-height:1.2; font-weight:900; letter-spacing:-.4px; }
+        .hero-sub { margin:0; color:var(--text-secondary); font-size:12.5px; }
+        .dashboard-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; margin:12px 0 16px; }
+        .metric-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:16px; padding:12px; box-shadow:var(--shadow-card); }
+        .metric-label { font-size:10.5px; color:var(--text-muted); font-weight:800; }
+        .metric-value { font-size:20px; font-weight:900; margin-top:2px; }
+        .metric-sub { font-size:10.5px; color:var(--text-secondary); margin-top:2px; }
+        .quick-actions { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; margin:10px 0 17px; }
+        .quick-btn { border:1px solid var(--border-card); background:var(--bg-card); border-radius:15px; padding:12px; text-align:left; color:var(--text-main); font-weight:800; box-shadow:var(--shadow-card); cursor:pointer; }
+        .quick-btn strong { display:block; font-size:13px; }
+        .quick-btn span { display:block; margin-top:2px; font-size:10.5px; color:var(--text-muted); font-weight:700; }
+        .list-card { border-radius:18px; box-shadow:0 5px 18px rgba(23,27,54,.055); }
+        .icon-box { border-radius:14px; }
+        .progress-track { height:7px; background:var(--bg-subtle); border-radius:999px; overflow:hidden; border:1px solid var(--border-card); }
+        .progress-fill { height:100%; width:0; background:linear-gradient(90deg,var(--accent-primary),#8b5cf6); border-radius:inherit; transition:width .35s ease; }
+        .q-meta-panel { display:flex; flex-wrap:wrap; gap:7px; margin:5px 0 13px; }
+        .q-meta-chip { display:inline-flex; align-items:center; gap:5px; padding:6px 9px; border-radius:10px; background:var(--bg-subtle); border:1px solid var(--border-card); color:var(--text-secondary); font-size:10.5px; font-weight:800; }
+        .q-meta-chip strong { color:var(--text-main); }
+        
+        .q-progress-wrap { margin:3px 0 12px; }
+        .question-scrubber-wrap {
+            position:relative;
+            width:100%;
+            padding:8px 2px 3px;
+            touch-action:pan-x;
+        }
+        .question-scrubber {
+            -webkit-appearance:none;
+            appearance:none;
+            width:100%;
+            height:18px;
+            margin:0;
+            padding:0;
+            background:transparent;
+            cursor:pointer;
+            display:block;
+        }
+        .question-scrubber::-webkit-slider-runnable-track {
+            height:6px;
+            border-radius:999px;
+            background:linear-gradient(90deg,var(--accent-primary) 0%,var(--accent-primary) var(--scrub-pct,0%),var(--bg-subtle) var(--scrub-pct,0%),var(--bg-subtle) 100%);
+            border:1px solid var(--border-card);
+        }
+        .question-scrubber::-webkit-slider-thumb {
+            -webkit-appearance:none;
+            appearance:none;
+            width:18px;
+            height:18px;
+            margin-top:-7px;
+            border-radius:50%;
+            background:var(--accent-primary);
+            border:3px solid var(--bg-card);
+            box-shadow:0 2px 8px rgba(23,27,54,.24);
+        }
+        .question-scrubber::-moz-range-track {
+            height:6px;
+            border-radius:999px;
+            background:var(--bg-subtle);
+            border:1px solid var(--border-card);
+        }
+        .question-scrubber::-moz-range-progress {
+            height:6px;
+            border-radius:999px;
+            background:var(--accent-primary);
+        }
+        .question-scrubber::-moz-range-thumb {
+            width:18px;
+            height:18px;
+            border-radius:50%;
+            background:var(--accent-primary);
+            border:3px solid var(--bg-card);
+            box-shadow:0 2px 8px rgba(23,27,54,.24);
+        }
+        
+        .question-scrubber-live-next { animation: scrubQuestionNext .14s ease-out; }
+        .question-scrubber-live-prev { animation: scrubQuestionPrev .14s ease-out; }
+        @keyframes scrubQuestionNext {
+            from { opacity:.72; transform:translateX(12px); }
+            to { opacity:1; transform:translateX(0); }
+        }
+        @keyframes scrubQuestionPrev {
+            from { opacity:.72; transform:translateX(-12px); }
+            to { opacity:1; transform:translateX(0); }
+        }
+
+        .practice-timer-card{
+            display:flex;align-items:center;justify-content:space-between;gap:10px;
+            margin:0 0 12px;padding:12px 14px;border:1px solid var(--border-card);
+            border-radius:16px;background:var(--bg-card);box-shadow:var(--shadow-card);
+        }
+        .practice-timer-label{font-size:12px;font-weight:900;color:var(--text-secondary)}
+        .practice-timer{
+            font-size:22px;font-weight:950;letter-spacing:.5px;color:var(--accent-primary);
+            font-variant-numeric:tabular-nums;
+        }
+        .practice-timer.danger{color:var(--wrong-main);animation:pulseTimer 1s infinite}
+        @keyframes pulseTimer{50%{opacity:.55}}
+        .practice-selected{
+            border-color:var(--accent-primary)!important;
+            background:var(--accent-soft)!important;
+            box-shadow:0 0 0 2px rgba(73,56,227,.10);
+        }
+        .practice-lock-note{
+            margin:10px 0;padding:10px 12px;border-radius:12px;
+            background:var(--bg-subtle);color:var(--text-secondary);font-size:12px;font-weight:800;
+        }
+        .practice-result-question{
+            padding:14px;margin-bottom:10px;border:1px solid var(--border-card);
+            border-radius:16px;background:var(--bg-card);
+        }
+        .practice-result-question .correct-line{
+            margin-top:8px;padding:9px 11px;border-radius:10px;
+            background:var(--correct-bg);color:var(--correct-main);font-weight:850;
+        }
+        .practice-result-question .chosen-line{
+            margin-top:6px;padding:9px 11px;border-radius:10px;
+            background:var(--bg-subtle);color:var(--text-secondary);font-weight:750;
+        }
+        .practice-result-options{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+        .practice-result-option{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--border-card);border-radius:12px;background:var(--bg-card);font-weight:700;color:var(--text-primary)}
+        .practice-result-option .result-letter{flex:0 0 28px;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--bg-subtle);color:var(--text-secondary);font-weight:900}
+        .practice-result-option.result-correct{border-color:var(--correct-main);background:var(--correct-bg);color:var(--correct-main)}
+        .practice-result-option.result-correct .result-letter{background:var(--correct-main);color:#fff}
+        .practice-result-option.result-wrong{border-color:var(--wrong-main);background:var(--wrong-bg);color:var(--wrong-main)}
+        .practice-result-option.result-wrong .result-letter{background:var(--wrong-main);color:#fff}
+        .practice-controls-row{display:flex;align-items:center;gap:8px;margin:0 0 12px;flex-wrap:wrap}
+        .practice-controls-row .nav-step-btn{flex:1;min-width:110px}
+        .practice-palette-btn{flex:0 0 auto!important;min-width:105px!important}
+
+        .practice-complete{
+            text-align:center;padding:26px 18px;border-radius:22px;
+            background:var(--bg-card);border:1px solid var(--border-card);box-shadow:var(--shadow-card);
+        }
+
+        .question-scrubber:focus-visible {
+            outline:2px solid var(--accent-primary);
+            outline-offset:4px;
+            border-radius:999px;
+        }
+
+        .q-progress-label { display:flex; justify-content:space-between; font-size:10.5px; color:var(--text-muted); font-weight:800; margin-bottom:5px; }
+        .question-card { border-radius:22px; box-shadow:0 10px 28px rgba(23,27,54,.07); }
+        .q-text { font-size:clamp(1.12rem,4.8vw,1.42rem); letter-spacing:-.1px; }
+        .opt-btn { min-height:58px; border-radius:16px; padding:13px 14px; }
+        .opt-btn:active:not(:disabled) { transform:scale(.992); }
+        .opt-btn.opt-correct { background:var(--correct-bg); border-color:var(--correct-main); }
+        .opt-btn.opt-wrong { background:var(--wrong-bg); border-color:var(--wrong-main); }
+        .opt-btn.opt-dim { opacity:.54; }
+        .opt-letter { width:34px; height:34px; border-radius:11px; }
+        .explanation-card { border-radius:20px; box-shadow:0 8px 22px rgba(23,27,54,.06); }
+        .smart-tip { margin-top:10px; padding:11px 12px; border-radius:13px; background:var(--bg-subtle); border:1px dashed var(--accent-primary); color:var(--text-secondary); font-size:12.5px; }
+        .smart-tip strong { color:var(--accent-primary); }
+        .source-card { margin:4px 0 14px; padding:11px 12px; border-radius:15px; background:linear-gradient(135deg,var(--bg-subtle),var(--bg-card)); border:1px solid var(--border-card); }
+        .source-title { font-size:10px; color:var(--text-muted); font-weight:900; text-transform:uppercase; letter-spacing:.5px; }
+        .source-value { font-size:12px; font-weight:800; color:var(--text-main); margin-top:2px; }
+        .result-hero { text-align:center; padding:20px 16px; border-radius:22px; background:linear-gradient(135deg,var(--accent-primary),#7c3aed); color:#fff; box-shadow:0 14px 30px rgba(73,56,227,.24); }
+        .result-score { font-size:42px; line-height:1; font-weight:950; margin:7px 0; }
+        .result-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:9px; margin:12px 0; }
+        .result-stat { background:var(--bg-card); border:1px solid var(--border-card); border-radius:15px; padding:12px; }
+        .achievement-row { display:flex; gap:8px; overflow-x:auto; padding:2px 1px 6px; }
+        .achievement { min-width:125px; background:var(--bg-card); border:1px solid var(--border-card); border-radius:15px; padding:11px; box-shadow:var(--shadow-card); }
+        .achievement .emoji { font-size:22px; }
+        .achievement strong { display:block; font-size:11px; margin-top:4px; }
+        .achievement span { display:block; color:var(--text-muted); font-size:9.5px; margin-top:2px; }
+        .bottom-nav { position:fixed; left:0; right:0; bottom:0; z-index:120; display:flex; justify-content:space-around; gap:4px; padding:7px 8px calc(7px + env(safe-area-inset-bottom)); background:rgba(255,255,255,.94); border-top:1px solid var(--border-card); box-shadow:0 -8px 25px rgba(15,23,42,.10); backdrop-filter:blur(18px); }
+        html.dark .bottom-nav { background:rgba(15,23,42,.94); }
+        .bottom-nav button { flex:1; border:0; background:transparent; color:var(--text-muted); padding:5px 2px; border-radius:12px; font-size:9.5px; font-weight:900; cursor:pointer; }
+        .bottom-nav button .bn-icon { display:block; font-size:18px; line-height:20px; margin-bottom:2px; }
+        .bottom-nav button.active { color:var(--accent-primary); background:var(--bg-subtle); }
+        .sticky-player-head { position:sticky; top:0; z-index:20; padding:4px 0 2px; background:linear-gradient(var(--bg-main) 82%,transparent); }
+        .practice-card { background:var(--bg-card); border:1px solid var(--border-card); border-radius:18px; padding:14px; box-shadow:var(--shadow-card); margin-bottom:10px; }
+        .practice-source { font-size:10.5px; color:var(--text-muted); font-weight:700; margin-top:3px; }
+        @media (min-width:700px){ .dashboard-grid{grid-template-columns:repeat(4,1fr)} .quick-actions{grid-template-columns:repeat(4,1fr)} .result-grid{grid-template-columns:repeat(4,1fr)} }
+    </style>
+</head>
+<body>
+
+    <!-- Top Sticky Header -->
+    <header class="app-header">
+        <div class="header-top-row">
+            <div class="header-left-group">
+                <button type="button" id="btn-back" class="hdr-btn" style="display:none;" onclick="goBack()">
+                    <span>←</span><span>Back</span>
+                </button>
+            </div>
+            <div class="header-right-group">
+                <button type="button" id="btn-theme" class="hdr-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                    <span id="theme-icon">🌙</span><span id="theme-label">Dark</span>
+                </button>
+                <button type="button" class="hdr-btn hdr-btn-primary" onclick="openAddMockModal()">
+                    <span>+ Add Mock</span>
+                </button>
+                <button type="button" class="hdr-btn" onclick="goHome()">
+                    <span>Home</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="header-brand-row">
+            <div class="anim-float" style="flex-shrink:0;">
+                <svg width="40" height="40" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="44" height="44" rx="12" fill="#4938e3"/>
+                    <circle cx="22" cy="22" r="14" stroke="#ffb300" stroke-width="2" stroke-dasharray="4 3" class="anim-pulse"/>
+                    <path d="M15 22.5L19.8 27L29.5 17" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div>
+                <span class="gold-badge">SSC MOCK PRO 2026</span>
+                <h1 class="brand-title" id="header-title">SSC Mock Pro 2026</h1>
+                <p class="brand-sub" id="header-subtitle">PYQ Master Test Series • MTS • CGL • Stenographer</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic View -->
+    <main class="container" id="app-root"></main>
+
+    <nav class="bottom-nav" id="bottom-nav" aria-label="Primary navigation">
+        <button type="button" id="bn-home" onclick="goHome()"><span class="bn-icon">⌂</span>Home</button>
+        <button type="button" id="bn-exams" onclick="openExamHub()"><span class="bn-icon">▣</span>Exams</button>
+        <button type="button" id="bn-practice" onclick="openPracticeView()"><span class="bn-icon">✓</span>Practice</button>
+        <button type="button" id="bn-progress" onclick="openProgressView()"><span class="bn-icon">◔</span>Progress</button>
+        <button type="button" id="bn-more" onclick="openMoreView()"><span class="bn-icon">＋</span>More</button>
+    </nav>
+
+    <!-- + Add Mock Modal -->
+    <div class="modal-backdrop" id="add-mock-modal" onclick="if(event.target===this)closeAddMockModal()">
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h2 class="modal-title">+ Add Mock Questions</h2>
+                <button type="button" class="close-x" onclick="closeAddMockModal()">×</button>
+            </div>
+
+            <div class="form-grid-2">
+                <div>
+                    <label class="form-label">परीक्षा (Exam)</label>
+                    <select id="imp-exam" class="form-select" onchange="onImportExamChange()"></select>
+                </div>
+                <div>
+                    <label class="form-label">विषय (Subject)</label>
+                    <select id="imp-subject" class="form-select" onchange="onImportSubjectChange()"></select>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div>
+                    <label class="form-label">प्रकार (Mock Mode)</label>
+                    <select id="imp-mode" class="form-select" onchange="onImportModeChange()">
+                        <option value="mixed">Mixed Questions Mock (4 × 25 Sets)</option>
+                        <option value="topic">Topic-Wise MOCKS (2 × 50 Sets)</option>
+                    </select>
+                </div>
+                <div id="imp-topic-wrap" style="display:none;">
+                    <label class="form-label">टॉपिक (Topic)</label>
+                    <select id="imp-topic" class="form-select" onchange="populateImportMockDropdown()"></select>
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div>
+                    <label class="form-label">लक्ष्य मॉक (Target Mock)</label>
+                    <select id="imp-mock" class="form-select"></select>
+                </div>
+                <div>
+                    <label class="form-label">Import Mode</label>
+                    <select id="imp-strategy" class="form-select">
+                        <option value="append">आगे जोड़ें (Append)</option>
+                        <option value="replace">बदलें (Replace)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="import-dropzone">
+                <div style="font-size:13px;font-weight:900;margin-bottom:7px;">📋 JSON यहाँ paste करें</div>
+                <textarea id="imp-json" class="import-textarea" spellcheck="false"
+                    placeholder='यहाँ पूरा JSON paste करें: [{"q":"...","opts":["A","B","C","D"],"ans":0,"exp":"..."}]'
+                    onpaste="setTimeout(()=>autoImportFromPaste(),120)"></textarea>
+                <div class="import-hint">अक्षर सीमा नहीं रखी गई है। पूरा JSON paste करते ही import शुरू हो जाएगा। बड़े JSON के लिए भी एक ही box इस्तेमाल करें।</div>
+            </div>
+
+            <div class="file-upload-box">
+                <div style="font-size:12.5px;font-weight:700;">📁 या JSON/TXT फ़ाइल चुनें
+                    <div id="selected-files-label" style="font-size:11px;color:var(--text-muted);font-weight:600;margin-top:2px;">कोई फ़ाइल नहीं चुनी गई</div>
+                </div>
+                <label class="hdr-btn hdr-btn-primary" style="cursor:pointer;">
+                    <span>Choose File</span>
+                    <input type="file" id="imp-files" accept=".json,.txt,application/json,text/plain" style="display:none;" onchange="handleFileSelection(event)">
+                </label>
+            </div>
+
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
+                <button type="button" class="mini-action-btn" onclick="copySampleJson()">Sample JSON</button>
+                <button type="button" class="mini-action-btn" onclick="exportAllDataBackup()">Backup JSON</button>
+            </div>
+
+            <div id="import-error-msg" style="display:none;background:var(--wrong-bg);color:var(--wrong-main);border:1px solid var(--wrong-border);padding:9px 12px;border-radius:10px;font-size:12.5px;font-weight:700;margin-bottom:10px;"></div>
+
+            <div style="display:flex;gap:8px;justify-content:flex-end;">
+                <button type="button" class="nav-step-btn" onclick="closeAddMockModal()">रद्द करें</button>
+                <button type="button" class="nav-step-btn primary" onclick="processAndSaveImport()">Save / Add Questions</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Question Palette Modal -->
+    <div class="modal-backdrop" id="palette-modal">
+        <div class="modal-panel" style="max-width:420px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="palette-modal-title">प्रश्न पैलेट (Set Palette)</h3>
+                <button type="button" class="close-x" onclick="closePaletteModal()">×</button>
+            </div>
+            <div class="palette-grid" id="palette-grid"></div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="modal-backdrop" id="reset-modal">
+        <div class="modal-panel" style="max-width:380px; text-align:center;">
+            <h3 class="modal-title" style="margin-bottom:8px;">इस Mock का स्कोर रीसेट करें?</h3>
+            <p style="font-size:13px; color:var(--text-secondary); margin:0 0 16px 0;">
+                आपके द्वारा इस Mock में चुने गए सभी उत्तर और स्कोर साफ़ हो जाएंगे। प्रश्न सुरक्षित रहेंगे।
+            </p>
+            <div style="display:flex; gap:8px; justify-content:center;">
+                <button type="button" class="nav-step-btn" onclick="closeResetModal()">नहीं, रहने दें</button>
+                <button type="button" class="nav-step-btn" style="background:var(--wrong-main); color:#fff; border-color:var(--wrong-main);" onclick="confirmResetMock()">हाँ, Reset करें</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-banner" id="toast-banner"></div>
+
+    <script>
+        // =========================================================================
+        // 1. MASTER CATALOG & CONFIGURATION
+        // =========================================================================
+        const STORAGE_KEY_V1 = 'ssc_mock_pro_2026_v1';
+
+        const SUBJECT_CATALOG = {
+            gk: {
+                id: 'gk',
+                name: 'GK / GS (सामान्य जागरूकता)',
+                short: 'GK / GS',
+                topics: [
+                    { id: 'history', name: 'इतिहास (History)' },
+                    { id: 'art_culture', name: 'कला एवं संस्कृति (Art & Culture)' },
+                    { id: 'polity', name: 'भारतीय राजव्यवस्था (Polity)' },
+                    { id: 'geography', name: 'भूगोल (Geography)' },
+                    { id: 'economy', name: 'भारतीय अर्थव्यवस्था (Economy)' },
+                    { id: 'physics', name: 'भौतिक विज्ञान (Physics)' },
+                    { id: 'chemistry', name: 'रसायन विज्ञान (Chemistry)' },
+                    { id: 'biology', name: 'जीव विज्ञान (Biology)' },
+                    { id: 'static_gk', name: 'स्टैटिक जीके (Static GK)' },
+                    { id: 'schemes_ca', name: 'सरकारी योजनाएँ एवं समसामयिकी (Schemes & Current Affairs)' },
+                    { id: 'current_affairs', name: 'समसामयिकी (Current Affairs)' },
+                    { id: 'dances', name: 'लोक एवं शास्त्रीय नृत्य (Dances)' },
+                    { id: 'festivals', name: 'पर्व एवं त्योहार (Festivals)' },
+                    { id: 'books_authors', name: 'पुस्तकें एवं लेखक (Books & Authors)' },
+                    { id: 'games_sports', name: 'खेलकूद (Games & Sports)' },
+                    { id: 'awards_honours', name: 'पुरस्कार एवं सम्मान (Awards & Honours)' }
+                ]
+            },
+            maths: {
+                id: 'maths',
+                name: 'Mathematics (गणित)',
+                short: 'Mathematics',
+                topics: [
+                    { id: 'percentage', name: 'प्रतिशत (Percentage)' },
+                    { id: 'profit_loss', name: 'लाभ एवं हानि (Profit & Loss)' },
+                    { id: 'si_ci', name: 'साधारण एवं चक्रवृद्धि ब्याज (SI & CI)' },
+                    { id: 'ratio_proportion', name: 'अनुपात एवं समानुपात (Ratio & Proportion)' },
+                    { id: 'average', name: 'औसत (Average)' },
+                    { id: 'time_work', name: 'समय एवं कार्य (Time & Work)' },
+                    { id: 'time_speed_distance', name: 'समय, चाल एवं दूरी (Time, Speed & Distance)' },
+                    { id: 'number_system', name: 'संख्या पद्धति (Number System)' },
+                    { id: 'algebra', name: 'बीजगणित (Algebra)' },
+                    { id: 'geometry_mensuration', name: 'ज्यामिति एवं क्षेत्रमिति (Geometry & Mensuration)' },
+                    { id: 'trigonometry', name: 'त्रिकोणमिति (Trigonometry)' },
+                    { id: 'data_interpretation', name: 'आँकड़ा निर्वचन (Data Interpretation)' }
+                ]
+            },
+            english: {
+                id: 'english',
+                name: 'English (अंग्रेज़ी)',
+                short: 'English',
+                topics: [
+                    { id: 'vocabulary', name: 'Vocabulary (Synonyms & Antonyms)' },
+                    { id: 'one_word', name: 'One Word Substitution' },
+                    { id: 'idioms_phrases', name: 'Idioms & Phrases' },
+                    { id: 'spelling', name: 'Spelling Correction' },
+                    { id: 'spot_error', name: 'Spot the Error' },
+                    { id: 'sentence_improvement', name: 'Sentence Improvement' },
+                    { id: 'fill_blanks', name: 'Fill in the Blanks' },
+                    { id: 'voice', name: 'Active & Passive Voice' },
+                    { id: 'narration', name: 'Direct & Indirect Speech' },
+                    { id: 'cloze_test', name: 'Cloze Test' },
+                    { id: 'comprehension', name: 'Reading Comprehension' },
+                    { id: 'para_jumbles', name: 'Para Jumbles' }
+                ]
+            },
+            reasoning: {
+                id: 'reasoning',
+                name: 'Reasoning (तर्कशक्ति)',
+                short: 'Reasoning',
+                topics: [
+                    { id: 'analogy_classification', name: 'Analogy & Classification' },
+                    { id: 'series', name: 'Number & Letter Series' },
+                    { id: 'coding_decoding', name: 'Coding-Decoding' },
+                    { id: 'blood_relations', name: 'Blood Relations' },
+                    { id: 'direction_distance', name: 'Direction & Distance' },
+                    { id: 'syllogism', name: 'Syllogism' },
+                    { id: 'venn_diagrams', name: 'Venn Diagrams' },
+                    { id: 'seating_puzzle', name: 'Seating Arrangement & Puzzle' },
+                    { id: 'dice_mirror', name: 'Dice, Cube & Mirror Image' },
+                    { id: 'paper_folding', name: 'Paper Folding & Cutting' },
+                    { id: 'math_operations', name: 'Mathematical Operations' },
+                    { id: 'statement_conclusion', name: 'Statement & Conclusion' }
+                ]
+            }
+        };
+
+        const EXAMS = [
+            {
+                id: 'mts',
+                title: '1. SSC MTS MOCKS',
+                subtitle: 'Multi-Tasking Staff — Mixed Mocks एवं Topic-Wise Mocks',
+                subjectsLine: 'Subjects: GK / GS • Mathematics • English • Reasoning',
+                badge: 'MTS 2026',
+                subjectIds: ['gk', 'maths', 'english', 'reasoning']
+            },
+            {
+                id: 'cgl',
+                title: '2. SSC CGL MOCKS',
+                subtitle: 'Combined Graduate Level — Mixed Mocks एवं Topic-Wise Mocks',
+                subjectsLine: 'Subjects: GK / GS • Mathematics • English • Reasoning',
+                badge: 'CGL 2026',
+                subjectIds: ['gk', 'maths', 'english', 'reasoning']
+            },
+            {
+                id: 'steno',
+                title: '3. SSC STENOGRAPHER MOCKS',
+                subtitle: 'Grade C & D — Mixed Mocks एवं Topic-Wise Mocks',
+                subjectsLine: 'Subjects: GK / GS • English • Reasoning',
+                badge: 'STENO 2026',
+                subjectIds: ['gk', 'english', 'reasoning']
+            }
+        ];
+
+        // =========================================================================
+        // 2. APPLICATION STATE & SINGLE-KEY LOCALSTORAGE PERSISTENCE
+        // =========================================================================
+        let state = {
+            view: 'home', // 'home' | 'exam' | 'subject' | 'topic_mocks' | 'player'
+            examId: null,
+            subjectId: null,
+            mode: 'mixed', // 'mixed' | 'topic'
+            topicId: null,
+            mockNumber: 1,
+            activeSet: 0,
+            currentQIndex: 0,
+            theme: 'light',
+            questionsDB: {},   // mockKey -> Array of normalized questions
+            answersDB: {},     // mockKey -> { [qIndex]: selectedOptionIndex }
+            progressDB: {},    // mockKey -> { activeSet, currentQIndex }
+            mockCountsDB: {},   // scopeKey -> total mock count (default 25)
+            removedMocksDB: {}, // scopeKey -> [mock numbers removed by user]
+            activityDates: {},
+            practiceAnswers: {},
+            practiceQueue: [],
+            practiceIndex: 0,
+            practiceSessions: {},   // mockKey -> {answers, activeSet, currentQIndex, deadline, completed, resultUnlocked}
+            practiceResultKey: null,
+            practiceTimerId: null,
+            practiceSetStartedAt: null,
+            resultMockKey: null,
+            playerZoom: 100
+        };
+
+        let uploadedFilesText = [];
+
+        function loadPersistedState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY_V1);
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === 'object') {
+                    if (parsed.questionsDB && typeof parsed.questionsDB === 'object') state.questionsDB = parsed.questionsDB;
+                    if (parsed.answersDB && typeof parsed.answersDB === 'object') state.answersDB = parsed.answersDB;
+                    if (parsed.progressDB && typeof parsed.progressDB === 'object') state.progressDB = parsed.progressDB;
+                    if (parsed.mockCountsDB && typeof parsed.mockCountsDB === 'object') state.mockCountsDB = parsed.mockCountsDB;
+                    if (parsed.removedMocksDB && typeof parsed.removedMocksDB === 'object') state.removedMocksDB = parsed.removedMocksDB;
+                    if (parsed.theme === 'dark' || parsed.theme === 'light') state.theme = parsed.theme;
+                    if (parsed.activityDates && typeof parsed.activityDates === 'object') state.activityDates = parsed.activityDates;
+                    if (parsed.practiceAnswers && typeof parsed.practiceAnswers === 'object') state.practiceAnswers = parsed.practiceAnswers;
+                    if (parsed.practiceSessions && typeof parsed.practiceSessions === 'object') state.practiceSessions = parsed.practiceSessions;
+                }
+            } catch (e) {}
+        }
+
+        function savePersistedState() {
+            try {
+                const payload = {
+                    theme: state.theme,
+                    questionsDB: state.questionsDB,
+                    answersDB: state.answersDB,
+                    progressDB: state.progressDB,
+                    mockCountsDB: state.mockCountsDB,
+                    removedMocksDB: state.removedMocksDB,
+                    activityDates: state.activityDates,
+                    practiceAnswers: state.practiceAnswers,
+                    practiceSessions: state.practiceSessions
+                };
+                localStorage.setItem(STORAGE_KEY_V1, JSON.stringify(payload));
+            } catch (e) {
+                showToast('Storage सीमा भर गई है — कृपया Backup JSON डाउनलोड करें।');
+            }
+        }
+
+        function applyTheme(mode) {
+            state.theme = mode === 'dark' ? 'dark' : 'light';
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            const label = document.getElementById('theme-label');
+            if (state.theme === 'dark') {
+                html.classList.add('dark');
+                if (icon) icon.textContent = '☀️';
+                if (label) label.textContent = 'Light';
+            } else {
+                html.classList.remove('dark');
+                if (icon) icon.textContent = '🌙';
+                if (label) label.textContent = 'Dark';
+            }
+            savePersistedState();
+        }
+
+        function toggleTheme() {
+            applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+        }
+
+        function showToast(msg) {
+            const el = document.getElementById('toast-banner');
+            if (!el) return;
+            el.textContent = msg;
+            el.classList.add('show');
+            clearTimeout(el._timer);
+            el._timer = setTimeout(() => el.classList.remove('show'), 3200);
+        }
+
+        // =========================================================================
+        // 3. KEY, SCORE & SANITIZATION HELPERS
+        // =========================================================================
+        function getScopeKey(examId, subjectId, mode, topicId) {
+            return mode === 'mixed'
+                ? `${examId}_${subjectId}_mixed`
+                : `${examId}_${subjectId}_topic_${topicId}`;
+        }
+
+        function getMockStorageKey(examId, subjectId, mode, topicId, mockNum) {
+            return `${getScopeKey(examId, subjectId, mode, topicId)}_m${mockNum}`;
+        }
+
+        function getTotalMocksForScope(scopeKey) {
+            const count = state.mockCountsDB[scopeKey];
+            return count && count >= 25 ? count : 25;
+        }
+
+        function getRemovedMocks(scopeKey) {
+            return Array.isArray(state.removedMocksDB[scopeKey]) ? state.removedMocksDB[scopeKey].map(Number) : [];
+        }
+
+        function isMockRemoved(scopeKey, mockNum) {
+            return getRemovedMocks(scopeKey).includes(Number(mockNum));
+        }
+
+        function getAvailableMockNumbers(scopeKey) {
+            const removed = new Set(getRemovedMocks(scopeKey));
+            const total = getTotalMocksForScope(scopeKey);
+            return Array.from({length: total}, (_,i) => i+1).filter(n => !removed.has(n));
+        }
+
+        const mockRemoveMode = {};
+        const mockRemoveSelection = {};
+
+        function addMoreMockToScope(scopeKey) {
+            const current = getTotalMocksForScope(scopeKey);
+            state.mockCountsDB[scopeKey] = current + 1;
+            savePersistedState();
+            showToast(`Mock-${current + 1} जोड़ दिया गया है!`);
+            render();
+        }
+
+        function toggleMockRemoveMode(scopeKey) {
+            mockRemoveMode[scopeKey] = !mockRemoveMode[scopeKey];
+            if (!mockRemoveMode[scopeKey]) mockRemoveSelection[scopeKey] = [];
+            render();
+        }
+
+        function toggleMockSelection(scopeKey, mockNum, checked) {
+            const current = new Set(mockRemoveSelection[scopeKey] || []);
+            if (checked) current.add(Number(mockNum)); else current.delete(Number(mockNum));
+            mockRemoveSelection[scopeKey] = Array.from(current).sort((a,b)=>a-b);
+        }
+
+        function removeSelectedMocks(scopeKey) {
+            const selected = (mockRemoveSelection[scopeKey] || []).map(Number);
+            if (!selected.length) { showToast('पहले कम से कम एक Mock select करें।'); return; }
+            const removed = new Set(getRemovedMocks(scopeKey));
+            selected.forEach(m => {
+                removed.add(m);
+                const prefix = `${scopeKey}_m${m}`;
+                delete state.questionsDB[prefix];
+                delete state.answersDB[prefix];
+                delete state.progressDB[prefix];
+            });
+            state.removedMocksDB[scopeKey] = Array.from(removed).sort((a,b)=>a-b);
+            mockRemoveSelection[scopeKey] = [];
+            mockRemoveMode[scopeKey] = false;
+            savePersistedState();
+            showToast(`🗑️ ${selected.length} Mock हटाए गए।`);
+            render();
+        }
+
+        function getMockQuestions(mockKey) {
+            return Array.isArray(state.questionsDB[mockKey]) ? state.questionsDB[mockKey] : [];
+        }
+
+        function getMockAnswers(mockKey) {
+            return state.answersDB[mockKey] && typeof state.answersDB[mockKey] === 'object' ? state.answersDB[mockKey] : {};
+        }
+
+        function computeMockStats(mockKey) {
+            const qs = getMockQuestions(mockKey);
+            const ansMap = getMockAnswers(mockKey);
+            let attempted = 0, correct = 0, wrong = 0;
+            Object.keys(ansMap).forEach(k => {
+                const idx = Number(k);
+                if (qs[idx]) {
+                    attempted++;
+                    if (ansMap[idx] === qs[idx].ans) correct++;
+                    else wrong++;
+                }
+            });
+            const score = (correct * 2) - (wrong * 0.5);
+            return { total: qs.length, attempted, correct, wrong, score };
+        }
+
+        function getExamSavedSummary(examId) {
+            let totalQ = 0;
+            let activeMocks = 0;
+            const prefix = `${examId}_`;
+            Object.keys(state.questionsDB).forEach(k => {
+                if (k.startsWith(prefix) && Array.isArray(state.questionsDB[k]) && state.questionsDB[k].length > 0) {
+                    totalQ += state.questionsDB[k].length;
+                    activeMocks++;
+                }
+            });
+            return { totalQ, activeMocks };
+        }
+
+        function escapeHTML(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // =========================================================================
+        // 4. ANIMATED SVG ICON GENERATOR
+        // =========================================================================
+        function getCustomSvgIcon(type, id) {
+            if (type === 'exam') {
+                const colors = { mts: '#059669', cgl: '#4938e3', steno: '#d97706' };
+                const c = colors[id] || '#4938e3';
+                return `<svg class="anim-float" width="26" height="26" viewBox="0 0 28 28" fill="none">
+                    <rect x="3" y="4" width="22" height="20" rx="5" fill="${c}" fill-opacity="0.14" stroke="${c}" stroke-width="2"/>
+                    <path d="M8 11H20M8 15H16M8 19H13" stroke="${c}" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="20" cy="18" r="3" fill="#ffb300" class="anim-pulse"/>
+                </svg>`;
+            }
+            if (type === 'subject') {
+                const map = {
+                    gk: `<svg class="anim-float" width="25" height="25" viewBox="0 0 28 28" fill="none">
+                        <circle cx="14" cy="14" r="10" stroke="#4938e3" stroke-width="2" fill="#4938e3" fill-opacity="0.12"/>
+                        <ellipse cx="14" cy="14" rx="4.5" ry="10" stroke="#4938e3" stroke-width="1.6"/>
+                        <path d="M4.5 14H23.5" stroke="#ffb300" stroke-width="2"/>
+                    </svg>`,
+                    maths: `<svg class="anim-float" width="25" height="25" viewBox="0 0 28 28" fill="none">
+                        <rect x="4" y="4" width="20" height="20" rx="5" fill="#059669" fill-opacity="0.12" stroke="#059669" stroke-width="2"/>
+                        <path d="M9 10H13M11 8V12M15 10H19M9 17L13 21M13 17L9 21M15 18H19M15 20.5H19" stroke="#059669" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>`,
+                    english: `<svg class="anim-float" width="25" height="25" viewBox="0 0 28 28" fill="none">
+                        <path d="M5 6H13C14.1 6 15 6.9 15 8V22C15 20.9 14.1 20 13 20H5V6Z" fill="#7e22ce" fill-opacity="0.14" stroke="#7e22ce" stroke-width="2"/>
+                        <path d="M23 6H15C13.9 6 13 6.9 13 8V22C13 20.9 13.9 20 15 20H23V6Z" fill="#7e22ce" fill-opacity="0.08" stroke="#7e22ce" stroke-width="2"/>
+                    </svg>`,
+                    reasoning: `<svg class="anim-float" width="25" height="25" viewBox="0 0 28 28" fill="none">
+                        <circle cx="14" cy="12" r="7" fill="#d97706" fill-opacity="0.15" stroke="#d97706" stroke-width="2"/>
+                        <path d="M11 22H17M12 25H16" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="14" cy="12" r="2.5" fill="#4938e3" class="anim-pulse"/>
+                    </svg>`
+                };
+                return map[id] || map.gk;
+            }
+            if (type === 'topic') {
+                return `<svg class="anim-float" width="23" height="23" viewBox="0 0 24 24" fill="none">
+                    <rect x="3" y="3" width="18" height="18" rx="5" fill="#7e22ce" fill-opacity="0.12" stroke="#7e22ce" stroke-width="1.8"/>
+                    <path d="M7.5 9H16.5M7.5 12.5H14M7.5 16H11.5" stroke="#7e22ce" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>`;
+            }
+            return `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="9" fill="#4938e3" fill-opacity="0.12" stroke="#4938e3" stroke-width="2"/>
+                <path d="M9 12.2L11 14.2L15.5 9.8" stroke="#059669" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`;
+        }
+
+        // =========================================================================
+        // 5. NAVIGATION HANDLERS
+        // =========================================================================
+        function goHome() {
+            closeAddMockModal();
+            state.view = 'home';
+            state.examId = null;
+            state.subjectId = null;
+            state.topicId = null;
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goBack() {
+            if (state.view === 'player') {
+                state.view = state.mode === 'topic' ? 'topic_mocks' : 'subject';
+            } else if (state.view === 'topic_mocks') {
+                state.view = 'subject';
+                state.topicId = null;
+            } else if (state.view === 'subject') {
+                state.view = 'exam';
+                state.subjectId = null;
+            } else if (state.view === 'exam') {
+                state.view = 'home';
+                state.examId = null;
+            }
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openExamHub() {
+            // Bottom-nav Exams must open the dedicated exam-selection screen,
+            // not the Home dashboard. Always close any modal first.
+            closeAddMockModal();
+            state.view = 'exams';
+            state.examId = null;
+            state.subjectId = null;
+            state.topicId = null;
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openMoreView() {
+            // More is a real navigation destination; it must never leave the
+            // Add Mock JSON modal sitting over the app.
+            closeAddMockModal();
+            state.view = 'more';
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openExam(examId) {
+            closeAddMockModal();
+            state.examId = examId;
+            state.view = 'exam';
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openSubject(subjectId) {
+            state.subjectId = subjectId;
+            state.mode = 'mixed';
+            state.topicId = null;
+            state.view = 'subject';
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function switchSubjectMode(mode) {
+            state.mode = mode;
+            state.topicId = null;
+            render();
+        }
+
+        function openTopicMocks(topicId) {
+            state.mode = 'topic';
+            state.topicId = topicId;
+            state.view = 'topic_mocks';
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openMockPlayer(mockNum) {
+            state.mockNumber = mockNum;
+            const mKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, mockNum);
+            const savedProg = state.progressDB[mKey];
+            state.activeSet = savedProg && typeof savedProg.activeSet === 'number' ? savedProg.activeSet : 0;
+            state.currentQIndex = savedProg && typeof savedProg.currentQIndex === 'number' ? savedProg.currentQIndex : 0;
+            state.view = 'player';
+            render();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function saveCurrentMockProgress(mockKey) {
+            state.progressDB[mockKey] = {
+                activeSet: state.activeSet,
+                currentQIndex: state.currentQIndex
+            };
+            savePersistedState();
+        }
+
+        // =========================================================================
+        // 6. VIEW RENDERERS
+        // =========================================================================
+        function render() {
+            const root = document.getElementById('app-root');
+            const backBtn = document.getElementById('btn-back');
+            const hdrTitle = document.getElementById('header-title');
+            const hdrSub = document.getElementById('header-subtitle');
+
+            backBtn.style.display = state.view === 'home' ? 'none' : 'inline-flex';
+
+            const examObj = EXAMS.find(e => e.id === state.examId);
+            const subjObj = state.subjectId ? SUBJECT_CATALOG[state.subjectId] : null;
+            const topicObj = subjObj && state.topicId ? subjObj.topics.find(t => t.id === state.topicId) : null;
+
+            if (state.view === 'home') {
+                hdrTitle.textContent = 'SSC Mock Pro 2026';
+                hdrSub.textContent = 'PYQ Master Test Series • MTS • CGL • Stenographer';
+                root.innerHTML = renderHomeView();
+            } else if (state.view === 'exam' && examObj) {
+                hdrTitle.textContent = examObj.title;
+                hdrSub.textContent = 'विषय चुनें (Select Subject)';
+                root.innerHTML = renderExamView(examObj);
+            } else if (state.view === 'subject' && examObj && subjObj) {
+                hdrTitle.textContent = `${examObj.badge} • ${subjObj.short}`;
+                hdrSub.textContent = subjObj.name;
+                root.innerHTML = renderSubjectView(examObj, subjObj);
+            } else if (state.view === 'topic_mocks' && examObj && subjObj && topicObj) {
+                hdrTitle.textContent = `${examObj.badge} • ${subjObj.short}`;
+                hdrSub.textContent = topicObj.name;
+                root.innerHTML = renderTopicMocksView(examObj, subjObj, topicObj);
+            } else if (state.view === 'player' && examObj && subjObj) {
+                const modeLabel = state.mode === 'topic' && topicObj
+                    ? `${topicObj.name} • Mock-${state.mockNumber}`
+                    : `Mixed Mock-${state.mockNumber}`;
+                hdrTitle.textContent = `${examObj.badge} • ${subjObj.short}`;
+                hdrSub.textContent = modeLabel;
+                root.innerHTML = renderPlayerView(examObj, subjObj, topicObj);
+            }
+        }
+
+        function renderHomeView() {
+            const cardsHtml = EXAMS.map(ex => {
+                const sum = getExamSavedSummary(ex.id);
+                return `
+                    <button type="button" class="list-card fade-in" onclick="openExam('${ex.id}')">
+                        <div class="card-left">
+                            <div class="icon-box">${getCustomSvgIcon('exam', ex.id)}</div>
+                            <div class="card-info">
+                                <h3 class="card-title">${escapeHTML(ex.title)}</h3>
+                                <p class="card-meta">${escapeHTML(ex.subtitle)}</p>
+                                <p class="card-meta" style="color:var(--accent-primary); font-weight:700; margin-top:4px;">
+                                    ${escapeHTML(ex.subjectsLine)}
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+                            <span class="badge-pill">${sum.totalQ} Qs Saved</span>
+                            <span style="font-size:12px; font-weight:800; color:var(--accent-primary);">Open →</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="section-title">
+                    <span>परीक्षा चुनें (Select Exam)</span>
+                    <span class="badge-pill">2026 Edition</span>
+                </div>
+                <div class="linear-list">${cardsHtml}</div>
+            `;
+        }
+
+        function renderExamView(examObj) {
+            const listHtml = examObj.subjectIds.map(sId => {
+                const subj = SUBJECT_CATALOG[sId];
+                let qCount = 0;
+                const prefix = `${examObj.id}_${subj.id}_`;
+                Object.keys(state.questionsDB).forEach(k => {
+                    if (k.startsWith(prefix)) qCount += state.questionsDB[k].length;
+                });
+                return `
+                    <button type="button" class="list-card fade-in" onclick="openSubject('${subj.id}')">
+                        <div class="card-left">
+                            <div class="icon-box">${getCustomSvgIcon('subject', subj.id)}</div>
+                            <div class="card-info">
+                                <h3 class="card-title">${escapeHTML(subj.name)}</h3>
+                                <p class="card-meta">Mixed Questions Mocks & ${subj.topics.length} Topic-Wise Mocks</p>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span class="badge-pill">${qCount} Qs</span>
+                            <span style="font-weight:800; color:var(--accent-primary);">→</span>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            return `
+                <div class="section-title">
+                    <span>विषय चुनें (Select Subject)</span>
+                    <span class="badge-pill">${escapeHTML(examObj.badge)}</span>
+                </div>
+                <div class="linear-list">${listHtml}</div>
+            `;
+        }
+
+        function renderSubjectView(examObj, subjObj) {
+            const isMixed = state.mode === 'mixed';
+            const switchHtml = `
+                <div class="mode-switch-row">
+                    <button type="button" class="mode-btn ${isMixed ? 'active' : ''}" onclick="switchSubjectMode('mixed')">
+                        <span>📋 Mixed Questions Mock</span><span style="font-size:11px;font-weight:600;opacity:.88;">4 × 25 Sets (100 Qs)</span>
+                    </button>
+                    <button type="button" class="mode-btn ${!isMixed ? 'active' : ''}" onclick="switchSubjectMode('topic')">
+                        <span>📚 Topic-Wise MOCKS</span><span style="font-size:11px;font-weight:600;opacity:.88;">${subjObj.topics.length} Topics • 2 × 50 Sets</span>
+                    </button>
+                </div>`;
+            if (isMixed) {
+                const scopeKey = getScopeKey(examObj.id, subjObj.id, 'mixed', null);
+                const totalMocks = getTotalMocksForScope(scopeKey);
+                const nums = getAvailableMockNumbers(scopeKey);
+                const removeMode = !!mockRemoveMode[scopeKey];
+                const selected = new Set(mockRemoveSelection[scopeKey] || []);
+                let mocksHtml = nums.map(m => {
+                    const mKey = getMockStorageKey(examObj.id, subjObj.id, 'mixed', null, m);
+                    const stats = computeMockStats(mKey);
+                    const actionLabel = stats.attempted > 0 ? 'Continue →' : 'Start →';
+                    const subText = stats.total > 0 ? `Qs: ${stats.total} • Attempted: ${stats.attempted}/${stats.total} • Score: ${stats.score.toFixed(1)}` : 'Qs: 0 • Attempted: 0 • Score: 0.0 (4 Sets × 25 Qs)';
+                    return `<div class="mock-row">${removeMode?`<label class="mock-select-wrap" title="Mock-${m} select करें"><input type="checkbox" ${selected.has(m)?'checked':''} onchange="toggleMockSelection('${scopeKey}',${m},this.checked)"></label>`:''}<button type="button" class="mock-open-btn" onclick="openMockPlayer(${m})"><div class="card-left"><div class="icon-box">${getCustomSvgIcon('mock',m)}</div><div class="card-info"><h3 class="card-title">Mock-${m}</h3><p class="card-meta">${escapeHTML(subText)}</p></div></div><span class="badge-pill">${actionLabel}</span></button></div>`;
+                }).join('');
+                return `${switchHtml}<div class="section-title"><span>Mixed Questions Mock</span><span class="badge-pill">${nums.length} Active • Max ${totalMocks}</span></div><div class="mock-management-bar"><span class="mock-management-info">${removeMode?'🗑️ हटाने के लिए Mocks select करें':'Mocks को manage करें'}</span><div style="display:flex;gap:6px;flex-wrap:wrap;"><button type="button" class="mock-remove-btn ${removeMode?'active':''}" onclick="toggleMockRemoveMode('${scopeKey}')">${removeMode?'Cancel':'🗑️ Remove Mocks'}</button>${removeMode?`<button type="button" class="nav-step-btn primary" style="padding:8px 10px;font-size:11.5px;" onclick="removeSelectedMocks('${scopeKey}')">Remove Selected (${selected.size})</button>`:''}</div></div><div class="linear-list">${mocksHtml || `<div class="empty-card">सभी उपलब्ध Mocks हटा दिए गए हैं। नया Mock जोड़ने के लिए नीचे + Add More Mock दबाएँ।</div>`}</div><button type="button" class="add-more-btn" onclick="addMoreMockToScope('${scopeKey}')">+ Add More Mock (Mock-${totalMocks+1})</button>`;
+            }
+            const topicsHtml = subjObj.topics.map((tp,idx) => {
+                let tpQCount=0; const prefix=`${examObj.id}_${subjObj.id}_topic_${tp.id}_`;
+                Object.keys(state.questionsDB).forEach(k=>{if(k.startsWith(prefix))tpQCount+=state.questionsDB[k].length;});
+                return `<button type="button" class="list-card fade-in" onclick="openTopicMocks('${tp.id}')"><div class="card-left"><div class="icon-box">${getCustomSvgIcon('topic',tp.id)}</div><div class="card-info"><h3 class="card-title">${idx+1}. ${escapeHTML(tp.name)}</h3><p class="card-meta">Mock-1 से Mock-25+ • प्रत्येक में 2 × 50 Sets</p></div></div><div style="display:flex;align-items:center;gap:8px;"><span class="badge-pill">${tpQCount} Qs</span><span style="font-weight:800;color:var(--accent-primary);">→</span></div></button>`;
+            }).join('');
+            return `${switchHtml}<div class="section-title"><span>टॉपिक चुनें (Select Topic)</span><span class="badge-pill">${subjObj.topics.length} Topics</span></div><div class="linear-list">${topicsHtml}</div>`;
+        }
+
+        function renderTopicMocksView(examObj, subjObj, topicObj) {
+            const scopeKey=getScopeKey(examObj.id,subjObj.id,'topic',topicObj.id);
+            const totalMocks=getTotalMocksForScope(scopeKey);
+            const nums=getAvailableMockNumbers(scopeKey);
+            const removeMode=!!mockRemoveMode[scopeKey];
+            const selected=new Set(mockRemoveSelection[scopeKey]||[]);
+            let listHtml=nums.map(m=>{
+                const mKey=getMockStorageKey(examObj.id,subjObj.id,'topic',topicObj.id,m),stats=computeMockStats(mKey);
+                const actionLabel=stats.attempted>0?'Continue →':'Start →';
+                const subText=stats.total>0?`Qs: ${stats.total} • Attempted: ${stats.attempted}/${stats.total} • Score: ${stats.score.toFixed(1)}`:'Qs: 0 • Attempted: 0 • Score: 0.0 (2 Sets × 50 Qs)';
+                return `<div class="mock-row">${removeMode?`<label class="mock-select-wrap" title="Mock-${m} select करें"><input type="checkbox" ${selected.has(m)?'checked':''} onchange="toggleMockSelection('${scopeKey}',${m},this.checked)"></label>`:''}<button type="button" class="mock-open-btn" onclick="openMockPlayer(${m})"><div class="card-left"><div class="icon-box">${getCustomSvgIcon('mock',m)}</div><div class="card-info"><h3 class="card-title">Mock-${m}</h3><p class="card-meta">${escapeHTML(subText)}</p></div></div><span class="badge-pill">${actionLabel}</span></button></div>`;
+            }).join('');
+            return `<div class="section-title"><span>${escapeHTML(topicObj.name)} — Mocks</span><span class="badge-pill">2 × 50 Sets</span></div><div class="mock-management-bar"><span class="mock-management-info">${removeMode?'🗑️ हटाने के लिए Mocks select करें':'Mocks को manage करें'}</span><div style="display:flex;gap:6px;flex-wrap:wrap;"><button type="button" class="mock-remove-btn ${removeMode?'active':''}" onclick="toggleMockRemoveMode('${scopeKey}')">${removeMode?'Cancel':'🗑️ Remove Mocks'}</button>${removeMode?`<button type="button" class="nav-step-btn primary" style="padding:8px 10px;font-size:11.5px;" onclick="removeSelectedMocks('${scopeKey}')">Remove Selected (${selected.size})</button>`:''}</div></div><div class="linear-list">${listHtml || `<div class="empty-card">सभी उपलब्ध Mocks हटा दिए गए हैं।</div>`}</div><button type="button" class="add-more-btn" onclick="addMoreMockToScope('${scopeKey}')">+ Add More Mock (Mock-${totalMocks+1})</button>`;
+        }
+
+        // =========================================================================
+        // 7. MOCK PLAYER & SCREENSHOT-2 EXACT QUESTION / EXPLANATION INTERFACE
+        // =========================================================================
+        function parseExplanationAndFacts(rawExp, explicitFacts) {
+            const text = String(rawExp || '').trim();
+            let mainExp = text;
+            let facts = Array.isArray(explicitFacts) ? [...explicitFacts] : [];
+
+            if (text.includes('•')) {
+                const parts = text.split('•').map(s => s.trim()).filter(Boolean);
+                if (parts.length > 1) {
+                    mainExp = parts[0];
+                    if (facts.length === 0) {
+                        facts = parts.slice(1);
+                    }
+                }
+            }
+            return { mainExp, facts };
+        }
+
+        function renderPlayerView(examObj, subjObj, topicObj) {
+            const mockKey = getMockStorageKey(examObj.id, subjObj.id, state.mode, state.topicId, state.mockNumber);
+            const allQs = getMockQuestions(mockKey);
+            const stats = computeMockStats(mockKey);
+
+            const setSize = state.mode === 'topic' ? 50 : 25;
+            const defaultSetCount = state.mode === 'topic' ? 2 : 4;
+            const totalSets = Math.max(defaultSetCount, Math.ceil(allQs.length / setSize));
+            if (state.activeSet >= totalSets) state.activeSet = 0;
+
+            const setStart = state.activeSet * setSize;
+            const setEnd = setStart + setSize;
+            const setQuestions = allQs.slice(setStart, setEnd);
+
+            let tabsHtml = '';
+            for (let s = 0; s < totalSets; s++) {
+                const r1 = s * setSize + 1;
+                const r2 = (s + 1) * setSize;
+                tabsHtml += `
+                    <button type="button" class="set-tab ${state.activeSet === s ? 'active' : ''}" onclick="selectPlayerSet(${s})">
+                        Set ${s + 1} (${r1}–${r2})
+                    </button>
+                `;
+            }
+
+            const statsBarHtml = `
+                <div class="stats-bar">
+                    <div class="stats-chips">
+                        <span class="stat-chip">प्रयास: ${stats.attempted}/${stats.total}</span>
+                        <span class="stat-chip stat-correct">सही: ${stats.correct}</span>
+                        <span class="stat-chip stat-wrong">गलत: ${stats.wrong}</span>
+                        <span class="stat-chip stat-score">स्कोर: ${stats.score.toFixed(1)}</span>
+                    </div>
+                    <div class="stats-actions">
+                        <button type="button" class="mini-action-btn" onclick="openPaletteModal()" ${allQs.length === 0 ? 'disabled' : ''}>पैलेट (Palette)</button>
+                        <button type="button" class="mini-action-btn mini-reset-btn" onclick="openResetModal()" ${stats.attempted === 0 ? 'disabled' : ''}>रीसेट (Reset)</button>
+                    </div>
+                </div>
+                <div class="set-tabs-row">${tabsHtml}</div>
+            `;
+
+            if (allQs.length === 0 || setQuestions.length === 0) {
+                return `
+                    ${statsBarHtml}
+                    <div class="empty-card fade-in" id="question-anchor">
+                        <div style="margin-bottom:10px;">${getCustomSvgIcon('mock', 1)}</div>
+                        <h3 style="margin:0 0 6px 0; font-size:16px; font-weight:800;">
+                            ${allQs.length === 0 ? 'इस Mock में अभी कोई प्रश्न नहीं है (0 Qs)' : `Set ${state.activeSet + 1} में अभी प्रश्न उपलब्ध नहीं हैं`}
+                        </h3>
+                        <p style="font-size:13px; color:var(--text-secondary); margin:0 0 16px 0;">
+                            Step 2 के लिए यह Mock खाली तैयार है। नीचे बटन दबाकर सीधे इस Mock में प्रश्न जोड़ें।
+                        </p>
+                        <button type="button" class="nav-step-btn primary" onclick="openAddMockModal()">
+                            + Add Questions to This Mock
+                        </button>
+                    </div>
+                `;
+            }
+
+            if (state.currentQIndex < 0) state.currentQIndex = 0;
+            if (state.currentQIndex >= setQuestions.length) state.currentQIndex = setQuestions.length - 1;
+
+            const globalIndex = setStart + state.currentQIndex;
+            const qObj = setQuestions[state.currentQIndex];
+            const ansMap = getMockAnswers(mockKey);
+            const userChoice = Object.prototype.hasOwnProperty.call(ansMap, globalIndex) ? ansMap[globalIndex] : null;
+            const isAnswered = userChoice !== null && userChoice !== undefined;
+
+            const pillTopicName = qObj.topic || (topicObj ? topicObj.name : subjObj.short);
+            const shiftTag = qObj.shift || qObj.source || `[${examObj.badge}]`;
+
+            // Shared Cloze Test / Passage support on Q.21-25 of English Mixed sets (or any q.passage)
+            let sharedPassage = qObj.passage || '';
+            if (!sharedPassage && subjObj.id === 'english' && state.mode === 'mixed' && state.currentQIndex >= 20 && state.currentQIndex <= 24) {
+                for (let k = 20; k <= state.currentQIndex; k++) {
+                    if (setQuestions[k] && setQuestions[k].passage) {
+                        sharedPassage = setQuestions[k].passage;
+                        break;
+                    }
+                }
+            }
+
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+            const lowerLetters = ['a', 'b', 'c', 'd', 'e'];
+
+            const optionsHtml = qObj.opts.map((optText, optIdx) => {
+                let cls = 'opt-btn';
+                let tagHtml = '';
+                if (isAnswered) {
+                    if (optIdx === qObj.ans) {
+                        cls += ' opt-correct';
+                        tagHtml = `<span class="opt-status-tag">✓ सही उत्तर</span>`;
+                    } else if (optIdx === userChoice) {
+                        cls += ' opt-wrong';
+                        tagHtml = `<span class="opt-status-tag">✗ गलत उत्तर</span>`;
+                    } else {
+                        cls += ' opt-dim';
+                    }
+                }
+                return `
+                    <button type="button" class="${cls}" ${isAnswered ? 'disabled' : ''} onclick="selectOption(${globalIndex}, ${optIdx})">
+                        <div class="opt-left">
+                            <span class="opt-letter">${letters[optIdx] || optIdx + 1}</span>
+                            <span class="opt-label-text">${escapeHTML(optText)}</span>
+                        </div>
+                        ${tagHtml}
+                    </button>
+                `;
+            }).join('');
+
+            let explanationHtml = '';
+            if (isAnswered) {
+                const isRight = userChoice === qObj.ans;
+                const { mainExp, facts } = parseExplanationAndFacts(qObj.exp, qObj.facts);
+                const correctLetterLower = lowerLetters[qObj.ans] || 'a';
+                const correctOptText = qObj.opts[qObj.ans] || '';
+
+                const factsSection = facts.length > 0 ? `
+                    <div class="exam-facts-box">
+                        <h4 class="exam-facts-title">महत्वपूर्ण परीक्षा तथ्य (Exam Facts):</h4>
+                        <ul class="exam-facts-list">
+                            ${facts.map(f => `<li>${escapeHTML(f)}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : '';
+
+                explanationHtml = `
+                    <div class="explanation-card fade-in">
+                        <div class="exp-result-header ${isRight ? 'is-right' : 'is-wrong'}">
+                            ${isRight ? '🎉 बिल्कुल सही! (+2 अंक)' : '❌ गलत उत्तर! (-0.5 अंक)'}
+                        </div>
+                        <div class="exp-ans-pill">
+                            उत्तर (${correctLetterLower}) ${escapeHTML(correctOptText)}
+                        </div>
+                        <div class="exp-heading">विस्तृत व्याख्या (EXPLANATION):</div>
+                        <p class="exp-body-text">${escapeHTML(mainExp || 'व्याख्या उपलब्ध नहीं है।')}</p>
+                        ${factsSection}
+                    </div>
+                `;
+            }
+
+            const prevDisabled = state.currentQIndex === 0 ? 'disabled' : '';
+            const nextDisabled = state.currentQIndex >= setQuestions.length - 1 ? 'disabled' : '';
+
+            const navRowHtml = `
+                <div class="nav-controls-row">
+                    <button type="button" class="nav-step-btn" ${prevDisabled} onclick="stepQuestion(-1)">← Previous</button>
+                    <div class="nav-center-label">सेट ${state.activeSet + 1} • प्रश्न ${state.currentQIndex + 1} / ${setQuestions.length}</div>
+                    <button type="button" class="nav-step-btn primary" ${nextDisabled} onclick="stepQuestion(1)">Next →</button>
+                </div>
+            `;
+
+            return `
+                ${statsBarHtml}
+                ${navRowHtml}
+                <div class="question-card fade-in" id="question-anchor">
+                    <div class="q-badges-row">
+                        <span class="q-num-pill">Q.${globalIndex + 1}</span>
+                        <span class="q-light-pill">${globalIndex + 1} / ${allQs.length}</span>
+                        <span class="q-light-pill">सेट ${state.activeSet + 1}</span>
+                        <span class="q-topic-pill">${escapeHTML(pillTopicName)}</span>
+                    </div>
+                    <div class="q-shift-line">${escapeHTML(shiftTag)}</div>
+
+                    ${sharedPassage ? `
+                        <div class="passage-box">
+                            <span class="passage-label">📖 Cloze Test / Reading Comprehension Passage</span>
+                            ${escapeHTML(sharedPassage)}
+                        </div>
+                    ` : ''}
+
+                    <h2 class="q-text">${escapeHTML(qObj.q)}</h2>
+
+                    <div class="options-list">${optionsHtml}</div>
+
+                    ${explanationHtml}
+                </div>
+                ${navRowHtml}
+            `;
+        }
+
+        function selectPlayerSet(setIdx) {
+            state.activeSet = setIdx;
+            state.currentQIndex = 0;
+            const mKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
+            saveCurrentMockProgress(mKey);
+            render();
+            scrollToQuestionAnchor();
+        }
+
+        function scrubQuestionLive(value, sliderEl) {
+            const n = Number(value);
+            if (!Number.isFinite(n)) return;
+
+            const mockKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
+            const examObj = EXAMS.find(e => e.id === state.examId);
+            const subjObj = state.subjectId ? SUBJECT_CATALOG[state.subjectId] : null;
+            const topicObj = subjObj && state.topicId ? subjObj.topics.find(t => t.id === state.topicId) : null;
+            if (!examObj || !subjObj || !mockKey) return;
+
+            const allQs = getMockQuestions(mockKey);
+            const setSize = state.mode === 'topic' ? 50 : 25;
+            const setStart = state.activeSet * setSize;
+            const setQuestions = allQs.slice(setStart, setStart + setSize);
+            if (!setQuestions.length) return;
+
+            const nextIdx = Math.max(0, Math.min(Math.round(n), setQuestions.length - 1));
+            if (nextIdx === state.currentQIndex) {
+                if (sliderEl) {
+                    const pct = setQuestions.length > 1 ? (nextIdx / (setQuestions.length - 1)) * 100 : 100;
+                    sliderEl.style.setProperty('--scrub-pct', pct + '%');
+                }
+                return;
+            }
+
+            const direction = nextIdx > state.currentQIndex ? 'next' : 'prev';
+            state.currentQIndex = nextIdx;
+
+            // Keep the scrubber itself alive while only the question content changes.
+            if (sliderEl) {
+                const pct = setQuestions.length > 1 ? (nextIdx / (setQuestions.length - 1)) * 100 : 100;
+                sliderEl.style.setProperty('--scrub-pct', pct + '%');
+            }
+
+            // Generate the latest question markup without replacing the whole player.
+            const holder = document.createElement('div');
+            holder.innerHTML = renderPlayerView(examObj, subjObj, topicObj);
+
+            const newCard = holder.querySelector('#question-anchor');
+            const oldCard = document.getElementById('question-anchor');
+            if (newCard && oldCard) {
+                newCard.classList.remove('fade-in');
+                newCard.classList.add(direction === 'next' ? 'question-scrubber-live-next' : 'question-scrubber-live-prev');
+                oldCard.replaceWith(newCard);
+            }
+
+            // Update both Previous/Next rows and the small scrubber label in place.
+            const newNavs = holder.querySelectorAll('.nav-controls-row');
+            const oldNavs = document.querySelectorAll('.nav-controls-row');
+            oldNavs.forEach((el, i) => {
+                if (newNavs[i]) el.replaceWith(newNavs[i].cloneNode(true));
+            });
+
+            const newLabel = holder.querySelector('.q-progress-label');
+            const oldLabel = document.querySelector('.q-progress-label');
+            if (newLabel && oldLabel) oldLabel.innerHTML = newLabel.innerHTML;
+
+            // Keep the page vertically locked: changing questions should feel like
+            // scrubbing a video, not like navigating to another page.
+            window.__lastScrubIndex = nextIdx;
+        }
+
+        function commitQuestionScrub(value) {
+            const n = Number(value);
+            if (!Number.isFinite(n)) return;
+            const mockKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
+            const allQs = getMockQuestions(mockKey);
+            const setSize = state.mode === 'topic' ? 50 : 25;
+            const setStart = state.activeSet * setSize;
+            const setQuestions = allQs.slice(setStart, setStart + setSize);
+            if (!setQuestions.length) return;
+            state.currentQIndex = Math.max(0, Math.min(Math.round(n), setQuestions.length - 1));
+            saveCurrentMockProgress(mockKey);
+        }
+
+        function seekQuestionFromScrubber(value) {
+            // Kept as a compatibility alias for older saved/inline handlers.
+            scrubQuestionLive(value, document.querySelector('.question-scrubber'));
+            commitQuestionScrub(value);
+        }
+
+        function stepQuestion(delta) {
+            state.currentQIndex += delta;
+            const mKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
+            saveCurrentMockProgress(mKey);
+            render();
+            scrollToQuestionAnchor();
+        }
+
+        function scrollToQuestionAnchor() {
+            const anchor = document.getElementById('question-anchor');
+            if (anchor) {
+                const y = anchor.getBoundingClientRect().top + window.scrollY - 120;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function selectOption(globalIdx, optIdx) {
+            const mockKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
+            if (!state.answersDB[mockKey]) state.answersDB[mockKey] = {};
+            if (Object.prototype.hasOwnProperty.call(state.answersDB[mockKey], globalIdx)) return;
+
+            state.answersDB[mockKey][globalIdx] = optIdx;
+            savePersistedState();
+            render();
+        }
+
+        // =========================================================================
+        // 8. PALETTE & RESET MODALS
+        // =========================================================================
+        function openPaletteModal() {
+            const isPractice = state.view === 'practice_player';
+            const mockKey = getMockStorageKey(state.examId, state.subjectId, 'mixed', null, state.mockNumber);
+            const allQs = getMockQuestions(mockKey);
+            const setSize = 25;
+            const setStart = state.activeSet * setSize;
+            const setQs = allQs.slice(setStart, setStart + setSize);
+            const ansMap = isPractice ? getPracticeSession(mockKey).answers : getMockAnswers(mockKey);
+
+            document.getElementById('palette-modal-title').textContent = isPractice
+                ? `सेट ${state.activeSet + 1} पैलेट (Timed Mock)`
+                : `सेट ${state.activeSet + 1} पैलेट (Q.${setStart + 1} – Q.${setStart + setQs.length})`;
+
+            const grid = document.getElementById('palette-grid');
+            grid.innerHTML = setQs.map((q, localIdx) => {
+                const gIdx = setStart + localIdx;
+                let cls = 'pal-btn';
+                if (localIdx === state.currentQIndex) cls += ' current';
+                if (Object.prototype.hasOwnProperty.call(ansMap, String(gIdx)) || Object.prototype.hasOwnProperty.call(ansMap, gIdx)) {
+                    const chosen = Object.prototype.hasOwnProperty.call(ansMap, String(gIdx)) ? ansMap[String(gIdx)] : ansMap[gIdx];
+                    if (!isPractice) cls += Number(chosen) === Number(q.ans) ? ' right' : ' wrong';
+                    else cls += ' right';
+                }
+                return `<button type="button" class="${cls}" onclick="jumpToSetQuestion(${localIdx})">${gIdx + 1}</button>`;
+            }).join('');
+
+            document.getElementById('palette-modal').classList.add('open');
+        }
+
+        function closePaletteModal() {
+            document.getElementById('palette-modal').classList.remove('open');
+        }
+
+        function jumpToSetQuestion(localIdx) {
+            if (state.view === 'practice_player') {
+                const key = getMockStorageKey(state.examId, state.subjectId, 'mixed', null, state.mockNumber);
+                const qs = getMockQuestions(key);
+                const s = getPracticeSession(key);
+                const setQs = qs.slice(s.activeSet * 25, s.activeSet * 25 + 25);
+                s.currentQIndex = Math.max(0, Math.min(setQs.length - 1, Number(localIdx)));
+                savePracticeSession();
+                closePaletteModal();
+                render();
+                window.scrollTo({top:0,behavior:'auto'});
+                return;
+            }
+            state.currentQIndex = localIdx;
+            const mKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
+            saveCurrentMockProgress(mKey);
+            closePaletteModal();
+            render();
+        }
+
+        function openResetModal() {
+            document.getElementById('reset-modal').classList.add('open');
+        }
+
+        function closeResetModal() {
+            document.getElementById('reset-modal').classList.remove('open');
+        }
+
+        function confirmResetMock() {
+            const mockKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
+            delete state.answersDB[mockKey];
+            delete state.progressDB[mockKey];
+            state.activeSet = 0;
+            state.currentQIndex = 0;
+            savePersistedState();
+            closeResetModal();
+            showToast('Mock स्कोर और उत्तर रीसेट हो गए हैं।');
+            render();
+        }
+
+        // =========================================================================
+        // 9. '+ ADD MOCK' MODAL (MULTI-BOX CHUNKED PASTE + MULTI-FILE UPLOAD)
+        // =========================================================================
+        function openAddMockModal() {
+            uploadedFilesText = [];
+            const label = document.getElementById('selected-files-label');
+            if (label) label.textContent = 'कोई फ़ाइल नहीं चुनी गई';
+            const fileInput = document.getElementById('imp-files');
+            if (fileInput) fileInput.value = '';
+            const jsonBox = document.getElementById('imp-json');
+            if (jsonBox) jsonBox.value = '';
+            const err = document.getElementById('import-error-msg');
+            if (err) err.style.display = 'none';
+
+            const examSel = document.getElementById('imp-exam');
+            examSel.innerHTML = EXAMS.map(e => `<option value="${e.id}">${escapeHTML(e.title)}</option>`).join('');
+            examSel.value = state.examId || 'cgl';
+            onImportExamChange(state.subjectId, state.mode, state.topicId, state.mockNumber);
+            document.getElementById('add-mock-modal').classList.add('open');
+        }
+
+        function closeAddMockModal() {
+            const modal = document.getElementById('add-mock-modal');
+            if (modal) modal.classList.remove('open');
+        }
+
+        function onImportExamChange(prefSubjId, prefMode, prefTopicId, prefMockNum) {
+            const examId = document.getElementById('imp-exam').value;
+            const examObj = EXAMS.find(e => e.id === examId) || EXAMS[1];
+            const subjSel = document.getElementById('imp-subject');
+            subjSel.innerHTML = examObj.subjectIds.map(sId => {
+                const s = SUBJECT_CATALOG[sId];
+                return `<option value="${s.id}">${escapeHTML(s.name)}</option>`;
+            }).join('');
+            if (prefSubjId && examObj.subjectIds.includes(prefSubjId)) subjSel.value = prefSubjId;
+            onImportSubjectChange(prefMode, prefTopicId, prefMockNum);
+        }
+
+        function onImportSubjectChange(prefMode, prefTopicId, prefMockNum) {
+            const subjId = document.getElementById('imp-subject').value;
+            const subjObj = SUBJECT_CATALOG[subjId] || SUBJECT_CATALOG.gk;
+            const topicSel = document.getElementById('imp-topic');
+            topicSel.innerHTML = subjObj.topics.map(t => `<option value="${t.id}">${escapeHTML(t.name)}</option>`).join('');
+            if (prefTopicId && subjObj.topics.some(t => t.id === prefTopicId)) topicSel.value = prefTopicId;
+            if (prefMode) document.getElementById('imp-mode').value = prefMode;
+            onImportModeChange(prefMockNum);
+        }
+
+        function onImportModeChange(prefMockNum) {
+            const mode = document.getElementById('imp-mode').value;
+            document.getElementById('imp-topic-wrap').style.display = mode === 'topic' ? 'block' : 'none';
+            populateImportMockDropdown(prefMockNum);
+        }
+
+        function populateImportMockDropdown(prefMockNum) {
+            const examId = document.getElementById('imp-exam').value;
+            const subjId = document.getElementById('imp-subject').value;
+            const mode = document.getElementById('imp-mode').value;
+            const topicId = mode === 'topic' ? document.getElementById('imp-topic').value : null;
+            const scopeKey = getScopeKey(examId, subjId, mode, topicId);
+            const mockSel = document.getElementById('imp-mock');
+            const nums = getAvailableMockNumbers(scopeKey);
+            mockSel.innerHTML = nums.map(m => {
+                const cnt = getMockQuestions(getMockStorageKey(examId, subjId, mode, topicId, m)).length;
+                return `<option value="${m}">Mock-${m} (${cnt} Qs saved)</option>`;
+            }).join('');
+            if (prefMockNum && nums.includes(Number(prefMockNum))) mockSel.value = String(prefMockNum);
+            if (!mockSel.value && nums.length) mockSel.value = String(nums[0]);
+        }
+
+        function handleFileSelection(event) {
+            const files = Array.from(event.target.files || []);
+            uploadedFilesText = [];
+            if (!files.length) {
+                document.getElementById('selected-files-label').textContent = 'कोई फ़ाइल नहीं चुनी गई';
+                return;
+            }
+            document.getElementById('selected-files-label').textContent = `${files.length} फ़ाइल(ें) चुनी गईं`;
+            let remaining = files.length;
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    uploadedFilesText.push(String(e.target.result || ''));
+                    remaining--;
+                    if (remaining === 0) setTimeout(() => processAndSaveImport(), 50);
+                };
+                reader.onerror = () => { remaining--; if (remaining === 0) setTimeout(() => processAndSaveImport(), 50); };
+                reader.readAsText(file);
+            });
+        }
+
+        function autoImportFromPaste() {
+            const box = document.getElementById('imp-json');
+            if (box && box.value.trim()) processAndSaveImport();
+        }
+
+        function sanitizeAndParseJson(rawStr) {
+            let clean = String(rawStr || '').trim();
+            if (!clean) return [];
+            // Strip markdown fences if user pasted ```json ... ```
+            clean = clean.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+            // Remove trailing commas before } or ]
+            clean = clean.replace(/,\s*([}\]])/g, '$1');
+
+            const parsed = JSON.parse(clean);
+            if (Array.isArray(parsed)) return parsed;
+            if (parsed && typeof parsed === 'object' && Array.isArray(parsed.questions)) return parsed.questions;
+            throw new Error('JSON में प्रश्नों की सूची ([ ... ]) नहीं मिली।');
+        }
+
+        function normalizeQuestionItem(raw) {
+            if (!raw || typeof raw !== 'object') return null;
+            const qText = raw.q || raw.question || raw.ques || '';
+            const rawOpts = raw.opts || raw.options || [];
+            if (!qText || !Array.isArray(rawOpts) || rawOpts.length < 2) return null;
+
+            let ansIdx = 0;
+            if (typeof raw.ans === 'number') ansIdx = raw.ans;
+            else if (typeof raw.answer === 'number') ansIdx = raw.answer;
+            else if (typeof raw.ans === 'string' || typeof raw.answer === 'string') {
+                const s = String(raw.ans ?? raw.answer).trim().toLowerCase();
+                const map = { a: 0, b: 1, c: 2, d: 3, e: 4, '0': 0, '1': 1, '2': 2, '3': 3, '4': 4 };
+                if (Object.prototype.hasOwnProperty.call(map, s)) ansIdx = map[s];
+            }
+            if (ansIdx < 0 || ansIdx >= rawOpts.length) ansIdx = 0;
+
+            return {
+                q: String(qText).trim(),
+                opts: rawOpts.map(o => String(o).trim()),
+                ans: ansIdx,
+                exp: String(raw.exp || raw.explanation || '').trim(),
+                facts: Array.isArray(raw.facts) ? raw.facts.map(f => String(f).trim()) : [],
+                topic: String(raw.topic || raw.category || '').trim(),
+                category: String(raw.category || raw.topic || '').trim(),
+                exam: String(raw.exam || raw.examName || raw.paper || '').trim(),
+                shift: String(raw.shift || raw.source || raw.tag || '').trim(),
+                date: String(raw.date || raw.examDate || '').trim(),
+                tip: String(raw.tip || raw.sscTip || '').trim(),
+                passage: String(raw.passage || raw.cloze || '').trim()
+            };
+        }
+
+        function processAndSaveImport() {
+            const errBox = document.getElementById('import-error-msg');
+            errBox.style.display = 'none';
+
+            const examId = document.getElementById('imp-exam').value;
+            const subjId = document.getElementById('imp-subject').value;
+            const mode = document.getElementById('imp-mode').value;
+            const topicId = mode === 'topic' ? document.getElementById('imp-topic').value : null;
+            const mockNum = Number(document.getElementById('imp-mock').value) || 1;
+            const strategy = document.getElementById('imp-strategy').value;
+
+            const pasted = String(document.getElementById('imp-json')?.value || '').trim();
+            const allSources = [...uploadedFilesText, ...(pasted ? [pasted] : [])];
+
+            if (allSources.length === 0) {
+                errBox.textContent = 'कृपया कम से कम एक फ़ाइल चुनें या किसी बॉक्स में JSON पेस्ट करें।';
+                errBox.style.display = 'block';
+                return;
+            }
+
+            let rawItems = [];
+            try {
+                for (let i = 0; i < allSources.length; i++) {
+                    const items = sanitizeAndParseJson(allSources[i]);
+                    rawItems = rawItems.concat(items);
+                }
+            } catch (singleErr) {
+                try {
+                    rawItems = [];
+                    for (const fText of uploadedFilesText) {
+                        rawItems = rawItems.concat(sanitizeAndParseJson(fText));
+                    }
+                    if (pasted) {
+                        rawItems = rawItems.concat(sanitizeAndParseJson(pasted));
+                    }
+                } catch (mergedErr) {
+                    errBox.textContent = `JSON त्रुटि: ${mergedErr.message} — कृपया जाँच लें कि ब्रैकेट [ ... ] सही बंद हैं।`;
+                    errBox.style.display = 'block';
+                    return;
+                }
+            }
+
+            const normalized = rawItems.map(normalizeQuestionItem).filter(Boolean);
+            if (normalized.length === 0) {
+                errBox.textContent = 'कोई मान्य प्रश्न नहीं मिला। सुनिश्चित करें कि प्रत्येक प्रश्न में "q", "opts" और "ans" मौजूद हैं।';
+                errBox.style.display = 'block';
+                return;
+            }
+
+            const scopeKeyForImport = getScopeKey(examId, subjId, mode, topicId);
+            if (isMockRemoved(scopeKeyForImport, mockNum)) {
+                state.removedMocksDB[scopeKeyForImport] = getRemovedMocks(scopeKeyForImport).filter(n => n !== mockNum);
+            }
+            const mockKey = getMockStorageKey(examId, subjId, mode, topicId, mockNum);
+            const existing = strategy === 'append' ? getMockQuestions(mockKey) : [];
+            state.questionsDB[mockKey] = [...existing, ...normalized];
+
+            if (strategy === 'replace') {
+                delete state.answersDB[mockKey];
+                delete state.progressDB[mockKey];
+            }
+
+            savePersistedState();
+            closeAddMockModal();
+
+            state.examId = examId;
+            state.subjectId = subjId;
+            state.mode = mode;
+            state.topicId = topicId;
+            state.mockNumber = mockNum;
+            state.activeSet = 0;
+            state.currentQIndex = 0;
+            state.view = 'player';
+            render();
+            showToast(`✅ ${normalized.length} प्रश्न सेव हो गए! (कुल: ${state.questionsDB[mockKey].length} Qs)`);
+        }
+
+        function copySampleJson() {
+            const sample = JSON.stringify([{
+                q: "निम्नलिखित में से कौन-सा राजपूत स्थापत्य का उदाहरण नहीं है?",
+                opts: ["आमेर का किला", "मेहरानगढ़ किला", "उदयपुर का सिटी पैलेस", "फ़तेहपुर सीकरी"],
+                ans: 3, exam: "SSC CGL", date: "16 Oct 2026", shift: "Shift-III",
+                category: "कला एवं संस्कृति", topic: "कला एवं संस्कृति",
+                tip: "राजपूत, मुगल और अन्य स्थापत्य के प्रमुख उदाहरणों को अलग-अलग याद रखें.",
+                exp: "फ़तेहपुर सीकरी का निर्माण मुग़ल सम्राट अकबर ने कराया था और यह मुग़ल स्थापत्य है, राजपूत नहीं।",
+                facts: ["आमेर किला (जयपुर), मेहरानगढ़ (जोधपुर) और सिटी पैलेस (उदयपुर) राजपूत निर्माण हैं।", "फ़तेहपुर सीकरी मुग़ल स्थापत्य का प्रमुख उदाहरण है।"]
+            }], null, 2);
+            const box = document.getElementById('imp-json');
+            if (!box) return;
+            box.value = sample;
+            box.focus();
+            try { navigator.clipboard?.writeText(sample); } catch(e) {}
+            showToast('Sample JSON box में डाल दिया गया है।');
+        }
+
+        function exportAllDataBackup() {
+            const payload = {
+                exportedAt: new Date().toISOString(),
+                questionsDB: state.questionsDB,
+                answersDB: state.answersDB,
+                progressDB: state.progressDB,
+                mockCountsDB: state.mockCountsDB
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ssc_mock_pro_2026_backup_${Date.now()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Backup JSON फ़ाइल डाउनलोड हो गई!');
+        }
+
+
+        // =========================================================================
+        // 10. PREMIUM UI / DASHBOARD / PROGRESS / PRACTICE OVERRIDES
+        // =========================================================================
+        function getGlobalStats() {
+            let total=0, attempted=0, correct=0, wrong=0, mocks=0, completed=0;
+            Object.keys(state.questionsDB).forEach(k => {
+                const qs=getMockQuestions(k); if(!qs.length) return;
+                mocks++; total += qs.length;
+                const st=computeMockStats(k); attempted+=st.attempted; correct+=st.correct; wrong+=st.wrong;
+                if(st.total && st.attempted>=st.total) completed++;
+            });
+            return {total,attempted,correct,wrong,mocks,completed,accuracy:attempted?Math.round(correct/attempted*100):0};
+        }
+        function getStreak() {
+            const dates=Object.keys(state.activityDates||{}).filter(Boolean).sort().reverse();
+            if(!dates.length) return 0;
+            let streak=0, d=new Date(); d.setHours(0,0,0,0);
+            for(const ds of dates){
+                const cur=new Date(ds+'T00:00:00'); const diff=Math.round((d-cur)/86400000);
+                if(diff===0){ streak=1; d=new Date(cur); } else if(diff===1){ streak++; d=new Date(cur); }
+                else if(diff>0) break;
+            }
+            return streak;
+        }
+        function getAchievements(g) {
+            return [
+                ['🎯','First Attempt',g.attempted>0?'Unlocked':'Solve a question'],
+                ['📚','500 Questions',g.attempted>=500?'Unlocked':`${g.attempted}/500`],
+                ['⚡','10 Mocks',g.completed>=10?'Unlocked':`${g.completed}/10`],
+                ['🏆','90% Accuracy',g.accuracy>=90?'Unlocked':`${g.accuracy}%`],
+                ['🔥','Streak',`${getStreak()} day${getStreak()===1?'':'s'}`]
+            ];
+        }
+        function renderBottomNav(active='home') {
+            document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.remove('active'));
+            const el=document.getElementById(`bn-${active}`); if(el) el.classList.add('active');
+        }
+        function renderExamHubView() {
+            const cardsHtml=EXAMS.map(ex=>{
+                const sum=getExamSavedSummary(ex.id);
+                return `<button type="button" class="list-card fade-in" onclick="openExam('${ex.id}')">
+                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('exam',ex.id)}</div><div class="card-info">
+                    <h3 class="card-title">${escapeHTML(ex.title)}</h3><p class="card-meta">${escapeHTML(ex.subtitle)}</p>
+                    <p class="card-meta" style="color:var(--accent-primary);font-weight:800;margin-top:4px">${escapeHTML(ex.subjectsLine)}</p></div></div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px"><span class="badge-pill">${sum.totalQ} Qs</span><span style="font-size:11px;font-weight:900;color:var(--accent-primary)">Open →</span></div>
+                </button>`;
+            }).join('');
+            return `<div class="section-title"><span>परीक्षा चुनें</span><span class="badge-pill">2026 Edition</span></div>
+            <div class="hero-card fade-in" style="margin-bottom:14px"><span class="hero-kicker">EXAM HUB</span><h2 class="hero-title">अपनी परीक्षा चुनें</h2><p class="hero-sub">पहले Exam चुनें, फिर उसी के अंदर Subjects और Mocks खोलें.</p></div>
+            <div class="linear-list">${cardsHtml}</div>`;
+        }
+
+        function renderMoreView(){
+            return `<div class="hero-card fade-in"><span class="hero-kicker">⚙ MORE</span><h2 class="hero-title">More Options</h2><p class="hero-sub">Import, backup और app settings यहाँ से manage करें.</p></div>
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="openAddMockModal()">＋<strong>Add Mock Questions</strong><span>JSON / TXT import</span></button>
+                <button class="quick-btn" onclick="exportAllDataBackup()">💾<strong>Backup Data</strong><span>Download your saved mocks</span></button>
+                <button class="quick-btn" onclick="openExamHub()">▣<strong>Browse Exams</strong><span>MTS, CGL & Stenographer</span></button>
+                <button class="quick-btn" onclick="toggleTheme()">🌙<strong>Toggle Theme</strong><span>Light / Dark mode</span></button>
+            </div>`;
+        }
+
+        function renderHomeView() {
+            const g=getGlobalStats();
+            const cardsHtml=EXAMS.map(ex=>{
+                const sum=getExamSavedSummary(ex.id);
+                return `<button type="button" class="list-card fade-in" onclick="openExam('${ex.id}')">
+                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('exam',ex.id)}</div><div class="card-info">
+                    <h3 class="card-title">${escapeHTML(ex.title)}</h3><p class="card-meta">${escapeHTML(ex.subtitle)}</p>
+                    <p class="card-meta" style="color:var(--accent-primary);font-weight:800;margin-top:4px">${escapeHTML(ex.subjectsLine)}</p></div></div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px"><span class="badge-pill">${sum.totalQ} Qs</span><span style="font-size:11px;font-weight:900;color:var(--accent-primary)">Open →</span></div>
+                </button>`;
+            }).join('');
+            const ach=getAchievements(g).map(a=>`<div class="achievement"><div class="emoji">${a[0]}</div><strong>${a[1]}</strong><span>${a[2]}</span></div>`).join('');
+            return `<div class="hero-card fade-in">
+                <span class="hero-kicker">✦ PREMIUM SSC PREP • 2026</span>
+                <h2 class="hero-title">Your preparation, one place.</h2>
+                <p class="hero-sub">PYQ practice • topic-wise learning • instant explanations • progress tracking</p>
+                <div style="margin-top:14px"><div class="q-progress-label"><span>Overall progress</span><span>${g.attempted}/${g.total} attempted</span></div><div class="progress-track"><div class="progress-fill" style="width:${g.total?Math.min(100,g.attempted/g.total*100):0}%"></div></div></div>
+            </div>
+            <div class="dashboard-grid">
+                <div class="metric-card"><div class="metric-label">Questions Solved</div><div class="metric-value">${g.attempted}</div><div class="metric-sub">of ${g.total}</div></div>
+                <div class="metric-card"><div class="metric-label">Accuracy</div><div class="metric-value">${g.accuracy}%</div><div class="metric-sub">correct answers</div></div>
+                <div class="metric-card"><div class="metric-label">Mocks</div><div class="metric-value">${g.completed}</div><div class="metric-sub">completed</div></div>
+                <div class="metric-card"><div class="metric-label">Streak</div><div class="metric-value">${getStreak()} 🔥</div><div class="metric-sub">active days</div></div>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="openPracticeView()">🎯<strong>Practice Mistakes</strong><span>Wrong questions only</span></button>
+                <button class="quick-btn" onclick="openProgressView()">📊<strong>My Progress</strong><span>Accuracy & performance</span></button>
+                <button class="quick-btn" onclick="openExamHub()">▣<strong>Browse Exams</strong><span>Choose MTS, CGL or Steno</span></button>
+                <button class="quick-btn" onclick="openAddMockModal()">＋<strong>Add Questions</strong><span>Import JSON / TXT</span></button>
+            </div>
+            <div class="section-title"><span>🏅 Achievements</span><span class="badge-pill">${g.completed} completed</span></div>
+            <div class="achievement-row">${ach}</div>
+            <div class="section-title" style="margin-top:18px"><span>परीक्षा चुनें</span><span class="badge-pill">2026 Edition</span></div>
+            <div class="linear-list">${cardsHtml}</div>`;
+        }
+        function openProgressView(){ closeAddMockModal(); state.view='progress'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+        function openPracticeView(){
+            closeAddMockModal();
+            clearPracticeTimer();
+            state.view='practice';
+            state.examId=null; state.subjectId=null; state.topicId=null;
+            render();
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+        function renderProgressView(){
+            const g=getGlobalStats();
+            const subjectRows=Object.values(SUBJECT_CATALOG).map(s=>{
+                let t=0,a=0,c=0; Object.keys(state.questionsDB).forEach(k=>{ if(k.includes('_'+s.id+'_')){const qs=getMockQuestions(k),st=computeMockStats(k);t+=qs.length;a+=st.attempted;c+=st.correct;} });
+                const pct=a?Math.round(c/a*100):0; return `<div class="practice-card"><div style="display:flex;justify-content:space-between;gap:8px"><strong>${escapeHTML(s.short)}</strong><span class="badge-pill">${pct}%</span></div><div class="progress-track" style="margin-top:8px"><div class="progress-fill" style="width:${pct}%"></div></div><div class="card-meta">${a} attempted • ${c} correct • ${t} saved</div></div>`;
+            }).join('');
+            return `<div class="hero-card"><span class="hero-kicker">📊 PREPARATION ANALYTICS</span><h2 class="hero-title">My Progress</h2><p class="hero-sub">Your performance is saved locally on this device.</p></div>
+            <div class="result-grid"><div class="result-stat"><b>${g.attempted}</b><div class="card-meta">Attempted</div></div><div class="result-stat"><b>${g.correct}</b><div class="card-meta">Correct</div></div><div class="result-stat"><b>${g.wrong}</b><div class="card-meta">Wrong</div></div><div class="result-stat"><b>${g.accuracy}%</b><div class="card-meta">Accuracy</div></div></div>
+            <div class="section-title"><span>Subject Performance</span></div>${subjectRows}`;
+        }
+        function collectWrongQuestions(){
+            const out=[]; Object.keys(state.questionsDB).forEach(k=>{const qs=getMockQuestions(k),ans=getMockAnswers(k); Object.keys(ans).forEach(i=>{const idx=Number(i);if(qs[idx]&&ans[idx]!==qs[idx].ans)out.push({key:k,index:idx,q:qs[idx]});});}); return out;
+        }
+
+        // =========================================================================
+        // PRACTICE MOCK MODE — SAME EXAMS / SUBJECTS / MIXED MOCKS, TIMED
+        // =========================================================================
+        function getPracticeTimeSeconds(examId){
+            return examId === 'cgl' ? 15 * 60 : 25 * 60;
+        }
+        function getPracticeSession(key){
+            if(!state.practiceSessions[key] || typeof state.practiceSessions[key] !== 'object'){
+                state.practiceSessions[key] = {
+                    answers:{}, activeSet:0, currentQIndex:0, deadline:0,
+                    completed:false, resultUnlocked:false, completedAt:null
+                };
+            }
+            const s=state.practiceSessions[key];
+            if(!s.answers || typeof s.answers !== 'object') s.answers={};
+            if(typeof s.activeSet!=='number') s.activeSet=0;
+            if(typeof s.currentQIndex!=='number') s.currentQIndex=0;
+            return s;
+        }
+        function getPracticeStats(key){
+            const qs=getMockQuestions(key), s=getPracticeSession(key);
+            let attempted=0,correct=0,wrong=0;
+            Object.keys(s.answers||{}).forEach(i=>{
+                const n=Number(i);
+                if(qs[n]){
+                    attempted++;
+                    if(Number(s.answers[i])===Number(qs[n].ans)) correct++; else wrong++;
+                }
+            });
+            return {total:qs.length,attempted,correct,wrong,unattempted:Math.max(0,qs.length-attempted),score:correct*2-wrong*.5};
+        }
+        function clearPracticeTimer(){
+            if(state.practiceTimerId){clearInterval(state.practiceTimerId);state.practiceTimerId=null;}
+        }
+        function savePracticeSession(){
+            savePersistedState();
+        }
+        function formatPracticeTime(sec){
+            sec=Math.max(0,Math.ceil(sec));
+            const m=Math.floor(sec/60), s=sec%60;
+            return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }
+        function startPracticeTimer(){
+            clearPracticeTimer();
+            if(state.view!=='practice_player') return;
+            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
+            const session=getPracticeSession(key);
+            const examObj=EXAMS.find(e=>e.id===state.examId);
+            if(!examObj || session.completed) return;
+            if(!session.deadline || session.deadline<=Date.now()){
+                session.deadline=Date.now()+getPracticeTimeSeconds(examObj.id)*1000;
+                session.setStartedAt=Date.now();
+                savePracticeSession();
+            }
+            const tick=()=>{
+                if(state.view!=='practice_player'){clearPracticeTimer();return;}
+                const left=Math.max(0,Math.ceil((session.deadline-Date.now())/1000));
+                const el=document.getElementById('practice-timer');
+                if(el){
+                    el.textContent=formatPracticeTime(left);
+                    el.classList.toggle('danger',left<=60);
+                }
+                if(left<=0){
+                    clearPracticeTimer();
+                    advancePracticeSet(true);
+                }
+            };
+            tick();
+            state.practiceTimerId=setInterval(tick,250);
+        }
+        function completePracticeMock(key){
+            clearPracticeTimer();
+            const s=getPracticeSession(key);
+            s.completed=true; s.resultUnlocked=true; s.completedAt=new Date().toISOString(); s.deadline=0;
+            state.practiceResultKey=key;
+            savePracticeSession();
+            state.view='practice_complete';
+            render();
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+        function advancePracticeSet(fromTimer=false){
+            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
+            const qs=getMockQuestions(key), s=getPracticeSession(key);
+            const totalSets=Math.max(1,Math.ceil(qs.length/25));
+            if(s.activeSet >= totalSets-1){
+                completePracticeMock(key); return;
+            }
+            s.activeSet++;
+            s.currentQIndex=0;
+            const examObj=EXAMS.find(e=>e.id===state.examId);
+            s.deadline=Date.now()+getPracticeTimeSeconds(examObj.id)*1000;
+            s.setStartedAt=Date.now();
+            savePracticeSession();
+            render();
+            window.scrollTo({top:0,behavior:'smooth'});
+            if(fromTimer) showToast('⏰ समय समाप्त — अगला Set शुरू हो गया।');
+        }
+        function openPracticeExam(examId){
+            clearPracticeTimer(); closeAddMockModal();
+            state.examId=examId; state.subjectId=null; state.topicId=null; state.mode='mixed'; state.view='practice_exam';
+            render(); window.scrollTo({top:0,behavior:'smooth'});
+        }
+        function openPracticeSubject(subjectId){
+            clearPracticeTimer();
+            state.subjectId=subjectId; state.topicId=null; state.mode='mixed'; state.view='practice_subject';
+            render(); window.scrollTo({top:0,behavior:'smooth'});
+        }
+        function openPracticeMockPlayer(mockNum){
+            clearPracticeTimer();
+            state.mode='mixed'; state.topicId=null; state.mockNumber=Number(mockNum);
+            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
+            const qs=getMockQuestions(key);
+            if(!qs.length){showToast('इस Mock में अभी कोई प्रश्न नहीं है।');return;}
+            const s=getPracticeSession(key);
+            if(s.completed){state.practiceResultKey=key;state.view='practice_complete';}
+            else{
+                state.view='practice_player';
+                if(s.activeSet>=Math.max(1,Math.ceil(qs.length/25))) s.activeSet=0;
+                if(s.currentQIndex>=Math.min(25,qs.length-s.activeSet*25)) s.currentQIndex=0;
+                if(!s.deadline || s.deadline<=Date.now()){
+                    const ex=EXAMS.find(e=>e.id===state.examId);
+                    s.deadline=Date.now()+getPracticeTimeSeconds(ex.id)*1000;
+                }
+            }
+            savePracticeSession(); render(); window.scrollTo({top:0,behavior:'smooth'});
+        }
+        function selectPracticeMockOption(globalIndex,optIndex){
+            if(state.view!=='practice_player') return;
+            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
+            const s=getPracticeSession(key);
+            if(s.completed) return;
+            s.answers[String(globalIndex)]=optIndex;
+            savePracticeSession();
+            render();
+            window.scrollTo({top:0,behavior:'auto'});
+        }
+        function practiceNextQuestion(delta){
+            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
+            const qs=getMockQuestions(key),s=getPracticeSession(key);
+            const start=s.activeSet*25, setQs=qs.slice(start,start+25);
+            if(delta>0 && s.currentQIndex>=setQs.length-1){advancePracticeSet(false);return;}
+            s.currentQIndex=Math.max(0,Math.min(setQs.length-1,s.currentQIndex+delta));
+            savePracticeSession(); render();
+        }
+        function openPracticeResults(){
+            const key=state.practiceResultKey;
+            if(!key || !getPracticeSession(key).completed){showToast('पहले Mock पूरा करें।');return;}
+            clearPracticeTimer(); state.view='practice_result'; render(); window.scrollTo({top:0,behavior:'smooth'});
+        }
+        function reattemptPracticeMock(key){
+            const s=getPracticeSession(key);
+            clearPracticeTimer();
+            s.answers={}; s.activeSet=0; s.currentQIndex=0; s.deadline=0;
+            s.completed=false; s.resultUnlocked=false; s.completedAt=null; s.setStartedAt=null;
+            state.practiceResultKey=key;
+            state.view='practice_player';
+            savePracticeSession();
+            render();
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+        function renderPracticeExamHubView(){
+            const cardsHtml=EXAMS.map(ex=>{
+                const sum=getExamSavedSummary(ex.id);
+                return `<button type="button" class="list-card fade-in" onclick="openPracticeExam('${ex.id}')">
+                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('exam',ex.id)}</div><div class="card-info">
+                    <h3 class="card-title">${escapeHTML(ex.title)}</h3><p class="card-meta">${escapeHTML(ex.subtitle)}</p>
+                    <p class="card-meta" style="color:var(--accent-primary);font-weight:800;margin-top:4px">${escapeHTML(ex.subjectsLine)}</p></div></div>
+                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px"><span class="badge-pill">${sum.totalQ} Qs</span><span style="font-size:11px;font-weight:900;color:var(--accent-primary)">Open →</span></div>
+                </button>`;
+            }).join('');
+            return `<div class="section-title"><span>परीक्षा चुनें</span><span class="badge-pill">Timed Practice</span></div>
+            <div class="hero-card fade-in" style="margin-bottom:14px"><span class="hero-kicker">🎯 PRACTICE HUB</span><h2 class="hero-title">अपनी परीक्षा चुनें</h2><p class="hero-sub">पहले Exam चुनें, फिर Subject और Mixed Mock चुनें. Topic-wise practice यहाँ नहीं है.</p></div>
+            <div class="linear-list">${cardsHtml}</div>`;
+        }
+        function renderPracticeExamView(examObj){
+            const listHtml=examObj.subjectIds.map(sId=>{
+                const subj=SUBJECT_CATALOG[sId]; let qCount=0;
+                const prefix=`${examObj.id}_${subj.id}_mixed_`;
+                Object.keys(state.questionsDB).forEach(k=>{if(k.startsWith(prefix))qCount+=state.questionsDB[k].length;});
+                return `<button type="button" class="list-card fade-in" onclick="openPracticeSubject('${subj.id}')">
+                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('subject',subj.id)}</div><div class="card-info">
+                    <h3 class="card-title">${escapeHTML(subj.name)}</h3><p class="card-meta">Timed Mixed Mocks • 4 × 25 Sets</p></div></div>
+                    <div style="display:flex;align-items:center;gap:8px"><span class="badge-pill">${qCount} Qs</span><span style="font-weight:800;color:var(--accent-primary)">→</span></div>
+                </button>`;
+            }).join('');
+            return `<div class="section-title"><span>विषय चुनें</span><span class="badge-pill">${escapeHTML(examObj.badge)}</span></div><div class="linear-list">${listHtml}</div>`;
+        }
+        function renderPracticeSubjectView(examObj,subjObj){
+            const scopeKey=getScopeKey(examObj.id,subjObj.id,'mixed',null);
+            const totalMocks=getTotalMocksForScope(scopeKey), nums=getAvailableMockNumbers(scopeKey);
+            const mocksHtml=nums.map(m=>{
+                const key=getMockStorageKey(examObj.id,subjObj.id,'mixed',null,m), qs=getMockQuestions(key), s=getPracticeSession(key);
+                const st=getPracticeStats(key);
+                let label=s.completed?'View Results':(st.attempted?'Continue →':'Start →');
+                let sub=s.completed?`Completed • ${st.correct}/${st.total} correct • Score: ${st.score.toFixed(1)}`:`25 Q / Set • ${examObj.id==='cgl'?'15':'25'} min / Set • ${qs.length} Qs`;
+                return `<div class="mock-row"><button type="button" class="mock-open-btn" onclick="openPracticeMockPlayer(${m})">
+                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('mock',m)}</div><div class="card-info"><h3 class="card-title">Mock-${m}</h3><p class="card-meta">${escapeHTML(sub)}</p></div></div><span class="badge-pill">${label}</span></button></div>`;
+            }).join('');
+            return `<div class="hero-card fade-in"><span class="hero-kicker">⏱ TIMED PRACTICE</span><h2 class="hero-title">${escapeHTML(subjObj.name)}</h2><p class="hero-sub">${examObj.id==='cgl'?'15 minutes':'25 minutes'} per 25-question Set • No instant answers or explanations.</p></div>
+            <div class="section-title"><span>Mixed Questions Mocks</span><span class="badge-pill">${nums.length} Active</span></div>
+            <div class="linear-list">${mocksHtml || `<div class="empty-card">इस Subject में अभी कोई Mock Questions नहीं हैं। Exams section में JSON import करते ही यहाँ भी automatically दिखाई देंगे.</div>`}</div>`;
+        }
+        function renderPracticePlayerView(examObj,subjObj){
+            const key=getMockStorageKey(examObj.id,subjObj.id,'mixed',null,state.mockNumber);
+            const qs=getMockQuestions(key),s=getPracticeSession(key),start=s.activeSet*25,setQs=qs.slice(start,start+25);
+            if(!setQs.length) return `<div class="empty-card">इस Mock में प्रश्न उपलब्ध नहीं हैं।</div>`;
+            const totalSets=Math.max(1,Math.ceil(qs.length/25)),left=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));
+            const q=setQs[Math.min(s.currentQIndex,setQs.length-1)], gi=start+s.currentQIndex;
+            const chosen=Object.prototype.hasOwnProperty.call(s.answers,String(gi))?Number(s.answers[String(gi)]):null;
+            const options=q.opts.map((o,i)=>`<button type="button" class="opt-btn ${chosen===i?'practice-selected':''}" onclick="selectPracticeMockOption(${gi},${i})"><div class="opt-left"><span class="opt-letter">${['A','B','C','D','E'][i]||i+1}</span><span class="opt-label-text">${escapeHTML(o)}</span></div></button>`).join('');
+            const atEnd=s.currentQIndex>=setQs.length-1;
+            const setPct=((s.currentQIndex+1)/setQs.length)*100;
+            const prevDisabled=s.currentQIndex===0;
+            const nextLabel=atEnd?(s.activeSet===totalSets-1?'Finish Mock ✓':'Next Set →'):'Next →';
+            return `<div class="practice-timer-card"><div><div class="practice-timer-label">⏱ SET ${s.activeSet+1}/${totalSets} • ${setQs.length} QUESTIONS</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">No instant answer • Explanation after completion</div></div><div id="practice-timer" class="practice-timer ${left<=60?'danger':''}">${formatPracticeTime(left)}</div></div>
+            <div class="q-progress-wrap"><div class="q-progress-label"><span>Question ${s.currentQIndex+1}/${setQs.length}</span><span>${Math.round(setPct)}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${setPct}%"></div></div></div>
+            <div class="practice-controls-row">
+                <button type="button" class="nav-step-btn" ${prevDisabled?'disabled':''} onclick="practiceNextQuestion(-1)">← Previous</button>
+                <button type="button" class="mini-action-btn practice-palette-btn" onclick="openPaletteModal()">☷ Palette</button>
+                <button type="button" class="nav-step-btn primary" onclick="${atEnd?'advancePracticeSet(false)':'practiceNextQuestion(1)'}">${nextLabel}</button>
+            </div>
+            <div class="question-card fade-in" id="practice-question-anchor">
+                <div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${qs.length}</span><span class="q-light-pill">Set ${s.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(q.category||q.topic||subjObj.short)}</span></div>
+                <div class="q-shift-line">${escapeHTML(q.exam||examObj.title)} • ${escapeHTML(q.shift||q.source||'PYQ')}</div>
+                ${q.passage?`<div class="passage-box"><span class="passage-label">📖 Passage</span>${escapeHTML(q.passage)}</div>`:''}
+                <h2 class="q-text">${escapeHTML(q.q)}</h2><div class="options-list">${options}</div>
+                <div class="practice-lock-note">🔒 उत्तर और व्याख्या Mock पूरा होने के बाद “View Results” में दिखाई जाएगी.</div>
+            </div>`;
+        }
+        function renderPracticeCompleteView(){
+            const key=state.practiceResultKey, s=getPracticeSession(key), st=getPracticeStats(key);
+            return `<div class="practice-complete"><div style="font-size:42px">🏁</div><div class="hero-kicker">MOCK COMPLETED</div><h2 class="hero-title" style="margin-top:6px">आपका Mock पूरा हो गया!</h2><p class="hero-sub">Result और detailed explanations अभी locked थे. अब आप उन्हें एक साथ देख सकते हैं.</p><button type="button" class="nav-step-btn primary" style="margin-top:14px" onclick="openPracticeResults()">📊 View Results</button><button type="button" class="nav-step-btn" style="margin-top:8px" onclick="reattemptPracticeMock('${key}')">↻ Reattempt Mock</button><button type="button" class="nav-step-btn" style="margin-top:8px" onclick="state.view='practice_subject';render()">← Back to Mocks</button></div>`;
+        }
+        function renderPracticeResultView(){
+            const key=state.practiceResultKey, qs=getMockQuestions(key), s=getPracticeSession(key), st=getPracticeStats(key);
+            if(!s.completed) return renderPracticeCompleteView();
+            const pct=st.attempted?Math.round(st.correct/st.attempted*100):0;
+            const rows=qs.map((q,i)=>{
+                const chosen=Object.prototype.hasOwnProperty.call(s.answers,String(i))?Number(s.answers[String(i)]):null;
+                const right=chosen!==null && chosen===Number(q.ans);
+                const {mainExp,facts}=parseExplanationAndFacts(q.exp,q.facts);
+                const resultOptions=(q.opts||[]).map((opt,oi)=>{
+                    let cls='practice-result-option';
+                    if(oi===Number(q.ans)) cls+=' result-correct';
+                    if(chosen!==null && oi===chosen && chosen!==Number(q.ans)) cls+=' result-wrong';
+                    const mark=oi===Number(q.ans)?'✓':(chosen!==null && oi===chosen?'✗':'');
+                    return `<div class="${cls}"><span class="result-letter">${['A','B','C','D','E'][oi]||oi+1}</span><span style="flex:1">${escapeHTML(opt)}</span>${mark?`<strong>${mark}</strong>`:''}</div>`;
+                }).join('');
+                return `<div class="practice-result-question">
+                    <div style="display:flex;justify-content:space-between;gap:8px"><strong>Q.${i+1}</strong><span class="badge-pill">${right?'Correct':(chosen===null?'Not Attempted':'Incorrect')}</span></div>
+                    <div style="font-weight:850;margin-top:7px">${escapeHTML(q.q)}</div>
+                    <div class="practice-result-options">${resultOptions}</div>
+                    <div class="chosen-line">आपका उत्तर: ${chosen===null?'Not Attempted':escapeHTML(q.opts[chosen]||'—')}</div>
+                    <div class="correct-line">सही उत्तर: ${escapeHTML(q.opts[q.ans]||'—')}</div>
+                    <div class="exp-heading" style="margin-top:10px">विस्तृत व्याख्या:</div><p class="exp-body-text">${escapeHTML(mainExp||'व्याख्या उपलब्ध नहीं है।')}</p>
+                    ${facts.length?`<div class="exam-facts-box"><h4 class="exam-facts-title">महत्वपूर्ण परीक्षा तथ्य:</h4><ul class="exam-facts-list">${facts.map(f=>`<li>${escapeHTML(f)}</li>`).join('')}</ul></div>`:''}
+                </div>`;
+            }).join('');
+            return `<div class="result-hero"><div style="font-size:12px;font-weight:900">PRACTICE MOCK RESULT</div><div class="result-score">${st.score.toFixed(1)}</div><div>${st.correct} correct • ${st.wrong} wrong • ${st.unattempted} unattempted</div><div style="margin-top:8px;font-size:12px;font-weight:800">Attempt accuracy: ${pct}%</div></div>
+            <div class="result-grid"><div class="result-stat"><b>${st.total}</b><div class="card-meta">Questions</div></div><div class="result-stat"><b>${st.correct}</b><div class="card-meta">Correct</div></div><div class="result-stat"><b>${st.wrong}</b><div class="card-meta">Wrong</div></div><div class="result-stat"><b>${st.score.toFixed(1)}</b><div class="card-meta">Score</div></div></div>
+            <div class="quick-actions"><button class="quick-btn" onclick="reattemptPracticeMock('${key}')">↻<strong>Reattempt Mock</strong><span>Start again from Q.1</span></button><button class="quick-btn" onclick="state.view='practice_subject';render()">←<strong>Back to Practice Mocks</strong><span>Choose another mock</span></button></div>
+            <div class="section-title"><span>Answers & Explanations</span><span class="badge-pill">Unlocked</span></div>${rows}`;
+        }
+
+        function renderPracticeView(){
+            return renderPracticeExamHubView();
+        }
+        function startWrongPractice(i){ state.practiceQueue=window._wrongPracticeCache||collectWrongQuestions(); state.practiceIndex=i; state.view='practice_question'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+        function renderPracticeQuestion(){
+            const item=state.practiceQueue[state.practiceIndex]; if(!item){state.view='practice';return renderPracticeView();}
+            const q=item.q, key=`${item.key}:${item.index}`, chosen=Object.prototype.hasOwnProperty.call(state.practiceAnswers,key)?state.practiceAnswers[key]:null, answered=chosen!==null&&chosen!==undefined;
+            const opts=q.opts.map((o,i)=>{let cls='opt-btn';if(answered){if(i===q.ans)cls+=' opt-correct';else if(i===chosen)cls+=' opt-wrong';else cls+=' opt-dim';}return `<button class="${cls}" ${answered?'disabled':''} onclick="selectPracticeOption(${i})"><div class="opt-left"><span class="opt-letter">${['A','B','C','D','E'][i]||i+1}</span><span class="opt-label-text">${escapeHTML(o)}</span></div></button>`}).join('');
+            const exp=answered?`<div class="explanation-card fade-in"><div class="exp-result-header ${chosen===q.ans?'is-right':'is-wrong'}">${chosen===q.ans?'🎉 सही!':'❌ फिर से देखें'}</div><div class="exp-ans-pill">उत्तर (${['a','b','c','d','e'][q.ans]}) ${escapeHTML(q.opts[q.ans])}</div><div class="exp-heading">विस्तृत व्याख्या (EXPLANATION):</div><p class="exp-body-text">${escapeHTML(q.exp||'व्याख्या उपलब्ध नहीं है।')}</p></div>`:'';
+            return `<div class="q-progress-wrap"><div class="q-progress-label"><span>Mistake Practice</span><span>${state.practiceIndex+1} / ${state.practiceQueue.length}</span></div><div class="progress-track"><div class="progress-fill" style="width:${((state.practiceIndex+1)/state.practiceQueue.length)*100}%"></div></div></div><div class="question-card fade-in"><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(q.topic||'—')}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(q.exam||'SSC')}</strong></span><span class="q-meta-chip">🏷 ${escapeHTML(q.shift||'PYQ')}</span></div><h2 class="q-text">${escapeHTML(q.q)}</h2><div class="options-list">${opts}</div>${exp}</div><div class="nav-controls-row"><button class="nav-step-btn" onclick="state.practiceIndex=Math.max(0,state.practiceIndex-1);render()" ${state.practiceIndex===0?'disabled':''}>← Previous</button><button class="nav-step-btn primary" onclick="state.practiceIndex=Math.min(state.practiceQueue.length-1,state.practiceIndex+1);render()" ${state.practiceIndex>=state.practiceQueue.length-1?'disabled':''}>Next →</button></div>`;
+        }
+        function selectPracticeOption(i){const item=state.practiceQueue[state.practiceIndex];const key=`${item.key}:${item.index}`;if(Object.prototype.hasOwnProperty.call(state.practiceAnswers,key))return;state.practiceAnswers[key]=i;savePersistedState();render();}
+        function finishMock(){state.resultMockKey=getMockStorageKey(state.examId,state.subjectId,state.mode,state.topicId,state.mockNumber);state.view='result';render();window.scrollTo({top:0,behavior:'smooth'});}
+        function retryWrongFromResult(){const key=state.resultMockKey;const qs=getMockQuestions(key),ans=getMockAnswers(key);state.practiceQueue=Object.keys(ans).map(i=>Number(i)).filter(i=>qs[i]&&ans[i]!==qs[i].ans).map(i=>({key,index:i,q:qs[i]}));state.practiceIndex=0;state.view=state.practiceQueue.length?'practice_question':'result';render();}
+        function retakeResult(){const key=state.resultMockKey;delete state.answersDB[key];delete state.progressDB[key];state.activeSet=0;state.currentQIndex=0;state.view='player';savePersistedState();render();}
+        function renderResultView(){
+            const key=state.resultMockKey, st=computeMockStats(key), qs=getMockQuestions(key); const pct=st.attempted?Math.round(st.correct/st.attempted*100):0;
+            const byTopic={}; qs.forEach((q,i)=>{const t=q.topic||'General';if(!byTopic[t])byTopic[t]={t:0,c:0};byTopic[t].t++;const ans=getMockAnswers(key);if(ans[i]===q.ans)byTopic[t].c++;});
+            const topics=Object.values(byTopic).map(x=>{const p=x.t?Math.round(x.c/x.t*100):0;return `<div class="practice-card"><div style="display:flex;justify-content:space-between"><strong>${escapeHTML(x.t)}</strong><span class="badge-pill">${p}%</span></div><div class="progress-track" style="margin-top:7px"><div class="progress-fill" style="width:${p}%"></div></div><div class="card-meta">${x.c}/${x.t} correct</div></div>`}).join('');
+            return `<div class="result-hero"><div style="font-size:12px;font-weight:900;opacity:.9">MOCK COMPLETED</div><div class="result-score">${st.score.toFixed(1)}</div><div>${st.correct} correct • ${st.wrong} wrong • ${st.total-st.attempted} unattempted</div><div style="margin-top:8px;font-size:12px;font-weight:800">Attempt accuracy: ${pct}%</div></div><div class="result-grid"><div class="result-stat"><b>${st.total}</b><div class="card-meta">Questions</div></div><div class="result-stat"><b>${st.correct}</b><div class="card-meta">Correct</div></div><div class="result-stat"><b>${st.wrong}</b><div class="card-meta">Wrong</div></div><div class="result-stat"><b>${st.score.toFixed(1)}</b><div class="card-meta">Score</div></div></div><div class="quick-actions"><button class="quick-btn" onclick="retryWrongFromResult()">🎯<strong>Retry Wrong</strong><span>${st.wrong} questions</span></button><button class="quick-btn" onclick="retakeResult()">↻<strong>Retake Mock</strong><span>Reset answers</span></button><button class="quick-btn" onclick="goBack()">←<strong>Back to Mock</strong><span>Keep your progress</span></button></div><div class="section-title"><span>Topic Performance</span></div>${topics}`;
+        }
+        function overrideRender(){
+            const root=document.getElementById('app-root'), backBtn=document.getElementById('btn-back'), hdrTitle=document.getElementById('header-title'), hdrSub=document.getElementById('header-subtitle');
+            const examObj=EXAMS.find(e=>e.id===state.examId), subjObj=state.subjectId?SUBJECT_CATALOG[state.subjectId]:null, topicObj=subjObj&&state.topicId?subjObj.topics.find(t=>t.id===state.topicId):null;
+            backBtn.style.display=['home','progress','practice'].includes(state.view)?'none':'inline-flex';
+            if(state.view!=='practice_player') clearPracticeTimer();
+            if(state.view==='home'){hdrTitle.textContent='SSC Mock Pro 2026';hdrSub.textContent='PYQ Master Test Series • MTS • CGL • Stenographer';root.innerHTML=renderHomeView();renderBottomNav('home');}
+            else if(state.view==='exams'){hdrTitle.textContent='Exams';hdrSub.textContent='Choose Exam → Subject → Mock';root.innerHTML=renderExamHubView();renderBottomNav('exams');}
+            else if(state.view==='progress'){hdrTitle.textContent='My Progress';hdrSub.textContent='Performance Analytics';root.innerHTML=renderProgressView();renderBottomNav('progress');}
+            else if(state.view==='practice'){hdrTitle.textContent='Practice';hdrSub.textContent='Timed Mock Practice';root.innerHTML=renderPracticeView();renderBottomNav('practice');}
+            else if(state.view==='practice_exam'&&examObj){hdrTitle.textContent=`Practice • ${examObj.badge}`;hdrSub.textContent='विषय चुनें (Select Subject)';root.innerHTML=renderPracticeExamView(examObj);renderBottomNav('practice');}
+            else if(state.view==='practice_subject'&&examObj&&subjObj){hdrTitle.textContent=`Practice • ${examObj.badge}`;hdrSub.textContent=subjObj.name;root.innerHTML=renderPracticeSubjectView(examObj,subjObj);renderBottomNav('practice');}
+            else if(state.view==='practice_player'&&examObj&&subjObj){hdrTitle.textContent=`Practice • ${examObj.badge} • ${subjObj.short}`;hdrSub.textContent=`Mock-${state.mockNumber} • Timed`;root.innerHTML=renderPracticePlayerView(examObj,subjObj);renderBottomNav('practice');}
+            else if(state.view==='practice_complete'){hdrTitle.textContent='Practice • Completed';hdrSub.textContent='View Results';root.innerHTML=renderPracticeCompleteView();renderBottomNav('practice');}
+            else if(state.view==='practice_result'){hdrTitle.textContent='Practice • Result';hdrSub.textContent='Answers & Explanations';root.innerHTML=renderPracticeResultView();renderBottomNav('practice');}
+            else if(state.view==='practice_question'){hdrTitle.textContent='Practice';hdrSub.textContent='Focused Revision';root.innerHTML=renderPracticeQuestion();renderBottomNav('practice');}
+            else if(state.view==='more'){hdrTitle.textContent='More';hdrSub.textContent='App Tools & Settings';root.innerHTML=renderMoreView();renderBottomNav('more');}
+            else if(state.view==='result'){hdrTitle.textContent='Mock Result';hdrSub.textContent='Performance Analysis';root.innerHTML=renderResultView();renderBottomNav('home');}
+            else if(state.view==='exam'&&examObj){hdrTitle.textContent=examObj.title;hdrSub.textContent='विषय चुनें (Select Subject)';root.innerHTML=renderExamView(examObj);renderBottomNav('exams');}
+            else if(state.view==='subject'&&examObj&&subjObj){hdrTitle.textContent=`${examObj.badge} • ${subjObj.short}`;hdrSub.textContent=subjObj.name;root.innerHTML=renderSubjectView(examObj,subjObj);renderBottomNav('exams');}
+            else if(state.view==='topic_mocks'&&examObj&&subjObj&&topicObj){hdrTitle.textContent=`${examObj.badge} • ${subjObj.short}`;hdrSub.textContent=topicObj.name;root.innerHTML=renderTopicMocksView(examObj,subjObj,topicObj);renderBottomNav('exams');}
+            else if(state.view==='player'&&examObj&&subjObj){const modeLabel=state.mode==='topic'&&topicObj?`${topicObj.name} • Mock-${state.mockNumber}`:`Mixed Mock-${state.mockNumber}`;hdrTitle.textContent=`${examObj.badge} • ${subjObj.short}`;hdrSub.textContent=modeLabel;root.innerHTML=renderPlayerView(examObj,subjObj,topicObj);renderBottomNav('exams');}
+            else {state.view='home';overrideRender();return;}
+            updatePlayerPinchZoom();
+            if(state.view==='practice_player') startPracticeTimer();
+        }
+        render=overrideRender;
+        function goBack(){
+            clearPracticeTimer();
+            if(state.view==='practice_result'||state.view==='practice_complete'){state.view='practice_subject';}
+            else if(state.view==='practice_player'){state.view='practice_subject';}
+            else if(state.view==='practice_subject'){state.view='practice_exam';state.subjectId=null;}
+            else if(state.view==='practice_exam'){state.view='practice';state.examId=null;}
+            else if(state.view==='practice_question'){state.view='practice';}
+            else if(state.view==='result'){state.view='player';}
+            else if(state.view==='player'){state.view=state.mode==='topic'?'topic_mocks':'subject';}
+            else if(state.view==='topic_mocks'){state.view='subject';state.topicId=null;}
+            else if(state.view==='subject'){state.view='exam';state.subjectId=null;}
+            else if(state.view==='exam'){state.view='exams';state.examId=null;}
+            else if(state.view==='exams'){state.view='home';}
+            else if(state.view==='more'){state.view='home';}
+            render();window.scrollTo({top:0,behavior:'smooth'});
+        }
+        const _originalSelectOption=selectOption;
+        selectOption=function(globalIdx,optIdx){
+            _originalSelectOption(globalIdx,optIdx);
+            const today=new Date(); const ds=today.toISOString().slice(0,10); state.activityDates[ds]=true; savePersistedState();
+        };
+        // Native pinch-to-zoom is enabled only while the actual mock/question player is open.
+        // Other app screens keep the normal mobile viewport so the UI remains app-like.
+        function updatePlayerPinchZoom(){
+            let meta=document.querySelector('meta[name="viewport"]');
+            if(!meta){
+                meta=document.createElement('meta');
+                meta.name='viewport';
+                document.head.appendChild(meta);
+            }
+            if(state.view==='player' || state.view==='practice_player' || state.view==='practice_result' || state.view==='practice_question'){
+                meta.content='width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover';
+                document.documentElement.classList.add('pinch-zoom-page');
+                document.body.classList.add('pinch-zoom-page');
+            }else{
+                meta.content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+                document.documentElement.classList.remove('pinch-zoom-page');
+                document.body.classList.remove('pinch-zoom-page');
+            }
+        }
+
+        function renderPlayerView(examObj, subjObj, topicObj) {
+            const mockKey=getMockStorageKey(examObj.id,subjObj.id,state.mode,state.topicId,state.mockNumber), allQs=getMockQuestions(mockKey), stats=computeMockStats(mockKey);
+            const setSize=state.mode==='topic'?50:25, defaultSetCount=state.mode==='topic'?2:4, totalSets=Math.max(defaultSetCount,Math.ceil(allQs.length/setSize));
+            if(state.activeSet>=totalSets)state.activeSet=0; const setStart=state.activeSet*setSize, setQuestions=allQs.slice(setStart,setStart+setSize);
+            const tabsHtml=Array.from({length:totalSets},(_,s)=>`<button type="button" class="set-tab ${state.activeSet===s?'active':''}" onclick="selectPlayerSet(${s})">Set ${s+1} (${s*setSize+1}–${Math.min((s+1)*setSize,allQs.length||((s+1)*setSize))})</button>`).join('');
+            const statsBar=`<div class="stats-bar"><div class="stats-chips"><span class="stat-chip">Attempted: ${stats.attempted}/${stats.total}</span><span class="stat-chip stat-correct">✓ ${stats.correct}</span><span class="stat-chip stat-wrong">✗ ${stats.wrong}</span><span class="stat-chip stat-score">Score: ${stats.score.toFixed(1)}</span></div><div class="stats-actions"><button class="mini-action-btn" onclick="openPaletteModal()" ${!allQs.length?'disabled':''}>☷ Palette</button><button class="mini-action-btn mini-reset-btn" onclick="openResetModal()" ${!stats.attempted?'disabled':''}>Reset</button></div></div><div class="set-tabs-row">${tabsHtml}</div>`;
+            // Font size remains native; the browser's own pinch gesture handles zooming.
+            // This keeps the question player readable without adding manual zoom controls.
+            const zoom=100;
+            const zoomBar='';
+            if(!allQs.length||!setQuestions.length)return `${statsBar}${zoomBar}<div class="empty-card fade-in" id="question-anchor"><div style="margin-bottom:10px">${getCustomSvgIcon('mock',1)}</div><h3 style="margin:0 0 6px;font-size:16px;font-weight:900">इस Mock में अभी कोई प्रश्न नहीं है</h3><p style="font-size:13px;color:var(--text-secondary);margin:0 0 16px">Questions import करके इस Mock को शुरू करें.</p><button class="nav-step-btn primary" onclick="openAddMockModal()">＋ Add Questions</button></div>`;
+            if(state.currentQIndex<0)state.currentQIndex=0;if(state.currentQIndex>=setQuestions.length)state.currentQIndex=setQuestions.length-1;
+            const gi=setStart+state.currentQIndex,q=setQuestions[state.currentQIndex],ansMap=getMockAnswers(mockKey),choice=Object.prototype.hasOwnProperty.call(ansMap,gi)?ansMap[gi]:null,answered=choice!==null&&choice!==undefined;
+            const category=q.category||q.topic||(topicObj?topicObj.name:subjObj.short),examName=q.exam||examObj.title.replace(/^\d+\.\s*/,'')||examObj.badge, source=q.shift||q.source||'PYQ';
+            let passage=q.passage||''; if(!passage&&subjObj.id==='english'&&state.mode==='mixed'&&state.currentQIndex>=20&&state.currentQIndex<=24){for(let k=20;k<=state.currentQIndex;k++){if(setQuestions[k]?.passage){passage=setQuestions[k].passage;break;}}}
+            const options=q.opts.map((o,i)=>{let cls='opt-btn',tag='';if(answered){if(i===q.ans){cls+=' opt-correct';tag='<span class="opt-status-tag">✓ सही उत्तर</span>';}else if(i===choice){cls+=' opt-wrong';tag='<span class="opt-status-tag">✗ आपका उत्तर</span>';}else cls+=' opt-dim';}return `<button type="button" class="${cls}" ${answered?'disabled':''} onclick="selectOption(${gi},${i})"><div class="opt-left"><span class="opt-letter">${['A','B','C','D','E'][i]||i+1}</span><span class="opt-label-text" style="font-size:${(14.5*zoom/100).toFixed(2)}px">${escapeHTML(o)}</span></div>${tag}</button>`}).join('');
+            let exp='';if(answered){const right=choice===q.ans;const {mainExp,facts}=parseExplanationAndFacts(q.exp,q.facts);exp=`<div class="explanation-card fade-in"><div class="exp-result-header ${right?'is-right':'is-wrong'}">${right?'🎉 बिल्कुल सही! (+2 अंक)':'❌ गलत उत्तर! (-0.5 अंक)'}</div><div class="exp-ans-pill">उत्तर (${['a','b','c','d','e'][q.ans]||'a'}) ${escapeHTML(q.opts[q.ans]||'')}</div><div class="exp-heading">विस्तृत व्याख्या (EXPLANATION):</div><p class="exp-body-text" style="font-size:${(14*zoom/100).toFixed(2)}px">${escapeHTML(mainExp||'व्याख्या उपलब्ध नहीं है।')}</p>${facts.length?`<div class="exam-facts-box"><h4 class="exam-facts-title" style="font-size:${(13.5*zoom/100).toFixed(2)}px">महत्वपूर्ण परीक्षा तथ्य (Exam Facts):</h4><ul class="exam-facts-list">${facts.map(f=>`<li style="font-size:${(13.5*zoom/100).toFixed(2)}px">${escapeHTML(f)}</li>`).join('')}</ul></div>`:''}${q.tip?`<div class="smart-tip"><strong>🎯 SSC Tip:</strong> ${escapeHTML(q.tip)}</div>`:''}</div>`;}
+            const pct=((state.currentQIndex+1)/setQuestions.length)*100;
+            const atMockEnd = gi >= allQs.length - 1;
+            const nav=`<div class="nav-controls-row"><button class="nav-step-btn" ${gi===0?'disabled':''} onclick="stepQuestion(-1)">← Previous</button><div class="nav-center-label">Q.${gi+1} / ${allQs.length}</div><button class="nav-step-btn primary" onclick="${atMockEnd?'finishMock()':'stepQuestion(1)'}">${atMockEnd?'Finish ✓':'Next →'}</button></div>`;
+            return `${statsBar}${zoomBar}<div class="sticky-player-head"><div class="q-progress-wrap">
+                <div class="q-progress-label">
+                    <span>Set ${state.activeSet+1} • Question ${state.currentQIndex+1}/${setQuestions.length}</span>
+                    <span>Drag to jump</span>
+                </div>
+                <div class="question-scrubber-wrap" title="Question बदलने के लिए slider को आगे-पीछे खींचें">
+                    <input
+                        type="range"
+                        class="question-scrubber"
+                        min="0"
+                        max="${Math.max(0,setQuestions.length-1)}"
+                        step="1"
+                        value="${state.currentQIndex}"
+                        style="--scrub-pct:${setQuestions.length > 1 ? pct : 100}%"
+                        aria-label="Question position"
+                        oninput="scrubQuestionLive(this.value,this)"
+                        onchange="commitQuestionScrub(this.value)"
+                    >
+                </div>
+            </div></div>${nav}<div class="question-card fade-in" id="question-anchor"><div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${allQs.length}</span><span class="q-light-pill">Set ${state.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(category)}</span></div><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(category)}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(examName)}</strong></span>${q.date?`<span class="q-meta-chip">📅 <strong>${escapeHTML(q.date)}</strong></span>`:''}<span class="q-meta-chip">🏷 Source: <strong>${escapeHTML(source)}</strong></span></div>${passage?`<div class="passage-box"><span class="passage-label">📖 Cloze Test / Reading Comprehension Passage</span>${escapeHTML(passage)}</div>`:''}<h2 class="q-text" style="font-size:${(1.28*zoom/100).toFixed(3)}rem">${escapeHTML(q.q)}</h2><div class="options-list">${options}</div>${exp}</div>${nav}`;
+        }
+
+        // =========================================================================
+        // 10. INITIALIZE ON WINDOW LOAD
+        // =========================================================================
+        window.onload = function () {
+            loadPersistedState();
+            applyTheme(state.theme);
+            render();
+        };
+    </script>
+
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
+</body>
+</html>

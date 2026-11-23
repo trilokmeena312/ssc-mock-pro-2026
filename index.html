@@ -3,8 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4f39f5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SSC Mock Pro 2026">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
     <meta name="theme-color" content="#111633">
-    <link rel="manifest" href="./manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -2584,8 +2592,12 @@
         }
 
         function exportAllDataBackup() {
+            // Export the complete persistent app state, not just questions.
+            // This makes the downloaded JSON a real restore point for the app.
+            savePersistedState();
             const payload = {
                 backupVersion: 2,
+                app: 'SSC Mock Pro 2026',
                 exportedAt: new Date().toISOString(),
                 theme: state.theme,
                 fontSizeMode: state.fontSizeMode,
@@ -2602,63 +2614,54 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `ssc_mock_pro_2026_backup_${Date.now()}.json`;
+            a.download = `ssc_mock_pro_2026_backup_${new Date().toISOString().slice(0,10)}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             setTimeout(() => URL.revokeObjectURL(url), 1000);
-            showToast('Complete Backup JSON फ़ाइल डाउनलोड हो गई!');
+            showToast('Complete backup JSON डाउनलोड हो गया! इसे Google Drive में रख दें।');
         }
 
-        function openRestoreBackupPicker() {
-            const input = document.getElementById('restore-backup-input');
-            if (input) input.click();
-        }
-
-        function restoreBackupFromFile(input) {
-            const file = input && input.files ? input.files[0] : null;
+        function restoreDataBackup(input) {
+            const file = input && input.files && input.files[0];
             if (!file) return;
-            if (!confirm('⚠️ Restore Backup करने पर मौजूदा saved mocks, answers, progress, removed mocks और theme backup वाले data से replace हो जाएंगे।\n\nक्या आप आगे बढ़ना चाहते हैं?')) {
-                input.value = '';
-                return;
-            }
             const reader = new FileReader();
-            reader.onload = function() {
+            reader.onload = function(e) {
                 try {
-                    const parsed = JSON.parse(reader.result);
-                    if (!parsed || typeof parsed !== 'object' || !parsed.questionsDB || !parsed.answersDB || !parsed.progressDB) {
+                    const data = JSON.parse(e.target.result);
+                    if (!data || typeof data !== 'object' || !data.questionsDB || typeof data.questionsDB !== 'object') {
                         throw new Error('Invalid backup');
                     }
-                    state.questionsDB = (parsed.questionsDB && typeof parsed.questionsDB === 'object') ? parsed.questionsDB : {};
-                    state.answersDB = (parsed.answersDB && typeof parsed.answersDB === 'object') ? parsed.answersDB : {};
-                    state.progressDB = (parsed.progressDB && typeof parsed.progressDB === 'object') ? parsed.progressDB : {};
-                    state.mockCountsDB = (parsed.mockCountsDB && typeof parsed.mockCountsDB === 'object') ? parsed.mockCountsDB : {};
-                    state.removedMocksDB = (parsed.removedMocksDB && typeof parsed.removedMocksDB === 'object') ? parsed.removedMocksDB : {};
-                    state.activityDates = (parsed.activityDates && typeof parsed.activityDates === 'object') ? parsed.activityDates : {};
-                    state.practiceAnswers = (parsed.practiceAnswers && typeof parsed.practiceAnswers === 'object') ? parsed.practiceAnswers : {};
-                    state.practiceSessions = (parsed.practiceSessions && typeof parsed.practiceSessions === 'object') ? parsed.practiceSessions : {};
-                    if (parsed.theme === 'dark' || parsed.theme === 'light') state.theme = parsed.theme;
-                    if (parsed.fontSizeMode === 'small' || parsed.fontSizeMode === 'medium' || parsed.fontSizeMode === 'large') state.fontSizeMode = parsed.fontSizeMode;
-                    state.view = 'home';
-                    state.examId = null; state.subjectId = null; state.topicId = null;
-                    state.mockNumber = 1; state.activeSet = 0; state.currentQIndex = 0;
+                    const ok = confirm('Backup restore करने से अभी का saved data replace हो जाएगा. पहले current data का backup ले लें. क्या restore करना है?');
+                    if (!ok) { input.value = ''; return; }
+
+                    state.questionsDB = data.questionsDB || {};
+                    state.answersDB = data.answersDB || {};
+                    state.progressDB = data.progressDB || {};
+                    state.mockCountsDB = data.mockCountsDB || {};
+                    state.removedMocksDB = data.removedMocksDB || {};
+                    state.activityDates = data.activityDates || {};
+                    state.practiceAnswers = data.practiceAnswers || {};
+                    state.practiceSessions = data.practiceSessions || {};
+                    if (data.theme === 'dark' || data.theme === 'light') state.theme = data.theme;
+                    if (data.fontSizeMode === 'small' || data.fontSizeMode === 'medium' || data.fontSizeMode === 'large') state.fontSizeMode = data.fontSizeMode;
+
                     savePersistedState();
                     applyTheme(state.theme);
-                    renderApp();
+                    render();
                     showToast('Backup successfully restore हो गया!');
-                } catch (e) {
-                    showToast('Backup JSON सही नहीं है या पढ़ा नहीं जा सका।');
+                } catch (err) {
+                    showToast('Backup file सही नहीं है या corrupt है।');
                 } finally {
                     input.value = '';
                 }
             };
             reader.onerror = function() {
                 input.value = '';
-                showToast('Backup फ़ाइल पढ़ी नहीं जा सकी।');
+                showToast('Backup file पढ़ी नहीं जा सकी।');
             };
             reader.readAsText(file);
         }
-
 
 
         // =========================================================================
@@ -2717,13 +2720,13 @@
             return `<div class="hero-card fade-in"><span class="hero-kicker">⚙ MORE</span><h2 class="hero-title">More Options</h2><p class="hero-sub">Import, backup और app settings यहाँ से manage करें.</p></div>
             <div class="quick-actions">
                 <button class="quick-btn" onclick="openAddMockModal()">＋<strong>Add Mock Questions</strong><span>JSON / TXT import</span></button>
-                <button class="quick-btn" onclick="exportAllDataBackup()">💾<strong>Backup Data</strong><span>Complete saved data JSON</span></button>
-                <button class="quick-btn" onclick="openRestoreBackupPicker()">📤<strong>Restore Backup</strong><span>Google Drive / Mobile Storage</span></button>
+                <button class="quick-btn" onclick="exportAllDataBackup()">💾<strong>Backup Data</strong><span>Download complete saved data</span></button>
+                <button class="quick-btn" onclick="document.getElementById('restore-backup-input').click()">📤<strong>Restore Backup</strong><span>JSON backup वापस लाएँ</span></button>
+                <input id="restore-backup-input" type="file" accept=".json,application/json" style="display:none" onchange="restoreDataBackup(this)">
                 <button class="quick-btn" onclick="openExamHub()">▣<strong>Browse Exams</strong><span>MTS, CGL & Stenographer</span></button>
                 <button class="quick-btn" onclick="cycleFontSize()">🔤<strong>Font Size: <span id="font-size-label">${FONT_SIZE_LABELS[state.fontSizeMode]}</span></strong><span>Small / Medium / Large</span></button>
                 <button class="quick-btn" onclick="toggleTheme()">🌙<strong>Toggle Theme</strong><span>Light / Dark mode</span></button>
-            </div>
-            <input id="restore-backup-input" type="file" accept="application/json,.json" style="display:none" onchange="restoreBackupFromFile(this)">`;
+            </div>`;
         }
 
         function renderHomeView() {
@@ -3187,14 +3190,11 @@
             render();
         };
     </script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register('./sw.js').catch(function (err) {
-                    console.warn('Service worker registration failed:', err);
-                });
-            });
-        }
-    </script>
+
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+}
+</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ssc-mock-pro-2026-v1';
+const CACHE_NAME = 'ssc-mock-pro-2026-v2-font-size';
 const APP_SHELL = [
   './',
   './index.html',

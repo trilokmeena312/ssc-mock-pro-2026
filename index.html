@@ -3,15 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#4f39f5">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="SSC Mock Pro 2026">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" href="icon-192.png">
-
     <meta name="theme-color" content="#111633">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -975,128 +966,7 @@
         .q-meta-panel { display:flex; flex-wrap:wrap; gap:7px; margin:5px 0 13px; }
         .q-meta-chip { display:inline-flex; align-items:center; gap:5px; padding:6px 9px; border-radius:10px; background:var(--bg-subtle); border:1px solid var(--border-card); color:var(--text-secondary); font-size:10.5px; font-weight:800; }
         .q-meta-chip strong { color:var(--text-main); }
-        
         .q-progress-wrap { margin:3px 0 12px; }
-        .question-scrubber-wrap {
-            position:relative;
-            width:100%;
-            padding:8px 2px 3px;
-            touch-action:pan-x;
-        }
-        .question-scrubber {
-            -webkit-appearance:none;
-            appearance:none;
-            width:100%;
-            height:18px;
-            margin:0;
-            padding:0;
-            background:transparent;
-            cursor:pointer;
-            display:block;
-        }
-        .question-scrubber::-webkit-slider-runnable-track {
-            height:6px;
-            border-radius:999px;
-            background:linear-gradient(90deg,var(--accent-primary) 0%,var(--accent-primary) var(--scrub-pct,0%),var(--bg-subtle) var(--scrub-pct,0%),var(--bg-subtle) 100%);
-            border:1px solid var(--border-card);
-        }
-        .question-scrubber::-webkit-slider-thumb {
-            -webkit-appearance:none;
-            appearance:none;
-            width:18px;
-            height:18px;
-            margin-top:-7px;
-            border-radius:50%;
-            background:var(--accent-primary);
-            border:3px solid var(--bg-card);
-            box-shadow:0 2px 8px rgba(23,27,54,.24);
-        }
-        .question-scrubber::-moz-range-track {
-            height:6px;
-            border-radius:999px;
-            background:var(--bg-subtle);
-            border:1px solid var(--border-card);
-        }
-        .question-scrubber::-moz-range-progress {
-            height:6px;
-            border-radius:999px;
-            background:var(--accent-primary);
-        }
-        .question-scrubber::-moz-range-thumb {
-            width:18px;
-            height:18px;
-            border-radius:50%;
-            background:var(--accent-primary);
-            border:3px solid var(--bg-card);
-            box-shadow:0 2px 8px rgba(23,27,54,.24);
-        }
-        
-        .question-scrubber-live-next { animation: scrubQuestionNext .14s ease-out; }
-        .question-scrubber-live-prev { animation: scrubQuestionPrev .14s ease-out; }
-        @keyframes scrubQuestionNext {
-            from { opacity:.72; transform:translateX(12px); }
-            to { opacity:1; transform:translateX(0); }
-        }
-        @keyframes scrubQuestionPrev {
-            from { opacity:.72; transform:translateX(-12px); }
-            to { opacity:1; transform:translateX(0); }
-        }
-
-        .practice-timer-card{
-            display:flex;align-items:center;justify-content:space-between;gap:10px;
-            margin:0 0 12px;padding:12px 14px;border:1px solid var(--border-card);
-            border-radius:16px;background:var(--bg-card);box-shadow:var(--shadow-card);
-        }
-        .practice-timer-label{font-size:12px;font-weight:900;color:var(--text-secondary)}
-        .practice-timer{
-            font-size:22px;font-weight:950;letter-spacing:.5px;color:var(--accent-primary);
-            font-variant-numeric:tabular-nums;
-        }
-        .practice-timer.danger{color:var(--wrong-main);animation:pulseTimer 1s infinite}
-        @keyframes pulseTimer{50%{opacity:.55}}
-        .practice-selected{
-            border-color:var(--accent-primary)!important;
-            background:var(--accent-soft)!important;
-            box-shadow:0 0 0 2px rgba(73,56,227,.10);
-        }
-        .practice-lock-note{
-            margin:10px 0;padding:10px 12px;border-radius:12px;
-            background:var(--bg-subtle);color:var(--text-secondary);font-size:12px;font-weight:800;
-        }
-        .practice-result-question{
-            padding:14px;margin-bottom:10px;border:1px solid var(--border-card);
-            border-radius:16px;background:var(--bg-card);
-        }
-        .practice-result-question .correct-line{
-            margin-top:8px;padding:9px 11px;border-radius:10px;
-            background:var(--correct-bg);color:var(--correct-main);font-weight:850;
-        }
-        .practice-result-question .chosen-line{
-            margin-top:6px;padding:9px 11px;border-radius:10px;
-            background:var(--bg-subtle);color:var(--text-secondary);font-weight:750;
-        }
-        .practice-result-options{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-        .practice-result-option{display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border:1px solid var(--border-card);border-radius:12px;background:var(--bg-card);font-weight:700;color:var(--text-primary)}
-        .practice-result-option .result-letter{flex:0 0 28px;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:var(--bg-subtle);color:var(--text-secondary);font-weight:900}
-        .practice-result-option.result-correct{border-color:var(--correct-main);background:var(--correct-bg);color:var(--correct-main)}
-        .practice-result-option.result-correct .result-letter{background:var(--correct-main);color:#fff}
-        .practice-result-option.result-wrong{border-color:var(--wrong-main);background:var(--wrong-bg);color:var(--wrong-main)}
-        .practice-result-option.result-wrong .result-letter{background:var(--wrong-main);color:#fff}
-        .practice-controls-row{display:flex;align-items:center;gap:8px;margin:0 0 12px;flex-wrap:wrap}
-        .practice-controls-row .nav-step-btn{flex:1;min-width:110px}
-        .practice-palette-btn{flex:0 0 auto!important;min-width:105px!important}
-
-        .practice-complete{
-            text-align:center;padding:26px 18px;border-radius:22px;
-            background:var(--bg-card);border:1px solid var(--border-card);box-shadow:var(--shadow-card);
-        }
-
-        .question-scrubber:focus-visible {
-            outline:2px solid var(--accent-primary);
-            outline-offset:4px;
-            border-radius:999px;
-        }
-
         .q-progress-label { display:flex; justify-content:space-between; font-size:10.5px; color:var(--text-muted); font-weight:800; margin-bottom:5px; }
         .question-card { border-radius:22px; box-shadow:0 10px 28px rgba(23,27,54,.07); }
         .q-text { font-size:clamp(1.12rem,4.8vw,1.42rem); letter-spacing:-.1px; }
@@ -1426,10 +1296,6 @@
             practiceAnswers: {},
             practiceQueue: [],
             practiceIndex: 0,
-            practiceSessions: {},   // mockKey -> {answers, activeSet, currentQIndex, deadline, completed, resultUnlocked}
-            practiceResultKey: null,
-            practiceTimerId: null,
-            practiceSetStartedAt: null,
             resultMockKey: null,
             playerZoom: 100
         };
@@ -1450,7 +1316,6 @@
                     if (parsed.theme === 'dark' || parsed.theme === 'light') state.theme = parsed.theme;
                     if (parsed.activityDates && typeof parsed.activityDates === 'object') state.activityDates = parsed.activityDates;
                     if (parsed.practiceAnswers && typeof parsed.practiceAnswers === 'object') state.practiceAnswers = parsed.practiceAnswers;
-                    if (parsed.practiceSessions && typeof parsed.practiceSessions === 'object') state.practiceSessions = parsed.practiceSessions;
                 }
             } catch (e) {}
         }
@@ -1465,8 +1330,7 @@
                     mockCountsDB: state.mockCountsDB,
                     removedMocksDB: state.removedMocksDB,
                     activityDates: state.activityDates,
-                    practiceAnswers: state.practiceAnswers,
-                    practiceSessions: state.practiceSessions
+                    practiceAnswers: state.practiceAnswers
                 };
                 localStorage.setItem(STORAGE_KEY_V1, JSON.stringify(payload));
             } catch (e) {
@@ -2139,87 +2003,6 @@
             scrollToQuestionAnchor();
         }
 
-        function scrubQuestionLive(value, sliderEl) {
-            const n = Number(value);
-            if (!Number.isFinite(n)) return;
-
-            const mockKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
-            const examObj = EXAMS.find(e => e.id === state.examId);
-            const subjObj = state.subjectId ? SUBJECT_CATALOG[state.subjectId] : null;
-            const topicObj = subjObj && state.topicId ? subjObj.topics.find(t => t.id === state.topicId) : null;
-            if (!examObj || !subjObj || !mockKey) return;
-
-            const allQs = getMockQuestions(mockKey);
-            const setSize = state.mode === 'topic' ? 50 : 25;
-            const setStart = state.activeSet * setSize;
-            const setQuestions = allQs.slice(setStart, setStart + setSize);
-            if (!setQuestions.length) return;
-
-            const nextIdx = Math.max(0, Math.min(Math.round(n), setQuestions.length - 1));
-            if (nextIdx === state.currentQIndex) {
-                if (sliderEl) {
-                    const pct = setQuestions.length > 1 ? (nextIdx / (setQuestions.length - 1)) * 100 : 100;
-                    sliderEl.style.setProperty('--scrub-pct', pct + '%');
-                }
-                return;
-            }
-
-            const direction = nextIdx > state.currentQIndex ? 'next' : 'prev';
-            state.currentQIndex = nextIdx;
-
-            // Keep the scrubber itself alive while only the question content changes.
-            if (sliderEl) {
-                const pct = setQuestions.length > 1 ? (nextIdx / (setQuestions.length - 1)) * 100 : 100;
-                sliderEl.style.setProperty('--scrub-pct', pct + '%');
-            }
-
-            // Generate the latest question markup without replacing the whole player.
-            const holder = document.createElement('div');
-            holder.innerHTML = renderPlayerView(examObj, subjObj, topicObj);
-
-            const newCard = holder.querySelector('#question-anchor');
-            const oldCard = document.getElementById('question-anchor');
-            if (newCard && oldCard) {
-                newCard.classList.remove('fade-in');
-                newCard.classList.add(direction === 'next' ? 'question-scrubber-live-next' : 'question-scrubber-live-prev');
-                oldCard.replaceWith(newCard);
-            }
-
-            // Update both Previous/Next rows and the small scrubber label in place.
-            const newNavs = holder.querySelectorAll('.nav-controls-row');
-            const oldNavs = document.querySelectorAll('.nav-controls-row');
-            oldNavs.forEach((el, i) => {
-                if (newNavs[i]) el.replaceWith(newNavs[i].cloneNode(true));
-            });
-
-            const newLabel = holder.querySelector('.q-progress-label');
-            const oldLabel = document.querySelector('.q-progress-label');
-            if (newLabel && oldLabel) oldLabel.innerHTML = newLabel.innerHTML;
-
-            // Keep the page vertically locked: changing questions should feel like
-            // scrubbing a video, not like navigating to another page.
-            window.__lastScrubIndex = nextIdx;
-        }
-
-        function commitQuestionScrub(value) {
-            const n = Number(value);
-            if (!Number.isFinite(n)) return;
-            const mockKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
-            const allQs = getMockQuestions(mockKey);
-            const setSize = state.mode === 'topic' ? 50 : 25;
-            const setStart = state.activeSet * setSize;
-            const setQuestions = allQs.slice(setStart, setStart + setSize);
-            if (!setQuestions.length) return;
-            state.currentQIndex = Math.max(0, Math.min(Math.round(n), setQuestions.length - 1));
-            saveCurrentMockProgress(mockKey);
-        }
-
-        function seekQuestionFromScrubber(value) {
-            // Kept as a compatibility alias for older saved/inline handlers.
-            scrubQuestionLive(value, document.querySelector('.question-scrubber'));
-            commitQuestionScrub(value);
-        }
-
         function stepQuestion(delta) {
             state.currentQIndex += delta;
             const mKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
@@ -2252,27 +2035,22 @@
         // 8. PALETTE & RESET MODALS
         // =========================================================================
         function openPaletteModal() {
-            const isPractice = state.view === 'practice_player';
-            const mockKey = getMockStorageKey(state.examId, state.subjectId, 'mixed', null, state.mockNumber);
+            const mockKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
             const allQs = getMockQuestions(mockKey);
-            const setSize = 25;
+            const ansMap = getMockAnswers(mockKey);
+            const setSize = state.mode === 'topic' ? 50 : 25;
             const setStart = state.activeSet * setSize;
             const setQs = allQs.slice(setStart, setStart + setSize);
-            const ansMap = isPractice ? getPracticeSession(mockKey).answers : getMockAnswers(mockKey);
 
-            document.getElementById('palette-modal-title').textContent = isPractice
-                ? `सेट ${state.activeSet + 1} पैलेट (Timed Mock)`
-                : `सेट ${state.activeSet + 1} पैलेट (Q.${setStart + 1} – Q.${setStart + setQs.length})`;
+            document.getElementById('palette-modal-title').textContent = `सेट ${state.activeSet + 1} पैलेट (Q.${setStart + 1} – Q.${setStart + setQs.length})`;
 
             const grid = document.getElementById('palette-grid');
             grid.innerHTML = setQs.map((q, localIdx) => {
                 const gIdx = setStart + localIdx;
                 let cls = 'pal-btn';
                 if (localIdx === state.currentQIndex) cls += ' current';
-                if (Object.prototype.hasOwnProperty.call(ansMap, String(gIdx)) || Object.prototype.hasOwnProperty.call(ansMap, gIdx)) {
-                    const chosen = Object.prototype.hasOwnProperty.call(ansMap, String(gIdx)) ? ansMap[String(gIdx)] : ansMap[gIdx];
-                    if (!isPractice) cls += Number(chosen) === Number(q.ans) ? ' right' : ' wrong';
-                    else cls += ' right';
+                if (Object.prototype.hasOwnProperty.call(ansMap, gIdx)) {
+                    cls += ansMap[gIdx] === q.ans ? ' right' : ' wrong';
                 }
                 return `<button type="button" class="${cls}" onclick="jumpToSetQuestion(${localIdx})">${gIdx + 1}</button>`;
             }).join('');
@@ -2285,23 +2063,12 @@
         }
 
         function jumpToSetQuestion(localIdx) {
-            if (state.view === 'practice_player') {
-                const key = getMockStorageKey(state.examId, state.subjectId, 'mixed', null, state.mockNumber);
-                const qs = getMockQuestions(key);
-                const s = getPracticeSession(key);
-                const setQs = qs.slice(s.activeSet * 25, s.activeSet * 25 + 25);
-                s.currentQIndex = Math.max(0, Math.min(setQs.length - 1, Number(localIdx)));
-                savePracticeSession();
-                closePaletteModal();
-                render();
-                window.scrollTo({top:0,behavior:'auto'});
-                return;
-            }
             state.currentQIndex = localIdx;
             const mKey = getMockStorageKey(state.examId, state.subjectId, state.mode, state.topicId, state.mockNumber);
             saveCurrentMockProgress(mKey);
             closePaletteModal();
             render();
+            scrollToQuestionAnchor();
         }
 
         function openResetModal() {
@@ -2562,23 +2329,71 @@
         }
 
         function exportAllDataBackup() {
+            // Complete restore point for the current app version.
+            savePersistedState();
             const payload = {
+                backupVersion: 2,
+                app: 'SSC Mock Pro 2026',
+                storageKey: STORAGE_KEY_V1,
                 exportedAt: new Date().toISOString(),
+                theme: state.theme,
                 questionsDB: state.questionsDB,
                 answersDB: state.answersDB,
                 progressDB: state.progressDB,
-                mockCountsDB: state.mockCountsDB
+                mockCountsDB: state.mockCountsDB,
+                removedMocksDB: state.removedMocksDB,
+                activityDates: state.activityDates,
+                practiceAnswers: state.practiceAnswers
             };
             const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `ssc_mock_pro_2026_backup_${Date.now()}.json`;
+            a.download = `ssc_mock_pro_2026_backup_${new Date().toISOString().slice(0,10)}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showToast('Backup JSON फ़ाइल डाउनलोड हो गई!');
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            showToast('Complete backup JSON डाउनलोड हो गया!');
+        }
+
+        function restoreDataBackup(input) {
+            const file = input && input.files && input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (!data || typeof data !== 'object' || !data.questionsDB || typeof data.questionsDB !== 'object') {
+                        throw new Error('Invalid backup');
+                    }
+                    const ok = confirm('Backup restore करने से अभी का saved data replace हो जाएगा. पहले current data का Backup ले लें. क्या restore करना है?');
+                    if (!ok) { input.value = ''; return; }
+
+                    state.questionsDB = data.questionsDB || {};
+                    state.answersDB = data.answersDB || {};
+                    state.progressDB = data.progressDB || {};
+                    state.mockCountsDB = data.mockCountsDB || {};
+                    state.removedMocksDB = data.removedMocksDB || {};
+                    state.activityDates = data.activityDates || {};
+                    state.practiceAnswers = data.practiceAnswers || {};
+                    if (data.theme === 'dark' || data.theme === 'light') state.theme = data.theme;
+
+                    savePersistedState();
+                    applyTheme(state.theme);
+                    render();
+                    showToast('Backup successfully restore हो गया!');
+                } catch (err) {
+                    showToast('Backup file सही नहीं है या corrupt है।');
+                } finally {
+                    input.value = '';
+                }
+            };
+            reader.onerror = function() {
+                input.value = '';
+                showToast('Backup file पढ़ी नहीं जा सकी।');
+            };
+            reader.readAsText(file);
         }
 
 
@@ -2639,6 +2454,8 @@
             <div class="quick-actions">
                 <button class="quick-btn" onclick="openAddMockModal()">＋<strong>Add Mock Questions</strong><span>JSON / TXT import</span></button>
                 <button class="quick-btn" onclick="exportAllDataBackup()">💾<strong>Backup Data</strong><span>Download your saved mocks</span></button>
+                <button class="quick-btn" onclick="document.getElementById('restore-backup-input').click()">📤<strong>Restore Backup</strong><span>JSON backup वापस लाएँ</span></button>
+                <input id="restore-backup-input" type="file" accept=".json,application/json" style="display:none" onchange="restoreDataBackup(this)">
                 <button class="quick-btn" onclick="openExamHub()">▣<strong>Browse Exams</strong><span>MTS, CGL & Stenographer</span></button>
                 <button class="quick-btn" onclick="toggleTheme()">🌙<strong>Toggle Theme</strong><span>Light / Dark mode</span></button>
             </div>`;
@@ -2680,14 +2497,7 @@
             <div class="linear-list">${cardsHtml}</div>`;
         }
         function openProgressView(){ closeAddMockModal(); state.view='progress'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
-        function openPracticeView(){
-            closeAddMockModal();
-            clearPracticeTimer();
-            state.view='practice';
-            state.examId=null; state.subjectId=null; state.topicId=null;
-            render();
-            window.scrollTo({top:0,behavior:'smooth'});
-        }
+        function openPracticeView(){ closeAddMockModal(); state.view='practice'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
         function renderProgressView(){
             const g=getGlobalStats();
             const subjectRows=Object.values(SUBJECT_CATALOG).map(s=>{
@@ -2701,273 +2511,13 @@
         function collectWrongQuestions(){
             const out=[]; Object.keys(state.questionsDB).forEach(k=>{const qs=getMockQuestions(k),ans=getMockAnswers(k); Object.keys(ans).forEach(i=>{const idx=Number(i);if(qs[idx]&&ans[idx]!==qs[idx].ans)out.push({key:k,index:idx,q:qs[idx]});});}); return out;
         }
-
-        // =========================================================================
-        // PRACTICE MOCK MODE — SAME EXAMS / SUBJECTS / MIXED MOCKS, TIMED
-        // =========================================================================
-        function getPracticeTimeSeconds(examId){
-            return examId === 'cgl' ? 15 * 60 : 25 * 60;
-        }
-        function getPracticeSession(key){
-            if(!state.practiceSessions[key] || typeof state.practiceSessions[key] !== 'object'){
-                state.practiceSessions[key] = {
-                    answers:{}, activeSet:0, currentQIndex:0, deadline:0,
-                    completed:false, resultUnlocked:false, completedAt:null
-                };
-            }
-            const s=state.practiceSessions[key];
-            if(!s.answers || typeof s.answers !== 'object') s.answers={};
-            if(typeof s.activeSet!=='number') s.activeSet=0;
-            if(typeof s.currentQIndex!=='number') s.currentQIndex=0;
-            return s;
-        }
-        function getPracticeStats(key){
-            const qs=getMockQuestions(key), s=getPracticeSession(key);
-            let attempted=0,correct=0,wrong=0;
-            Object.keys(s.answers||{}).forEach(i=>{
-                const n=Number(i);
-                if(qs[n]){
-                    attempted++;
-                    if(Number(s.answers[i])===Number(qs[n].ans)) correct++; else wrong++;
-                }
-            });
-            return {total:qs.length,attempted,correct,wrong,unattempted:Math.max(0,qs.length-attempted),score:correct*2-wrong*.5};
-        }
-        function clearPracticeTimer(){
-            if(state.practiceTimerId){clearInterval(state.practiceTimerId);state.practiceTimerId=null;}
-        }
-        function savePracticeSession(){
-            savePersistedState();
-        }
-        function formatPracticeTime(sec){
-            sec=Math.max(0,Math.ceil(sec));
-            const m=Math.floor(sec/60), s=sec%60;
-            return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-        }
-        function startPracticeTimer(){
-            clearPracticeTimer();
-            if(state.view!=='practice_player') return;
-            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const session=getPracticeSession(key);
-            const examObj=EXAMS.find(e=>e.id===state.examId);
-            if(!examObj || session.completed) return;
-            if(!session.deadline || session.deadline<=Date.now()){
-                session.deadline=Date.now()+getPracticeTimeSeconds(examObj.id)*1000;
-                session.setStartedAt=Date.now();
-                savePracticeSession();
-            }
-            const tick=()=>{
-                if(state.view!=='practice_player'){clearPracticeTimer();return;}
-                const left=Math.max(0,Math.ceil((session.deadline-Date.now())/1000));
-                const el=document.getElementById('practice-timer');
-                if(el){
-                    el.textContent=formatPracticeTime(left);
-                    el.classList.toggle('danger',left<=60);
-                }
-                if(left<=0){
-                    clearPracticeTimer();
-                    advancePracticeSet(true);
-                }
-            };
-            tick();
-            state.practiceTimerId=setInterval(tick,250);
-        }
-        function completePracticeMock(key){
-            clearPracticeTimer();
-            const s=getPracticeSession(key);
-            s.completed=true; s.resultUnlocked=true; s.completedAt=new Date().toISOString(); s.deadline=0;
-            state.practiceResultKey=key;
-            savePracticeSession();
-            state.view='practice_complete';
-            render();
-            window.scrollTo({top:0,behavior:'smooth'});
-        }
-        function advancePracticeSet(fromTimer=false){
-            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key), s=getPracticeSession(key);
-            const totalSets=Math.max(1,Math.ceil(qs.length/25));
-            if(s.activeSet >= totalSets-1){
-                completePracticeMock(key); return;
-            }
-            s.activeSet++;
-            s.currentQIndex=0;
-            const examObj=EXAMS.find(e=>e.id===state.examId);
-            s.deadline=Date.now()+getPracticeTimeSeconds(examObj.id)*1000;
-            s.setStartedAt=Date.now();
-            savePracticeSession();
-            render();
-            window.scrollTo({top:0,behavior:'smooth'});
-            if(fromTimer) showToast('⏰ समय समाप्त — अगला Set शुरू हो गया।');
-        }
-        function openPracticeExam(examId){
-            clearPracticeTimer(); closeAddMockModal();
-            state.examId=examId; state.subjectId=null; state.topicId=null; state.mode='mixed'; state.view='practice_exam';
-            render(); window.scrollTo({top:0,behavior:'smooth'});
-        }
-        function openPracticeSubject(subjectId){
-            clearPracticeTimer();
-            state.subjectId=subjectId; state.topicId=null; state.mode='mixed'; state.view='practice_subject';
-            render(); window.scrollTo({top:0,behavior:'smooth'});
-        }
-        function openPracticeMockPlayer(mockNum){
-            clearPracticeTimer();
-            state.mode='mixed'; state.topicId=null; state.mockNumber=Number(mockNum);
-            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key);
-            if(!qs.length){showToast('इस Mock में अभी कोई प्रश्न नहीं है।');return;}
-            const s=getPracticeSession(key);
-            if(s.completed){state.practiceResultKey=key;state.view='practice_complete';}
-            else{
-                state.view='practice_player';
-                if(s.activeSet>=Math.max(1,Math.ceil(qs.length/25))) s.activeSet=0;
-                if(s.currentQIndex>=Math.min(25,qs.length-s.activeSet*25)) s.currentQIndex=0;
-                if(!s.deadline || s.deadline<=Date.now()){
-                    const ex=EXAMS.find(e=>e.id===state.examId);
-                    s.deadline=Date.now()+getPracticeTimeSeconds(ex.id)*1000;
-                }
-            }
-            savePracticeSession(); render(); window.scrollTo({top:0,behavior:'smooth'});
-        }
-        function selectPracticeMockOption(globalIndex,optIndex){
-            if(state.view!=='practice_player') return;
-            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const s=getPracticeSession(key);
-            if(s.completed) return;
-            s.answers[String(globalIndex)]=optIndex;
-            savePracticeSession();
-            render();
-            window.scrollTo({top:0,behavior:'auto'});
-        }
-        function practiceNextQuestion(delta){
-            const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key),s=getPracticeSession(key);
-            const start=s.activeSet*25, setQs=qs.slice(start,start+25);
-            if(delta>0 && s.currentQIndex>=setQs.length-1){advancePracticeSet(false);return;}
-            s.currentQIndex=Math.max(0,Math.min(setQs.length-1,s.currentQIndex+delta));
-            savePracticeSession(); render();
-        }
-        function openPracticeResults(){
-            const key=state.practiceResultKey;
-            if(!key || !getPracticeSession(key).completed){showToast('पहले Mock पूरा करें।');return;}
-            clearPracticeTimer(); state.view='practice_result'; render(); window.scrollTo({top:0,behavior:'smooth'});
-        }
-        function reattemptPracticeMock(key){
-            const s=getPracticeSession(key);
-            clearPracticeTimer();
-            s.answers={}; s.activeSet=0; s.currentQIndex=0; s.deadline=0;
-            s.completed=false; s.resultUnlocked=false; s.completedAt=null; s.setStartedAt=null;
-            state.practiceResultKey=key;
-            state.view='practice_player';
-            savePracticeSession();
-            render();
-            window.scrollTo({top:0,behavior:'smooth'});
-        }
-        function renderPracticeExamHubView(){
-            const cardsHtml=EXAMS.map(ex=>{
-                const sum=getExamSavedSummary(ex.id);
-                return `<button type="button" class="list-card fade-in" onclick="openPracticeExam('${ex.id}')">
-                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('exam',ex.id)}</div><div class="card-info">
-                    <h3 class="card-title">${escapeHTML(ex.title)}</h3><p class="card-meta">${escapeHTML(ex.subtitle)}</p>
-                    <p class="card-meta" style="color:var(--accent-primary);font-weight:800;margin-top:4px">${escapeHTML(ex.subjectsLine)}</p></div></div>
-                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px"><span class="badge-pill">${sum.totalQ} Qs</span><span style="font-size:11px;font-weight:900;color:var(--accent-primary)">Open →</span></div>
-                </button>`;
-            }).join('');
-            return `<div class="section-title"><span>परीक्षा चुनें</span><span class="badge-pill">Timed Practice</span></div>
-            <div class="hero-card fade-in" style="margin-bottom:14px"><span class="hero-kicker">🎯 PRACTICE HUB</span><h2 class="hero-title">अपनी परीक्षा चुनें</h2><p class="hero-sub">पहले Exam चुनें, फिर Subject और Mixed Mock चुनें. Topic-wise practice यहाँ नहीं है.</p></div>
-            <div class="linear-list">${cardsHtml}</div>`;
-        }
-        function renderPracticeExamView(examObj){
-            const listHtml=examObj.subjectIds.map(sId=>{
-                const subj=SUBJECT_CATALOG[sId]; let qCount=0;
-                const prefix=`${examObj.id}_${subj.id}_mixed_`;
-                Object.keys(state.questionsDB).forEach(k=>{if(k.startsWith(prefix))qCount+=state.questionsDB[k].length;});
-                return `<button type="button" class="list-card fade-in" onclick="openPracticeSubject('${subj.id}')">
-                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('subject',subj.id)}</div><div class="card-info">
-                    <h3 class="card-title">${escapeHTML(subj.name)}</h3><p class="card-meta">Timed Mixed Mocks • 4 × 25 Sets</p></div></div>
-                    <div style="display:flex;align-items:center;gap:8px"><span class="badge-pill">${qCount} Qs</span><span style="font-weight:800;color:var(--accent-primary)">→</span></div>
-                </button>`;
-            }).join('');
-            return `<div class="section-title"><span>विषय चुनें</span><span class="badge-pill">${escapeHTML(examObj.badge)}</span></div><div class="linear-list">${listHtml}</div>`;
-        }
-        function renderPracticeSubjectView(examObj,subjObj){
-            const scopeKey=getScopeKey(examObj.id,subjObj.id,'mixed',null);
-            const totalMocks=getTotalMocksForScope(scopeKey), nums=getAvailableMockNumbers(scopeKey);
-            const mocksHtml=nums.map(m=>{
-                const key=getMockStorageKey(examObj.id,subjObj.id,'mixed',null,m), qs=getMockQuestions(key), s=getPracticeSession(key);
-                const st=getPracticeStats(key);
-                let label=s.completed?'View Results':(st.attempted?'Continue →':'Start →');
-                let sub=s.completed?`Completed • ${st.correct}/${st.total} correct • Score: ${st.score.toFixed(1)}`:`25 Q / Set • ${examObj.id==='cgl'?'15':'25'} min / Set • ${qs.length} Qs`;
-                return `<div class="mock-row"><button type="button" class="mock-open-btn" onclick="openPracticeMockPlayer(${m})">
-                    <div class="card-left"><div class="icon-box">${getCustomSvgIcon('mock',m)}</div><div class="card-info"><h3 class="card-title">Mock-${m}</h3><p class="card-meta">${escapeHTML(sub)}</p></div></div><span class="badge-pill">${label}</span></button></div>`;
-            }).join('');
-            return `<div class="hero-card fade-in"><span class="hero-kicker">⏱ TIMED PRACTICE</span><h2 class="hero-title">${escapeHTML(subjObj.name)}</h2><p class="hero-sub">${examObj.id==='cgl'?'15 minutes':'25 minutes'} per 25-question Set • No instant answers or explanations.</p></div>
-            <div class="section-title"><span>Mixed Questions Mocks</span><span class="badge-pill">${nums.length} Active</span></div>
-            <div class="linear-list">${mocksHtml || `<div class="empty-card">इस Subject में अभी कोई Mock Questions नहीं हैं। Exams section में JSON import करते ही यहाँ भी automatically दिखाई देंगे.</div>`}</div>`;
-        }
-        function renderPracticePlayerView(examObj,subjObj){
-            const key=getMockStorageKey(examObj.id,subjObj.id,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key),s=getPracticeSession(key),start=s.activeSet*25,setQs=qs.slice(start,start+25);
-            if(!setQs.length) return `<div class="empty-card">इस Mock में प्रश्न उपलब्ध नहीं हैं।</div>`;
-            const totalSets=Math.max(1,Math.ceil(qs.length/25)),left=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));
-            const q=setQs[Math.min(s.currentQIndex,setQs.length-1)], gi=start+s.currentQIndex;
-            const chosen=Object.prototype.hasOwnProperty.call(s.answers,String(gi))?Number(s.answers[String(gi)]):null;
-            const options=q.opts.map((o,i)=>`<button type="button" class="opt-btn ${chosen===i?'practice-selected':''}" onclick="selectPracticeMockOption(${gi},${i})"><div class="opt-left"><span class="opt-letter">${['A','B','C','D','E'][i]||i+1}</span><span class="opt-label-text">${escapeHTML(o)}</span></div></button>`).join('');
-            const atEnd=s.currentQIndex>=setQs.length-1;
-            const setPct=((s.currentQIndex+1)/setQs.length)*100;
-            const prevDisabled=s.currentQIndex===0;
-            const nextLabel=atEnd?(s.activeSet===totalSets-1?'Finish Mock ✓':'Next Set →'):'Next →';
-            return `<div class="practice-timer-card"><div><div class="practice-timer-label">⏱ SET ${s.activeSet+1}/${totalSets} • ${setQs.length} QUESTIONS</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">No instant answer • Explanation after completion</div></div><div id="practice-timer" class="practice-timer ${left<=60?'danger':''}">${formatPracticeTime(left)}</div></div>
-            <div class="q-progress-wrap"><div class="q-progress-label"><span>Question ${s.currentQIndex+1}/${setQs.length}</span><span>${Math.round(setPct)}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${setPct}%"></div></div></div>
-            <div class="practice-controls-row">
-                <button type="button" class="nav-step-btn" ${prevDisabled?'disabled':''} onclick="practiceNextQuestion(-1)">← Previous</button>
-                <button type="button" class="mini-action-btn practice-palette-btn" onclick="openPaletteModal()">☷ Palette</button>
-                <button type="button" class="nav-step-btn primary" onclick="${atEnd?'advancePracticeSet(false)':'practiceNextQuestion(1)'}">${nextLabel}</button>
-            </div>
-            <div class="question-card fade-in" id="practice-question-anchor">
-                <div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${qs.length}</span><span class="q-light-pill">Set ${s.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(q.category||q.topic||subjObj.short)}</span></div>
-                <div class="q-shift-line">${escapeHTML(q.exam||examObj.title)} • ${escapeHTML(q.shift||q.source||'PYQ')}</div>
-                ${q.passage?`<div class="passage-box"><span class="passage-label">📖 Passage</span>${escapeHTML(q.passage)}</div>`:''}
-                <h2 class="q-text">${escapeHTML(q.q)}</h2><div class="options-list">${options}</div>
-                <div class="practice-lock-note">🔒 उत्तर और व्याख्या Mock पूरा होने के बाद “View Results” में दिखाई जाएगी.</div>
-            </div>`;
-        }
-        function renderPracticeCompleteView(){
-            const key=state.practiceResultKey, s=getPracticeSession(key), st=getPracticeStats(key);
-            return `<div class="practice-complete"><div style="font-size:42px">🏁</div><div class="hero-kicker">MOCK COMPLETED</div><h2 class="hero-title" style="margin-top:6px">आपका Mock पूरा हो गया!</h2><p class="hero-sub">Result और detailed explanations अभी locked थे. अब आप उन्हें एक साथ देख सकते हैं.</p><button type="button" class="nav-step-btn primary" style="margin-top:14px" onclick="openPracticeResults()">📊 View Results</button><button type="button" class="nav-step-btn" style="margin-top:8px" onclick="reattemptPracticeMock('${key}')">↻ Reattempt Mock</button><button type="button" class="nav-step-btn" style="margin-top:8px" onclick="state.view='practice_subject';render()">← Back to Mocks</button></div>`;
-        }
-        function renderPracticeResultView(){
-            const key=state.practiceResultKey, qs=getMockQuestions(key), s=getPracticeSession(key), st=getPracticeStats(key);
-            if(!s.completed) return renderPracticeCompleteView();
-            const pct=st.attempted?Math.round(st.correct/st.attempted*100):0;
-            const rows=qs.map((q,i)=>{
-                const chosen=Object.prototype.hasOwnProperty.call(s.answers,String(i))?Number(s.answers[String(i)]):null;
-                const right=chosen!==null && chosen===Number(q.ans);
-                const {mainExp,facts}=parseExplanationAndFacts(q.exp,q.facts);
-                const resultOptions=(q.opts||[]).map((opt,oi)=>{
-                    let cls='practice-result-option';
-                    if(oi===Number(q.ans)) cls+=' result-correct';
-                    if(chosen!==null && oi===chosen && chosen!==Number(q.ans)) cls+=' result-wrong';
-                    const mark=oi===Number(q.ans)?'✓':(chosen!==null && oi===chosen?'✗':'');
-                    return `<div class="${cls}"><span class="result-letter">${['A','B','C','D','E'][oi]||oi+1}</span><span style="flex:1">${escapeHTML(opt)}</span>${mark?`<strong>${mark}</strong>`:''}</div>`;
-                }).join('');
-                return `<div class="practice-result-question">
-                    <div style="display:flex;justify-content:space-between;gap:8px"><strong>Q.${i+1}</strong><span class="badge-pill">${right?'Correct':(chosen===null?'Not Attempted':'Incorrect')}</span></div>
-                    <div style="font-weight:850;margin-top:7px">${escapeHTML(q.q)}</div>
-                    <div class="practice-result-options">${resultOptions}</div>
-                    <div class="chosen-line">आपका उत्तर: ${chosen===null?'Not Attempted':escapeHTML(q.opts[chosen]||'—')}</div>
-                    <div class="correct-line">सही उत्तर: ${escapeHTML(q.opts[q.ans]||'—')}</div>
-                    <div class="exp-heading" style="margin-top:10px">विस्तृत व्याख्या:</div><p class="exp-body-text">${escapeHTML(mainExp||'व्याख्या उपलब्ध नहीं है।')}</p>
-                    ${facts.length?`<div class="exam-facts-box"><h4 class="exam-facts-title">महत्वपूर्ण परीक्षा तथ्य:</h4><ul class="exam-facts-list">${facts.map(f=>`<li>${escapeHTML(f)}</li>`).join('')}</ul></div>`:''}
-                </div>`;
-            }).join('');
-            return `<div class="result-hero"><div style="font-size:12px;font-weight:900">PRACTICE MOCK RESULT</div><div class="result-score">${st.score.toFixed(1)}</div><div>${st.correct} correct • ${st.wrong} wrong • ${st.unattempted} unattempted</div><div style="margin-top:8px;font-size:12px;font-weight:800">Attempt accuracy: ${pct}%</div></div>
-            <div class="result-grid"><div class="result-stat"><b>${st.total}</b><div class="card-meta">Questions</div></div><div class="result-stat"><b>${st.correct}</b><div class="card-meta">Correct</div></div><div class="result-stat"><b>${st.wrong}</b><div class="card-meta">Wrong</div></div><div class="result-stat"><b>${st.score.toFixed(1)}</b><div class="card-meta">Score</div></div></div>
-            <div class="quick-actions"><button class="quick-btn" onclick="reattemptPracticeMock('${key}')">↻<strong>Reattempt Mock</strong><span>Start again from Q.1</span></button><button class="quick-btn" onclick="state.view='practice_subject';render()">←<strong>Back to Practice Mocks</strong><span>Choose another mock</span></button></div>
-            <div class="section-title"><span>Answers & Explanations</span><span class="badge-pill">Unlocked</span></div>${rows}`;
-        }
-
         function renderPracticeView(){
-            return renderPracticeExamHubView();
+            const wrong=collectWrongQuestions();
+            const g=getGlobalStats();
+            if(!wrong.length) return `<div class="hero-card"><span class="hero-kicker">🎯 TARGETED PRACTICE</span><h2 class="hero-title">No wrong questions yet.</h2><p class="hero-sub">Attempt a mock and this section will automatically collect your mistakes for focused revision.</p></div><div class="quick-actions"><button class="quick-btn" onclick="openExam('cgl')">🚀<strong>Start a Mock</strong><span>Build your mistake bank</span></button><button class="quick-btn" onclick="openProgressView()">📊<strong>View Progress</strong><span>${g.accuracy}% overall accuracy</span></button></div>`;
+            const list=wrong.slice(0,50).map((x,i)=>`<button class="practice-card" style="width:100%;text-align:left;color:var(--text-main);cursor:pointer" onclick="startWrongPractice(${i})"><div style="display:flex;justify-content:space-between;gap:8px"><strong>Q.${i+1} • ${escapeHTML(x.q.topic||'Practice')}</strong><span class="badge-pill">Wrong</span></div><div style="font-size:13px;font-weight:700;margin-top:6px">${escapeHTML(x.q.q)}</div><div class="practice-source">${escapeHTML(x.q.shift||x.q.exam||'Saved PYQ')}</div></button>`).join('');
+            window._wrongPracticeCache=wrong;
+            return `<div class="hero-card"><span class="hero-kicker">🎯 MISTAKE BANK</span><h2 class="hero-title">Practice your mistakes</h2><p class="hero-sub">${wrong.length} wrong questions found. Focus on these before starting another mock.</p></div>${list}`;
         }
         function startWrongPractice(i){ state.practiceQueue=window._wrongPracticeCache||collectWrongQuestions(); state.practiceIndex=i; state.view='practice_question'; render(); window.scrollTo({top:0,behavior:'smooth'}); }
         function renderPracticeQuestion(){
@@ -2991,16 +2541,10 @@
             const root=document.getElementById('app-root'), backBtn=document.getElementById('btn-back'), hdrTitle=document.getElementById('header-title'), hdrSub=document.getElementById('header-subtitle');
             const examObj=EXAMS.find(e=>e.id===state.examId), subjObj=state.subjectId?SUBJECT_CATALOG[state.subjectId]:null, topicObj=subjObj&&state.topicId?subjObj.topics.find(t=>t.id===state.topicId):null;
             backBtn.style.display=['home','progress','practice'].includes(state.view)?'none':'inline-flex';
-            if(state.view!=='practice_player') clearPracticeTimer();
             if(state.view==='home'){hdrTitle.textContent='SSC Mock Pro 2026';hdrSub.textContent='PYQ Master Test Series • MTS • CGL • Stenographer';root.innerHTML=renderHomeView();renderBottomNav('home');}
             else if(state.view==='exams'){hdrTitle.textContent='Exams';hdrSub.textContent='Choose Exam → Subject → Mock';root.innerHTML=renderExamHubView();renderBottomNav('exams');}
             else if(state.view==='progress'){hdrTitle.textContent='My Progress';hdrSub.textContent='Performance Analytics';root.innerHTML=renderProgressView();renderBottomNav('progress');}
-            else if(state.view==='practice'){hdrTitle.textContent='Practice';hdrSub.textContent='Timed Mock Practice';root.innerHTML=renderPracticeView();renderBottomNav('practice');}
-            else if(state.view==='practice_exam'&&examObj){hdrTitle.textContent=`Practice • ${examObj.badge}`;hdrSub.textContent='विषय चुनें (Select Subject)';root.innerHTML=renderPracticeExamView(examObj);renderBottomNav('practice');}
-            else if(state.view==='practice_subject'&&examObj&&subjObj){hdrTitle.textContent=`Practice • ${examObj.badge}`;hdrSub.textContent=subjObj.name;root.innerHTML=renderPracticeSubjectView(examObj,subjObj);renderBottomNav('practice');}
-            else if(state.view==='practice_player'&&examObj&&subjObj){hdrTitle.textContent=`Practice • ${examObj.badge} • ${subjObj.short}`;hdrSub.textContent=`Mock-${state.mockNumber} • Timed`;root.innerHTML=renderPracticePlayerView(examObj,subjObj);renderBottomNav('practice');}
-            else if(state.view==='practice_complete'){hdrTitle.textContent='Practice • Completed';hdrSub.textContent='View Results';root.innerHTML=renderPracticeCompleteView();renderBottomNav('practice');}
-            else if(state.view==='practice_result'){hdrTitle.textContent='Practice • Result';hdrSub.textContent='Answers & Explanations';root.innerHTML=renderPracticeResultView();renderBottomNav('practice');}
+            else if(state.view==='practice'){hdrTitle.textContent='Practice';hdrSub.textContent='Mistake Bank';root.innerHTML=renderPracticeView();renderBottomNav('practice');}
             else if(state.view==='practice_question'){hdrTitle.textContent='Practice';hdrSub.textContent='Focused Revision';root.innerHTML=renderPracticeQuestion();renderBottomNav('practice');}
             else if(state.view==='more'){hdrTitle.textContent='More';hdrSub.textContent='App Tools & Settings';root.innerHTML=renderMoreView();renderBottomNav('more');}
             else if(state.view==='result'){hdrTitle.textContent='Mock Result';hdrSub.textContent='Performance Analysis';root.innerHTML=renderResultView();renderBottomNav('home');}
@@ -3010,17 +2554,11 @@
             else if(state.view==='player'&&examObj&&subjObj){const modeLabel=state.mode==='topic'&&topicObj?`${topicObj.name} • Mock-${state.mockNumber}`:`Mixed Mock-${state.mockNumber}`;hdrTitle.textContent=`${examObj.badge} • ${subjObj.short}`;hdrSub.textContent=modeLabel;root.innerHTML=renderPlayerView(examObj,subjObj,topicObj);renderBottomNav('exams');}
             else {state.view='home';overrideRender();return;}
             updatePlayerPinchZoom();
-            if(state.view==='practice_player') startPracticeTimer();
         }
         render=overrideRender;
         function goBack(){
-            clearPracticeTimer();
-            if(state.view==='practice_result'||state.view==='practice_complete'){state.view='practice_subject';}
-            else if(state.view==='practice_player'){state.view='practice_subject';}
-            else if(state.view==='practice_subject'){state.view='practice_exam';state.subjectId=null;}
-            else if(state.view==='practice_exam'){state.view='practice';state.examId=null;}
+            if(state.view==='result'){state.view='player';}
             else if(state.view==='practice_question'){state.view='practice';}
-            else if(state.view==='result'){state.view='player';}
             else if(state.view==='player'){state.view=state.mode==='topic'?'topic_mocks':'subject';}
             else if(state.view==='topic_mocks'){state.view='subject';state.topicId=null;}
             else if(state.view==='subject'){state.view='exam';state.subjectId=null;}
@@ -3043,7 +2581,7 @@
                 meta.name='viewport';
                 document.head.appendChild(meta);
             }
-            if(state.view==='player' || state.view==='practice_player' || state.view==='practice_result' || state.view==='practice_question'){
+            if(state.view==='player' || state.view==='practice_question'){
                 meta.content='width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover';
                 document.documentElement.classList.add('pinch-zoom-page');
                 document.body.classList.add('pinch-zoom-page');
@@ -3074,26 +2612,7 @@
             const pct=((state.currentQIndex+1)/setQuestions.length)*100;
             const atMockEnd = gi >= allQs.length - 1;
             const nav=`<div class="nav-controls-row"><button class="nav-step-btn" ${gi===0?'disabled':''} onclick="stepQuestion(-1)">← Previous</button><div class="nav-center-label">Q.${gi+1} / ${allQs.length}</div><button class="nav-step-btn primary" onclick="${atMockEnd?'finishMock()':'stepQuestion(1)'}">${atMockEnd?'Finish ✓':'Next →'}</button></div>`;
-            return `${statsBar}${zoomBar}<div class="sticky-player-head"><div class="q-progress-wrap">
-                <div class="q-progress-label">
-                    <span>Set ${state.activeSet+1} • Question ${state.currentQIndex+1}/${setQuestions.length}</span>
-                    <span>Drag to jump</span>
-                </div>
-                <div class="question-scrubber-wrap" title="Question बदलने के लिए slider को आगे-पीछे खींचें">
-                    <input
-                        type="range"
-                        class="question-scrubber"
-                        min="0"
-                        max="${Math.max(0,setQuestions.length-1)}"
-                        step="1"
-                        value="${state.currentQIndex}"
-                        style="--scrub-pct:${setQuestions.length > 1 ? pct : 100}%"
-                        aria-label="Question position"
-                        oninput="scrubQuestionLive(this.value,this)"
-                        onchange="commitQuestionScrub(this.value)"
-                    >
-                </div>
-            </div></div>${nav}<div class="question-card fade-in" id="question-anchor"><div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${allQs.length}</span><span class="q-light-pill">Set ${state.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(category)}</span></div><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(category)}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(examName)}</strong></span>${q.date?`<span class="q-meta-chip">📅 <strong>${escapeHTML(q.date)}</strong></span>`:''}<span class="q-meta-chip">🏷 Source: <strong>${escapeHTML(source)}</strong></span></div>${passage?`<div class="passage-box"><span class="passage-label">📖 Cloze Test / Reading Comprehension Passage</span>${escapeHTML(passage)}</div>`:''}<h2 class="q-text" style="font-size:${(1.28*zoom/100).toFixed(3)}rem">${escapeHTML(q.q)}</h2><div class="options-list">${options}</div>${exp}</div>${nav}`;
+            return `${statsBar}${zoomBar}<div class="sticky-player-head"><div class="q-progress-wrap"><div class="q-progress-label"><span>Set ${state.activeSet+1} • Question ${state.currentQIndex+1}/${setQuestions.length}</span><span>${Math.round(pct)}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div></div></div>${nav}<div class="question-card fade-in" id="question-anchor"><div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${allQs.length}</span><span class="q-light-pill">Set ${state.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(category)}</span></div><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(category)}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(examName)}</strong></span>${q.date?`<span class="q-meta-chip">📅 <strong>${escapeHTML(q.date)}</strong></span>`:''}<span class="q-meta-chip">🏷 Source: <strong>${escapeHTML(source)}</strong></span></div>${passage?`<div class="passage-box"><span class="passage-label">📖 Cloze Test / Reading Comprehension Passage</span>${escapeHTML(passage)}</div>`:''}<h2 class="q-text" style="font-size:${(1.28*zoom/100).toFixed(3)}rem">${escapeHTML(q.q)}</h2><div class="options-list">${options}</div>${exp}</div>${nav}`;
         }
 
         // =========================================================================
@@ -3105,11 +2624,5 @@
             render();
         };
     </script>
-
-<script>
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
-}
-</script>
 </body>
 </html>

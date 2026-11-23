@@ -1,4 +1,4 @@
-const CACHE = 'ssc-mock-pro-2026-v1';
+const CACHE = 'ssc-mock-pro-2026-v2-backup';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));

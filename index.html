@@ -562,6 +562,8 @@
         html.pinch-zoom-page, body.pinch-zoom-page { touch-action: pan-x pan-y pinch-zoom; }
         body.pinch-zoom-page { overflow-x: hidden; }
 
+        .question-media { margin: 10px 0 16px; padding: 10px; background: var(--bg-subtle); border: 1px solid var(--border-card); border-radius: 14px; text-align: center; overflow: hidden; }
+        .question-media img { display: block; max-width: 100%; width: auto; height: auto; max-height: 520px; object-fit: contain; margin: 0 auto; }
         .q-text {
             font-size: 1.12rem;
             font-weight: 700;
@@ -2151,6 +2153,7 @@
                     ` : ''}
 
                     <h2 class="q-text">${escapeHTML(qObj.q)}</h2>
+                    ${renderQuestionMedia(qObj)}
 
                     <div class="options-list">${optionsHtml}</div>
 
@@ -2464,6 +2467,30 @@
             throw new Error('JSON में प्रश्नों की सूची ([ ... ]) नहीं मिली।');
         }
 
+
+        // Optional figures/graphs from JSON: diagram, graph, image or figure.
+        function renderQuestionMedia(q) {
+            if (!q || typeof q !== 'object') return '';
+            const candidate = q.diagram ?? q.graph ?? q.image ?? q.figure ?? q.diagramUrl ?? q.graphUrl ?? q.imageUrl;
+            if (!candidate) return '';
+            let src = '', alt = 'Question diagram or graph';
+            if (typeof candidate === 'string') {
+                const value = candidate.trim();
+                if (/^\s*<svg[\s>]/i.test(value)) {
+                    if (/<script\b|\bon\w+\s*=|javascript:/i.test(value)) return '';
+                    src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(value);
+                } else src = value;
+            } else if (typeof candidate === 'object') {
+                alt = String(candidate.alt || alt);
+                if (typeof candidate.svg === 'string' && /^\s*<svg[\s>]/i.test(candidate.svg)) {
+                    if (/<script\b|\bon\w+\s*=|javascript:/i.test(candidate.svg)) return '';
+                    src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(candidate.svg);
+                } else src = String(candidate.url || candidate.src || candidate.data || '');
+            }
+            if (!src || /^\s*javascript:/i.test(src)) return '';
+            return `<div class="question-media"><img src="${escapeHTML(src)}" alt="${escapeHTML(alt)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`;
+        }
+
         function normalizeQuestionItem(raw) {
             if (!raw || typeof raw !== 'object') return null;
             const qText = raw.q || raw.question || raw.ques || '';
@@ -2492,7 +2519,11 @@
                 shift: String(raw.shift || raw.source || raw.tag || '').trim(),
                 date: String(raw.date || raw.examDate || '').trim(),
                 tip: String(raw.tip || raw.sscTip || '').trim(),
-                passage: String(raw.passage || raw.cloze || '').trim()
+                passage: String(raw.passage || raw.cloze || '').trim(),
+                diagram: raw.diagram ?? raw.diagramUrl ?? null,
+                graph: raw.graph ?? raw.graphUrl ?? null,
+                image: raw.image ?? raw.imageUrl ?? null,
+                figure: raw.figure ?? null
             };
         }
 
@@ -3012,7 +3043,7 @@
                 <div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${qs.length}</span><span class="q-light-pill">Set ${s.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(q.category||q.topic||subjObj.short)}</span></div>
                 <div class="q-shift-line">${escapeHTML(q.exam||examObj.title)} • ${escapeHTML(q.shift||q.source||'PYQ')}</div>
                 ${q.passage?`<div class="passage-box"><span class="passage-label">📖 Passage</span>${escapeHTML(q.passage)}</div>`:''}
-                <h2 class="q-text">${escapeHTML(q.q)}</h2><div class="options-list">${options}</div>
+                <h2 class="q-text">${escapeHTML(q.q)}</h2>${renderQuestionMedia(q)}<div class="options-list">${options}</div>
                 <div class="practice-lock-note">🔒 उत्तर और व्याख्या Mock पूरा होने के बाद “View Results” में दिखाई जाएगी.</div>
             </div>`;
         }
@@ -3060,7 +3091,7 @@
             const q=item.q, key=`${item.key}:${item.index}`, chosen=Object.prototype.hasOwnProperty.call(state.practiceAnswers,key)?state.practiceAnswers[key]:null, answered=chosen!==null&&chosen!==undefined;
             const opts=q.opts.map((o,i)=>{let cls='opt-btn';if(answered){if(i===q.ans)cls+=' opt-correct';else if(i===chosen)cls+=' opt-wrong';else cls+=' opt-dim';}return `<button class="${cls}" ${answered?'disabled':''} onclick="selectPracticeOption(${i})"><div class="opt-left"><span class="opt-letter">${['A','B','C','D','E'][i]||i+1}</span><span class="opt-label-text">${escapeHTML(o)}</span></div></button>`}).join('');
             const exp=answered?`<div class="explanation-card fade-in"><div class="exp-result-header ${chosen===q.ans?'is-right':'is-wrong'}">${chosen===q.ans?'🎉 सही!':'❌ फिर से देखें'}</div><div class="exp-ans-pill">उत्तर (${['a','b','c','d','e'][q.ans]}) ${escapeHTML(q.opts[q.ans])}</div><div class="exp-heading">विस्तृत व्याख्या (EXPLANATION):</div><p class="exp-body-text">${escapeHTML(q.exp||'व्याख्या उपलब्ध नहीं है।')}</p></div>`:'';
-            return `<div class="q-progress-wrap"><div class="q-progress-label"><span>Mistake Practice</span><span>${state.practiceIndex+1} / ${state.practiceQueue.length}</span></div><div class="progress-track"><div class="progress-fill" style="width:${((state.practiceIndex+1)/state.practiceQueue.length)*100}%"></div></div></div><div class="question-card fade-in"><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(q.topic||'—')}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(q.exam||'SSC')}</strong></span><span class="q-meta-chip">🏷 ${escapeHTML(q.shift||'PYQ')}</span></div><h2 class="q-text">${escapeHTML(q.q)}</h2><div class="options-list">${opts}</div>${exp}</div><div class="nav-controls-row"><button class="nav-step-btn" onclick="state.practiceIndex=Math.max(0,state.practiceIndex-1);render()" ${state.practiceIndex===0?'disabled':''}>← Previous</button><button class="nav-step-btn primary" onclick="state.practiceIndex=Math.min(state.practiceQueue.length-1,state.practiceIndex+1);render()" ${state.practiceIndex>=state.practiceQueue.length-1?'disabled':''}>Next →</button></div>`;
+            return `<div class="q-progress-wrap"><div class="q-progress-label"><span>Mistake Practice</span><span>${state.practiceIndex+1} / ${state.practiceQueue.length}</span></div><div class="progress-track"><div class="progress-fill" style="width:${((state.practiceIndex+1)/state.practiceQueue.length)*100}%"></div></div></div><div class="question-card fade-in"><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(q.topic||'—')}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(q.exam||'SSC')}</strong></span><span class="q-meta-chip">🏷 ${escapeHTML(q.shift||'PYQ')}</span></div><h2 class="q-text">${escapeHTML(q.q)}</h2>${renderQuestionMedia(q)}<div class="options-list">${opts}</div>${exp}</div><div class="nav-controls-row"><button class="nav-step-btn" onclick="state.practiceIndex=Math.max(0,state.practiceIndex-1);render()" ${state.practiceIndex===0?'disabled':''}>← Previous</button><button class="nav-step-btn primary" onclick="state.practiceIndex=Math.min(state.practiceQueue.length-1,state.practiceIndex+1);render()" ${state.practiceIndex>=state.practiceQueue.length-1?'disabled':''}>Next →</button></div>`;
         }
         function selectPracticeOption(i){const item=state.practiceQueue[state.practiceIndex];const key=`${item.key}:${item.index}`;if(Object.prototype.hasOwnProperty.call(state.practiceAnswers,key))return;state.practiceAnswers[key]=i;savePersistedState();render();}
         function finishMock(){state.resultMockKey=getMockStorageKey(state.examId,state.subjectId,state.mode,state.topicId,state.mockNumber);state.view='result';render();window.scrollTo({top:0,behavior:'smooth'});}
@@ -3178,7 +3209,7 @@
                         onchange="commitQuestionScrub(this.value)"
                     >
                 </div>
-            </div></div>${nav}<div class="question-card fade-in" id="question-anchor"><div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${allQs.length}</span><span class="q-light-pill">Set ${state.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(category)}</span></div><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(category)}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(examName)}</strong></span>${q.date?`<span class="q-meta-chip">📅 <strong>${escapeHTML(q.date)}</strong></span>`:''}<span class="q-meta-chip">🏷 Source: <strong>${escapeHTML(source)}</strong></span></div>${passage?`<div class="passage-box"><span class="passage-label">📖 Cloze Test / Reading Comprehension Passage</span>${escapeHTML(passage)}</div>`:''}<h2 class="q-text" style="font-size:${(1.28*zoom/100).toFixed(3)}rem">${escapeHTML(q.q)}</h2><div class="options-list">${options}</div>${exp}</div>${nav}`;
+            </div></div>${nav}<div class="question-card fade-in" id="question-anchor"><div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${allQs.length}</span><span class="q-light-pill">Set ${state.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(category)}</span></div><div class="q-meta-panel"><span class="q-meta-chip">📚 Category: <strong>${escapeHTML(category)}</strong></span><span class="q-meta-chip">📝 Exam: <strong>${escapeHTML(examName)}</strong></span>${q.date?`<span class="q-meta-chip">📅 <strong>${escapeHTML(q.date)}</strong></span>`:''}<span class="q-meta-chip">🏷 Source: <strong>${escapeHTML(source)}</strong></span></div>${passage?`<div class="passage-box"><span class="passage-label">📖 Cloze Test / Reading Comprehension Passage</span>${escapeHTML(passage)}</div>`:''}<h2 class="q-text" style="font-size:${(1.28*zoom/100).toFixed(3)}rem">${escapeHTML(q.q)}</h2>${renderQuestionMedia(q)}<div class="options-list">${options}</div>${exp}</div>${nav}`;
         }
 
         // =========================================================================

@@ -1207,7 +1207,7 @@
                 <div>
                     <label class="form-label">प्रकार (Mock Mode)</label>
                     <select id="imp-mode" class="form-select" onchange="onImportModeChange()">
-                        <option value="mixed">Mixed Questions Mock (4 × 25 Sets)</option>
+                        <option value="mixed">Mixed Questions Mock (25 Questions per Mock)</option>
                         <option value="topic">Topic-Wise MOCKS (2 × 50 Sets)</option>
                     </select>
                 </div>
@@ -1462,7 +1462,17 @@
                     if (parsed.fontSizeMode === 'small' || parsed.fontSizeMode === 'medium' || parsed.fontSizeMode === 'large') state.fontSizeMode = parsed.fontSizeMode;
                     if (parsed.activityDates && typeof parsed.activityDates === 'object') state.activityDates = parsed.activityDates;
                     if (parsed.practiceAnswers && typeof parsed.practiceAnswers === 'object') state.practiceAnswers = parsed.practiceAnswers;
-                    if (parsed.practiceSessions && typeof parsed.practiceSessions === 'object') state.practiceSessions = parsed.practiceSessions;
+                    if (parsed.practiceSessions && typeof parsed.practiceSessions === 'object') {
+                        state.practiceSessions = parsed.practiceSessions;
+                        // Any unfinished timed mock found at startup belonged to a previous app session.
+                        // Discard it so reopening the app always starts that mock fresh.
+                        Object.values(state.practiceSessions).forEach(ps => {
+                            if (ps && typeof ps === 'object' && !ps.completed && Number(ps.deadline) > 0) {
+                                ps.answers = {}; ps.activeSet = 0; ps.currentQIndex = 0; ps.deadline = 0;
+                                ps.completedSets = []; ps.resultUnlocked = false; ps.completedAt = null; ps.setStartedAt = null;
+                            }
+                        });
+                    }
                 }
             } catch (e) {}
         }
@@ -1920,7 +1930,7 @@
             const switchHtml = `
                 <div class="mode-switch-row">
                     <button type="button" class="mode-btn ${isMixed ? 'active' : ''}" onclick="switchSubjectMode('mixed')">
-                        <span>📋 Mixed Questions Mock</span><span style="font-size:11px;font-weight:600;opacity:.88;">4 × 25 Sets (100 Qs)</span>
+                        <span>📋 Mixed Questions Mock</span><span style="font-size:11px;font-weight:600;opacity:.88;">25 Questions per Mock (100 Qs)</span>
                     </button>
                     <button type="button" class="mode-btn ${!isMixed ? 'active' : ''}" onclick="switchSubjectMode('topic')">
                         <span>📚 Topic-Wise MOCKS</span><span style="font-size:11px;font-weight:600;opacity:.88;">${subjObj.topics.length} Topics • 2 × 50 Sets</span>
@@ -2855,10 +2865,10 @@
             }
             return s;
         }
-        function getPracticeStats(key, setIndex=null){
-            const qs=getMockQuestions(key).slice(0,100), s=getPracticeSession(key);
-            const start=setIndex===null?0:Number(setIndex)*25;
-            const end=setIndex===null?qs.length:Math.min(qs.length,start+25);
+        function getPracticeStats(key, setIndex=0){
+            const qs=getMockQuestions(key).slice(0,25), s=getPracticeSession(key);
+            const start=0;
+            const end=qs.length;
             let attempted=0,correct=0,wrong=0;
             Object.keys(s.answers||{}).forEach(i=>{
                 const n=Number(i);
@@ -2876,6 +2886,25 @@
         function savePracticeSession(){
             savePersistedState();
         }
+        // Leaving an unfinished timed practice mock discards that attempt completely.
+        let activePracticeKey = null;
+        function resetAbandonedPracticeSession(key){
+            if(!key) return;
+            clearPracticeTimer();
+            const s=getPracticeSession(key);
+            s.answers={}; s.activeSet=0; s.currentQIndex=0; s.deadline=0;
+            s.completed=false; s.resultUnlocked=false; s.completedAt=null;
+            s.completedSets=[]; s.lastCompletedSet=null; s.setStartedAt=null;
+            savePracticeSession();
+        }
+        function resetCurrentPracticeIfRunning(){
+            const key=activePracticeKey || (state.view==='practice_player' && state.examId && state.subjectId ? getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber) : null);
+            if(key) resetAbandonedPracticeSession(key);
+            activePracticeKey=null;
+        }
+        // A real page close/reload clears an unfinished attempt and its timer.
+        window.addEventListener('pagehide', resetCurrentPracticeIfRunning);
+        window.addEventListener('beforeunload', resetCurrentPracticeIfRunning);
         function formatPracticeTime(sec){
             sec=Math.max(0,Math.ceil(sec));
             const m=Math.floor(sec/60), s=sec%60;
@@ -2919,9 +2948,11 @@
         }
         function completePracticeSet(key){
             clearPracticeTimer();
-            const s=getPracticeSession(key), qs=getMockQuestions(key).slice(0,100);
-            const totalSets=Math.max(1,Math.ceil(qs.length/25));
-            s.completedSets[s.activeSet]=true;
+            activePracticeKey=null;
+            const s=getPracticeSession(key), qs=getMockQuestions(key).slice(0,25);
+            const totalSets=1;
+            s.activeSet=0;
+            s.completedSets=[true];
             s.deadline=0;
             s.resultUnlocked=true;
             s.lastCompletedSet=s.activeSet;
@@ -2936,8 +2967,8 @@
         }
         function advancePracticeSet(fromTimer=false){
             const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key).slice(0,100), s=getPracticeSession(key);
-            const totalSets=Math.max(1,Math.ceil(qs.length/25));
+            const qs=getMockQuestions(key).slice(0,25), s=getPracticeSession(key);
+            const totalSets=1;
             if(!s.completedSets[s.activeSet]) { completePracticeSet(key); return; }
             if(s.activeSet >= totalSets-1){
                 state.view='practice_subject'; savePracticeSession(); render(); return;
@@ -2954,13 +2985,13 @@
             if(fromTimer) showToast('⏰ समय समाप्त — इस Set का परिणाम तैयार है।');
         }
         function reattemptPracticeSet(key, setIndex){
-            const s=getPracticeSession(key), idx=Number(setIndex);
-            const qs=getMockQuestions(key).slice(0,100), start=idx*25, end=Math.min(qs.length,start+25);
+            const s=getPracticeSession(key), idx=0;
+            const qs=getMockQuestions(key).slice(0,25), start=0, end=qs.length;
             for(let i=start;i<end;i++) delete s.answers[String(i)];
-            s.activeSet=idx; s.currentQIndex=0; s.completedSets[idx]=false;
-            s.completed=s.completedSets.filter(Boolean).length>=Math.max(1,Math.ceil(qs.length/25));
+            s.activeSet=idx; s.currentQIndex=0; s.completedSets=[false];
+            s.completed=false;
             s.deadline=0; s.resultUnlocked=false;
-            state.practiceResultKey=key; state.practiceResultSet=idx; state.view='practice_player';
+            state.practiceResultKey=key; state.practiceResultSet=idx; state.view='practice_player'; activePracticeKey=key;
             const ex=EXAMS.find(e=>e.id===state.examId);
             if(ex) s.deadline=Date.now()+getPracticeTimeSeconds(ex.id)*1000;
             savePracticeSession(); render(); window.scrollTo({top:0,behavior:'smooth'});
@@ -2979,14 +3010,15 @@
             clearPracticeTimer();
             state.mode='mixed'; state.topicId=null; state.mockNumber=Number(mockNum);
             const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key).slice(0,100);
+            const qs=getMockQuestions(key).slice(0,25);
             if(!qs.length){showToast('इस Mock में अभी कोई प्रश्न नहीं है।');return;}
             const s=getPracticeSession(key);
-            if(s.completedSets[s.activeSet]){state.practiceResultKey=key;state.practiceResultSet=s.activeSet;state.view='practice_complete';}
+            s.activeSet=0;
+            if(s.completedSets[0]){state.practiceResultKey=key;state.practiceResultSet=s.activeSet;state.view='practice_complete';}
             else{
                 state.view='practice_player';
-                if(s.activeSet>=Math.max(1,Math.ceil(qs.length/25))) s.activeSet=0;
-                if(s.currentQIndex>=Math.min(25,qs.length-s.activeSet*25)) s.currentQIndex=0;
+                s.activeSet=0;
+                if(s.currentQIndex>=qs.length) s.currentQIndex=0;
                 if(s.deadline && s.deadline<=Date.now()){
                     completePracticeSet(key);
                     return;
@@ -3010,9 +3042,9 @@
         }
         function practiceNextQuestion(delta){
             const key=getMockStorageKey(state.examId,state.subjectId,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key),s=getPracticeSession(key);
-            const start=s.activeSet*25, setQs=qs.slice(start,start+25);
-            if(delta>0 && s.currentQIndex>=setQs.length-1){advancePracticeSet(false);return;}
+            const qs=getMockQuestions(key).slice(0,25),s=getPracticeSession(key);
+            const start=0, setQs=qs;
+            if(delta>0 && s.currentQIndex>=setQs.length-1){completePracticeSet(key);return;}
             s.currentQIndex=Math.max(0,Math.min(setQs.length-1,s.currentQIndex+delta));
             savePracticeSession(); render();
         }
@@ -3028,7 +3060,7 @@
             s.answers={}; s.activeSet=0; s.currentQIndex=0; s.deadline=0; s.completedSets=[];
             s.completed=false; s.resultUnlocked=false; s.completedAt=null; s.setStartedAt=null;
             state.practiceResultKey=key;
-            state.view='practice_player';
+            state.view='practice_player'; activePracticeKey=key;
             savePracticeSession();
             render();
             window.scrollTo({top:0,behavior:'smooth'});
@@ -3054,7 +3086,7 @@
                 Object.keys(state.questionsDB).forEach(k=>{if(k.startsWith(prefix))qCount+=state.questionsDB[k].length;});
                 return `<button type="button" class="list-card fade-in" onclick="openPracticeSubject('${subj.id}')">
                     <div class="card-left"><div class="icon-box">${getCustomSvgIcon('subject',subj.id)}</div><div class="card-info">
-                    <h3 class="card-title">${escapeHTML(subj.name)}</h3><p class="card-meta">Timed Mixed Mocks • 4 × 25 Sets</p></div></div>
+                    <h3 class="card-title">${escapeHTML(subj.name)}</h3><p class="card-meta">Timed Mixed Mocks • 25 Questions per Mock</p></div></div>
                     <div style="display:flex;align-items:center;gap:8px"><span class="badge-pill">${qCount} Qs</span><span style="font-weight:800;color:var(--accent-primary)">→</span></div>
                 </button>`;
             }).join('');
@@ -3067,19 +3099,19 @@
                 const key=getMockStorageKey(examObj.id,subjObj.id,'mixed',null,m), qs=getMockQuestions(key), s=getPracticeSession(key);
                 const st=getPracticeStats(key);
                 let label=s.completed?'View Results':(st.attempted?'Continue →':'Start →');
-                let sub=s.completed?`Completed • ${st.correct}/${st.total} correct • Score: ${st.score.toFixed(1)}`:`25 Q / Set • ${examObj.id==='cgl'?'15':'25'} min / Set • ${qs.length} Qs`;
+                let sub=s.completed?`Completed • ${st.correct}/${st.total} correct • Score: ${st.score.toFixed(1)}`:`25 Questions • ${examObj.id==='cgl'?'15':'25'} min • ${Math.min(25,qs.length)} available`;
                 return `<div class="mock-row"><button type="button" class="mock-open-btn" onclick="openPracticeMockPlayer(${m})">
                     <div class="card-left"><div class="icon-box">${getCustomSvgIcon('mock',m)}</div><div class="card-info"><h3 class="card-title">Mock-${m}</h3><p class="card-meta">${escapeHTML(sub)}</p></div></div><span class="badge-pill">${label}</span></button></div>`;
             }).join('');
-            return `<div class="hero-card fade-in"><span class="hero-kicker">⏱ TIMED PRACTICE</span><h2 class="hero-title">${escapeHTML(subjObj.name)}</h2><p class="hero-sub">${examObj.id==='cgl'?'15 minutes':'25 minutes'} per 25-question Set • No instant answers or explanations.</p></div>
+            return `<div class="hero-card fade-in"><span class="hero-kicker">⏱ TIMED PRACTICE</span><h2 class="hero-title">${escapeHTML(subjObj.name)}</h2><p class="hero-sub">${examObj.id==='cgl'?'15 minutes':'25 minutes'} per 25-question Mock • No instant answers or explanations.</p></div>
             <div class="section-title"><span>Mixed Questions Mocks</span><span class="badge-pill">${nums.length} Active</span></div>
             <div class="linear-list">${mocksHtml || `<div class="empty-card">इस Subject में अभी कोई Mock Questions नहीं हैं। Exams section में JSON import करते ही यहाँ भी automatically दिखाई देंगे.</div>`}</div>`;
         }
         function renderPracticePlayerView(examObj,subjObj){
             const key=getMockStorageKey(examObj.id,subjObj.id,'mixed',null,state.mockNumber);
-            const qs=getMockQuestions(key).slice(0,100),s=getPracticeSession(key),start=s.activeSet*25,setQs=qs.slice(start,start+25);
+            const qs=getMockQuestions(key).slice(0,25),s=getPracticeSession(key),start=0,setQs=qs;
             if(!setQs.length) return `<div class="empty-card">इस Mock में प्रश्न उपलब्ध नहीं हैं।</div>`;
-            const totalSets=Math.max(1,Math.ceil(qs.length/25)),left=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));
+            const totalSets=1,left=Math.max(0,Math.ceil((s.deadline-Date.now())/1000));
             const q=setQs[Math.min(s.currentQIndex,setQs.length-1)], gi=start+s.currentQIndex;
             const chosen=Object.prototype.hasOwnProperty.call(s.answers,String(gi))?Number(s.answers[String(gi)]):null;
             const options=q.opts.map((o,i)=>`<button type="button" class="opt-btn ${chosen===i?'practice-selected':''}" onclick="selectPracticeMockOption(${gi},${i})"><div class="opt-left"><span class="opt-letter">${['A','B','C','D','E'][i]||i+1}</span><span class="opt-label-text">${escapeHTML(o)}</span></div></button>`).join('');
@@ -3087,7 +3119,7 @@
             const setPct=((s.currentQIndex+1)/setQs.length)*100;
             const prevDisabled=s.currentQIndex===0;
             const nextLabel=atEnd?(s.activeSet===totalSets-1?'Finish Mock ✓':'Next Set →'):'Next →';
-            return `<div class="practice-timer-card"><div><div class="practice-timer-label">⏱ SET ${s.activeSet+1}/${totalSets} • ${setQs.length} QUESTIONS</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">No instant answer • Explanation after completion</div></div><div id="practice-timer" class="practice-timer ${left<=60?'danger':''}">${formatPracticeTime(left)}</div></div>
+            return `<div class="practice-timer-card"><div><div class="practice-timer-label">⏱ TIMED MOCK • ${setQs.length} QUESTIONS</div><div style="font-size:11px;color:var(--text-secondary);margin-top:3px">No instant answer • Explanation after completion</div></div><div id="practice-timer" class="practice-timer ${left<=60?'danger':''}">${formatPracticeTime(left)}</div></div>
             <div class="q-progress-wrap"><div class="q-progress-label"><span>Question ${s.currentQIndex+1}/${setQs.length}</span><span>${Math.round(setPct)}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${setPct}%"></div></div></div>
             <div class="practice-controls-row">
                 <button type="button" class="nav-step-btn" ${prevDisabled?'disabled':''} onclick="practiceNextQuestion(-1)">← Previous</button>
@@ -3095,7 +3127,7 @@
                 <button type="button" class="nav-step-btn primary" onclick="${atEnd?'advancePracticeSet(false)':'practiceNextQuestion(1)'}">${nextLabel}</button>
             </div>
             <div class="question-card fade-in" id="practice-question-anchor">
-                <div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${qs.length}</span><span class="q-light-pill">Set ${s.activeSet+1}</span><span class="q-topic-pill">${escapeHTML(q.category||q.topic||subjObj.short)}</span></div>
+                <div class="q-badges-row"><span class="q-num-pill">Q.${gi+1}</span><span class="q-light-pill">${gi+1} / ${qs.length}</span><span class="q-light-pill">Practice Mock</span><span class="q-topic-pill">${escapeHTML(q.category||q.topic||subjObj.short)}</span></div>
                 <div class="q-shift-line">${escapeHTML(q.exam||examObj.title)} • ${escapeHTML(q.shift||q.source||'PYQ')}</div>
                 ${q.passage?`<div class="passage-box"><span class="passage-label">📖 Passage</span>${escapeHTML(q.passage)}</div>`:''}
                 <h2 class="q-text">${escapeHTML(q.q)}</h2>${renderQuestionMedia(q)}<div class="options-list">${options}</div>
@@ -3104,12 +3136,12 @@
         }
         function renderPracticeCompleteView(){
             const key=state.practiceResultKey, s=getPracticeSession(key), idx=Number(state.practiceResultSet??s.activeSet), st=getPracticeStats(key,idx);
-            const totalSets=Math.max(1,Math.ceil(Math.min(100,getMockQuestions(key).length)/25));
-            const isLast=idx>=totalSets-1;
-            return `<div class="practice-complete"><div style="font-size:42px">🏁</div><div class="hero-kicker">SET ${idx+1} COMPLETED</div><h2 class="hero-title" style="margin-top:6px">Set ${idx+1} पूरा हो गया!</h2><p class="hero-sub">${st.correct} सही • ${st.wrong} गलत • ${st.unattempted} बिना प्रयास • Score ${st.score.toFixed(1)}</p><button type="button" class="nav-step-btn primary" style="margin-top:14px" onclick="openPracticeResults()">📊 Set ${idx+1} Result देखें</button><button type="button" class="nav-step-btn" style="margin-top:8px" onclick="reattemptPracticeSet('${key}',${idx})">↻ Reattempt Set ${idx+1}</button>${!isLast?`<button type="button" class="nav-step-btn primary" style="margin-top:8px" onclick="advancePracticeSet(false)">Next Set ${idx+2} →</button>`:`<button type="button" class="nav-step-btn primary" style="margin-top:8px" onclick="state.view='practice_subject';render()">All Sets Complete • Back to Mocks</button>`}<button type="button" class="nav-step-btn" style="margin-top:8px" onclick="state.view='practice_subject';render()">← Back to Mocks</button></div>`;
+            const totalSets=1;
+            const isLast=true;
+            return `<div class="practice-complete"><div style="font-size:42px">🏁</div><div class="hero-kicker">PRACTICE MOCK COMPLETED</div><h2 class="hero-title" style="margin-top:6px">Mock पूरा हो गया!</h2><p class="hero-sub">${st.correct} सही • ${st.wrong} गलत • ${st.unattempted} बिना प्रयास • Score ${st.score.toFixed(1)}</p><button type="button" class="nav-step-btn primary" style="margin-top:14px" onclick="openPracticeResults()">📊 Mock Result देखें</button><button type="button" class="nav-step-btn" style="margin-top:8px" onclick="reattemptPracticeSet('${key}',${idx})">↻ Reattempt Mock</button><button type="button" class="nav-step-btn primary" style="margin-top:8px" onclick="state.view='practice_subject';render()">← Back to Mocks</button></div>`;
         }
         function renderPracticeResultView(){
-            const key=state.practiceResultKey, allQs=getMockQuestions(key).slice(0,100), s=getPracticeSession(key), setIndex=Number(state.practiceResultSet??s.activeSet), start=setIndex*25, qs=allQs.slice(start,start+25), st=getPracticeStats(key,setIndex);
+            const key=state.practiceResultKey, allQs=getMockQuestions(key).slice(0,25), s=getPracticeSession(key), setIndex=0, start=0, qs=allQs, st=getPracticeStats(key,0);
             if(!s.completedSets[setIndex]) return renderPracticeCompleteView();
             const pct=st.attempted?Math.round(st.correct/st.attempted*100):0;
             const rows=qs.map((q,i)=>{
@@ -3161,7 +3193,10 @@
             const topics=Object.values(byTopic).map(x=>{const p=x.t?Math.round(x.c/x.t*100):0;return `<div class="practice-card"><div style="display:flex;justify-content:space-between"><strong>${escapeHTML(x.t)}</strong><span class="badge-pill">${p}%</span></div><div class="progress-track" style="margin-top:7px"><div class="progress-fill" style="width:${p}%"></div></div><div class="card-meta">${x.c}/${x.t} correct</div></div>`}).join('');
             return `<div class="result-hero"><div style="font-size:12px;font-weight:900;opacity:.9">MOCK COMPLETED</div><div class="result-score">${st.score.toFixed(1)}</div><div>${st.correct} correct • ${st.wrong} wrong • ${st.total-st.attempted} unattempted</div><div style="margin-top:8px;font-size:12px;font-weight:800">Attempt accuracy: ${pct}%</div></div><div class="result-grid"><div class="result-stat"><b>${st.total}</b><div class="card-meta">Questions</div></div><div class="result-stat"><b>${st.correct}</b><div class="card-meta">Correct</div></div><div class="result-stat"><b>${st.wrong}</b><div class="card-meta">Wrong</div></div><div class="result-stat"><b>${st.score.toFixed(1)}</b><div class="card-meta">Score</div></div></div><div class="quick-actions"><button class="quick-btn" onclick="retryWrongFromResult()">🎯<strong>Retry Wrong</strong><span>${st.wrong} questions</span></button><button class="quick-btn" onclick="retakeResult()">↻<strong>Retake Mock</strong><span>Reset answers</span></button><button class="quick-btn" onclick="goBack()">←<strong>Back to Mock</strong><span>Keep your progress</span></button></div><div class="section-title"><span>Topic Performance</span></div>${topics}`;
         }
+        let lastRenderedAppView = null;
         function overrideRender(){
+            if(lastRenderedAppView==='practice_player' && !['practice_player','practice_complete','practice_result'].includes(state.view)) resetCurrentPracticeIfRunning();
+            lastRenderedAppView=state.view;
             const root=document.getElementById('app-root'), backBtn=document.getElementById('btn-back'), hdrTitle=document.getElementById('header-title'), hdrSub=document.getElementById('header-subtitle');
             const examObj=EXAMS.find(e=>e.id===state.examId), subjObj=state.subjectId?SUBJECT_CATALOG[state.subjectId]:null, topicObj=subjObj&&state.topicId?subjObj.topics.find(t=>t.id===state.topicId):null;
             backBtn.style.display=['home','progress','practice'].includes(state.view)?'none':'inline-flex';
@@ -3188,6 +3223,7 @@
         }
         render=overrideRender;
         function goBack(){
+            if(state.view==='practice_player') resetCurrentPracticeIfRunning();
             clearPracticeTimer();
             if(state.view==='practice_result'||state.view==='practice_complete'){state.view='practice_subject';}
             else if(state.view==='practice_player'){state.view='practice_subject';}

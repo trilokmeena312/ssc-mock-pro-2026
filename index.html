@@ -562,7 +562,8 @@
         html.pinch-zoom-page, body.pinch-zoom-page { touch-action: pan-x pan-y pinch-zoom; }
         body.pinch-zoom-page { overflow-x: hidden; }
 
-        .question-media { margin: 10px 0 16px; padding: 10px; background: var(--bg-subtle); border: 1px solid var(--border-card); border-radius: 14px; text-align: center; overflow: hidden; }
+        .question-media { margin: 12px 0 16px; padding: 12px; background: #ffffff; border: 1.5px solid var(--border-card); border-radius: 14px; text-align: center; overflow-x: auto; display: flex; justify-content: center; align-items: center; }
+        .question-media svg { display: block; width: 100%; max-width: 340px; height: auto; max-height: 360px; margin: 0 auto; }
         .question-media img { display: block; max-width: 100%; width: auto; height: auto; max-height: 520px; object-fit: contain; margin: 0 auto; }
         .q-text {
             font-size: 1.12rem;
@@ -2481,24 +2482,60 @@
         }
 
 
-        // Optional figures/graphs from JSON: diagram, graph, image or figure.
+        // Sanitize inline SVG safely so diagrams & graphs render natively in Android WebView & all browsers
+        function sanitizeInlineSvg(rawSvg) {
+            const val = String(rawSvg || '').trim();
+            if (!/^\s*<svg[\s>]/i.test(val)) return '';
+            if (/<script\b|<foreignObject\b|\bon\w+\s*=|javascript:/i.test(val)) return '';
+            try {
+                const doc = new DOMParser().parseFromString(val, 'image/svg+xml');
+                const svgEl = doc.querySelector('svg');
+                if (!svgEl || doc.querySelector('parsererror')) return '';
+                const allowedTags = new Set(['svg','g','circle','ellipse','rect','line','polyline','polygon','path','text','tspan','defs','marker','lineargradient','radialgradient','stop','title','desc']);
+                svgEl.querySelectorAll('*').forEach(node => {
+                    if (!allowedTags.has(node.tagName.toLowerCase())) {
+                        node.remove();
+                        return;
+                    }
+                    Array.from(node.attributes).forEach(attr => {
+                        const name = attr.name.toLowerCase();
+                        const v = attr.value.trim().toLowerCase();
+                        if (name.startsWith('on') || v.startsWith('javascript:')) node.removeAttribute(attr.name);
+                    });
+                });
+                if (!svgEl.getAttribute('viewBox')) {
+                    const w = parseFloat(svgEl.getAttribute('width')) || 300;
+                    const h = parseFloat(svgEl.getAttribute('height')) || 200;
+                    svgEl.setAttribute('viewBox', `0 0 ${w} ${h}`);
+                }
+                return new XMLSerializer().serializeToString(svgEl);
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // Optional figures/graphs from JSON: diagram, graph, svg, image or figure.
         function renderQuestionMedia(q) {
             if (!q || typeof q !== 'object') return '';
-            const candidate = q.diagram ?? q.graph ?? q.image ?? q.figure ?? q.diagramUrl ?? q.graphUrl ?? q.imageUrl;
+            const candidate = q.diagram ?? q.graph ?? q.svg ?? q.image ?? q.figure ?? q.diagramUrl ?? q.graphUrl ?? q.imageUrl;
             if (!candidate) return '';
             let src = '', alt = 'Question diagram or graph';
             if (typeof candidate === 'string') {
                 const value = candidate.trim();
                 if (/^\s*<svg[\s>]/i.test(value)) {
-                    if (/<script\b|\bon\w+\s*=|javascript:/i.test(value)) return '';
-                    src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(value);
-                } else src = value;
+                    const cleanSvg = sanitizeInlineSvg(value);
+                    if (!cleanSvg) return '';
+                    return `<div class="question-media">${cleanSvg}</div>`;
+                }
+                src = value;
             } else if (typeof candidate === 'object') {
                 alt = String(candidate.alt || alt);
                 if (typeof candidate.svg === 'string' && /^\s*<svg[\s>]/i.test(candidate.svg)) {
-                    if (/<script\b|\bon\w+\s*=|javascript:/i.test(candidate.svg)) return '';
-                    src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(candidate.svg);
-                } else src = String(candidate.url || candidate.src || candidate.data || '');
+                    const cleanSvg = sanitizeInlineSvg(candidate.svg);
+                    if (!cleanSvg) return '';
+                    return `<div class="question-media">${cleanSvg}</div>`;
+                }
+                src = String(candidate.url || candidate.src || candidate.data || '');
             }
             if (!src || /^\s*javascript:/i.test(src)) return '';
             return `<div class="question-media"><img src="${escapeHTML(src)}" alt="${escapeHTML(alt)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`;
@@ -2535,6 +2572,7 @@
                 passage: String(raw.passage || raw.cloze || '').trim(),
                 diagram: raw.diagram ?? raw.diagramUrl ?? null,
                 graph: raw.graph ?? raw.graphUrl ?? null,
+                svg: raw.svg ?? null,
                 image: raw.image ?? raw.imageUrl ?? null,
                 figure: raw.figure ?? null
             };
@@ -3159,6 +3197,7 @@
                 return `<div class="practice-result-question">
                     <div style="display:flex;justify-content:space-between;gap:8px"><strong>Q.${i+1}</strong><span class="badge-pill">${right?'Correct':(chosen===null?'Not Attempted':'Incorrect')}</span></div>
                     <div style="font-weight:850;margin-top:7px">${escapeHTML(q.q)}</div>
+                    ${renderQuestionMedia(q)}
                     <div class="practice-result-options">${resultOptions}</div>
                     <div class="chosen-line">आपका उत्तर: ${chosen===null?'Not Attempted':escapeHTML(q.opts[chosen]||'—')}</div>
                     <div class="correct-line">सही उत्तर: ${escapeHTML(q.opts[q.ans]||'—')}</div>
